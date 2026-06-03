@@ -11,6 +11,7 @@ export interface SessionPayload {
   id: string;
   name: string;
   email: string;
+  role: "admin" | "user";
   expiresAt: string;
 }
 
@@ -31,7 +32,7 @@ export async function decrypt(token: string): Promise<SessionPayload | null> {
   }
 }
 
-export async function createSession(user: { id: string; name: string; email: string }) {
+export async function createSession(user: { id: string; name: string; email: string; role: "admin" | "user" }) {
   const expiresAt = new Date(Date.now() + TTL);
   const token = await encrypt({ ...user, expiresAt: expiresAt.toISOString() });
   const jar = await cookies();

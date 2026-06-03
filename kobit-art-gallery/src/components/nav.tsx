@@ -83,6 +83,11 @@ export function Nav({ onDark }: { onDark?: boolean }) {
                     <Link href="/profile" className="nav__drop-item" onClick={() => setDropOpen(false)}>
                       Profile
                     </Link>
+                    {user.role === "admin" && (
+                      <Link href="/admin" className="nav__drop-item" onClick={() => setDropOpen(false)}>
+                        Admin Dashboard
+                      </Link>
+                    )}
                     <div className="nav__drop-divider" />
                     <form action={logout}>
                       <button type="submit" className="nav__drop-item nav__drop-item--logout">

@@ -26,7 +26,7 @@ export async function login(_prev: AuthState, formData: FormData): Promise<AuthS
     return { error: "Invalid email or password." };
   }
 
-  await createSession({ id: user.id, name: user.name, email: user.email });
+  await createSession({ id: user.id, name: user.name, email: user.email, role: user.role ?? "user" });
   redirect("/");
 }
 
@@ -53,7 +53,7 @@ export async function register(_prev: AuthState, formData: FormData): Promise<Au
 
   const hashed = await hashPassword(password);
   const user = await createUser(name, email, hashed);
-  await createSession({ id: user.id, name: user.name, email: user.email });
+  await createSession({ id: user.id, name: user.name, email: user.email, role: user.role ?? "user" });
   redirect("/");
 }
 

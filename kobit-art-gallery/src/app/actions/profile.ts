@@ -46,7 +46,7 @@ export async function updateProfile(_prev: ProfileState, formData: FormData): Pr
     return { error: "User not found." };
   }
 
-  await createSession({ id: updated.id, name: updated.name, email: updated.email });
+  await createSession({ id: updated.id, name: updated.name, email: updated.email, role: updated.role ?? "user" });
 
   return { success: "Profile updated successfully." };
 }

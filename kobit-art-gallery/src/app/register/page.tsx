@@ -2,8 +2,8 @@
 
 import { useActionState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { register, AuthState } from "@/app/actions/auth";
+import { AuthSlideshow } from "@/components/auth-slideshow";
 
 export default function RegisterPage() {
   const [state, action, pending] = useActionState<AuthState, FormData>(register, undefined);
@@ -11,14 +11,7 @@ export default function RegisterPage() {
   return (
     <div className="auth-split">
       <div className="auth-split__img">
-        <Image
-          src="/assets/auth-brushes.png"
-          alt="Traditional bamboo paintbrushes held by a child's hand"
-          fill
-          priority
-          sizes="50vw"
-          style={{ objectFit: "cover" }}
-        />
+        <AuthSlideshow />
         <div className="auth-split__img-overlay" />
         <div className="auth-split__img-text">
           <Link href="/" className="auth-split__brand">

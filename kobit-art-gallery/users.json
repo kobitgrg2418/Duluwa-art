@@ -4,5 +4,12 @@
     "name": "Kobit Gurung",
     "email": "kobitgrg22@gmail.com",
     "password": "e403f47b5f728d5d0564799cf03aff68848d86f7f140bf8779cfea59df531165"
+  },
+  {
+    "id": "6a642563-6017-4489-93f6-88fd83f4f816",
+    "name": "Admin",
+    "email": "admin@duluwa.art",
+    "password": "a6e5531d1a1bc4a195e69f98c4b9fc08e018d67e6305dc4a96d51218a3fcb43e",
+    "role": "admin"
   }
 ]

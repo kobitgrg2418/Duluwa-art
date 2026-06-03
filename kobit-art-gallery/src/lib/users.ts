@@ -7,6 +7,7 @@ export interface StoredUser {
   name: string;
   email: string;
   password: string;
+  role: "admin" | "user";
 }
 
 const FILE = join(process.cwd(), "users.json");
@@ -41,6 +42,7 @@ export async function createUser(name: string, email: string, hashedPw: string) 
     name,
     email,
     password: hashedPw,
+    role: "user",
   };
   users.push(user);
   await save(users);
@@ -62,15 +64,20 @@ export async function verifyPassword(pw: string, hash: string): Promise<boolean>
   return h === hash;
 }
 
-export async function updateUser(id: string, data: { name?: string; email?: string; password?: string }) {
+export async function updateUser(id: string, data: { name?: string; email?: string; password?: string; role?: "admin" | "user" }) {
   const users = await load();
   const idx = users.findIndex((u) => u.id === id);
   if (idx === -1) return null;
   if (data.name) users[idx].name = data.name;
   if (data.email) users[idx].email = data.email;
   if (data.password) users[idx].password = data.password;
+  if (data.role) users[idx].role = data.role;
   await save(users);
   return users[idx];
+}
+
+export async function getAllUsers(): Promise<StoredUser[]> {
+  return load();
 }
 
 export async function deleteUser(id: string) {
