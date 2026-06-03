@@ -8,7 +8,6 @@ import { Featured } from "@/components/featured";
 import { CollectionsPreview } from "@/components/collections-preview";
 import { ArtistStory } from "@/components/artist-story";
 import { Process } from "@/components/process";
-import { VideoShowcase } from "@/components/video-showcase";
 import { Testimonials } from "@/components/testimonials";
 import { CommissionSection } from "@/components/commission-section";
 import { Footer } from "@/components/footer";
@@ -37,7 +36,6 @@ export function HomeClient({ artworks, collections, process, testimonials, siteM
         <CollectionsPreview collections={collections} artworks={artworks} />
         <ArtistStory artworks={artworks} />
         <Process steps={process} />
-        <VideoShowcase videoSrc={mediaMap.video_src} posterImage={mediaMap.video_poster} />
         <Testimonials testimonials={testimonials} />
         <CommissionSection />
       </main>
