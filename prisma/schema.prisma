@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String   @default("")
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Collection {
+  id       String    @id
+  no       String
+  title    String
+  count    Int       @default(0)
+  hue      Int       @default(0)
+  blurb    String    @default("")
+  artworks Artwork[]
+}
+
+model Artwork {
+  id           String        @id @default(cuid())
+  title        String
+  year         String
+  medium       String
+  size         String        @default("")
+  collectionId String
+  collection   Collection    @relation(fields: [collectionId], references: [id])
+  hue          Int           @default(0)
+  ratio        Float         @default(1)
+  featured     Boolean       @default(false)
+  note         String        @default("")
+  image        String        @default("")
+  price        Float         @default(0)
+  status       ArtworkStatus @default(IN_SALE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  orderItems   OrderItem[]
+}
+
+enum ArtworkStatus {
+  IN_SALE
+  SOLD_OUT
+}
+
+model ProcessStep {
+  id    String @id @default(cuid())
+  no    String @unique
+  title String
+  hue   Int    @default(0)
+  text  String @default("")
+}
+
+model Testimonial {
+  id    String @id @default(cuid())
+  quote String
+  who   String
+  role  String @default("")
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id])
+  status        OrderStatus @default(PENDING)
+  paymentMethod String
+  name          String
+  email         String
+  phone         String      @default("")
+  address       String      @default("")
+  city          String      @default("")
+  subtotal      Float
+  total         Float
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  items         OrderItem[]
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  artworkId String
+  artwork   Artwork @relation(fields: [artworkId], references: [id])
+  qty       Int     @default(1)
+  price     Float
+}

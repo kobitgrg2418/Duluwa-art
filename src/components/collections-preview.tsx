@@ -3,15 +3,16 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { ArtFrame, Reveal, Eyebrow } from "./atoms";
-import { COLLECTIONS, ARTWORKS } from "@/lib/data";
+import type { Collection, Artwork } from "@/lib/data";
 
-function coverImage(collId: string) {
-  const art = ARTWORKS.find((a) => a.coll === collId && a.image);
-  return art?.image;
-}
+export function CollectionsPreview({ collections, artworks }: { collections: Collection[]; artworks: Artwork[] }) {
+  const C = collections;
 
-export function CollectionsPreview() {
-  const C = COLLECTIONS;
+  function coverImage(collId: string) {
+    const art = artworks.find((a) => a.coll === collId && a.image);
+    return art?.image;
+  }
+
   const [active, setActive] = useState(0);
   const [offset, setOffset] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);

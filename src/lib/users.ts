@@ -1,6 +1,6 @@
 import "server-only";
-import { readFile, writeFile } from "fs/promises";
-import { join } from "path";
+import { prisma } from "./db";
+import type { Role } from "@/generated/prisma/client";
 
 export interface StoredUser {
   id: string;
@@ -10,44 +10,32 @@ export interface StoredUser {
   role: "admin" | "user";
 }
 
-const FILE = join(process.cwd(), "users.json");
-
-async function load(): Promise<StoredUser[]> {
-  try {
-    const raw = await readFile(FILE, "utf-8");
-    return JSON.parse(raw);
-  } catch {
-    return [];
-  }
+function toRole(r: Role): "admin" | "user" {
+  return r === "ADMIN" ? "admin" : "user";
 }
 
-async function save(users: StoredUser[]) {
-  await writeFile(FILE, JSON.stringify(users, null, 2), "utf-8");
+function toStoredUser(u: { id: string; name: string; email: string; password: string; role: Role }): StoredUser {
+  return { id: u.id, name: u.name, email: u.email, password: u.password, role: toRole(u.role) };
 }
 
-export async function findById(id: string) {
-  const users = await load();
-  return users.find((u) => u.id === id) ?? null;
+export async function findById(id: string): Promise<StoredUser | null> {
+  const u = await prisma.user.findUnique({ where: { id } });
+  return u ? toStoredUser(u) : null;
 }
 
-export async function findByEmail(email: string) {
-  const users = await load();
-  return users.find((u) => u.email === email) ?? null;
+export async function findByEmail(email: string): Promise<StoredUser | null> {
+  const u = await prisma.user.findUnique({ where: { email } });
+  return u ? toStoredUser(u) : null;
 }
 
-export async function createUser(name: string, email: string, hashedPw: string) {
-  const users = await load();
-  const user: StoredUser = {
-    id: crypto.randomUUID(),
-    name,
-    email,
-    password: hashedPw,
-    role: "user",
-  };
-  users.push(user);
-  await save(users);
-  return user;
+export async function createUser(name: string, email: string, hashedPw: string): Promise<StoredUser> {
+  const u = await prisma.user.create({
+    data: { name, email, password: hashedPw, role: "USER" },
+  });
+  return toStoredUser(u);
 }
+
+const SECRET_SALT = "duluwa-salt-2024";
 
 async function hashPassword(pw: string): Promise<string> {
   const data = new TextEncoder().encode(pw + SECRET_SALT);
@@ -57,35 +45,43 @@ async function hashPassword(pw: string): Promise<string> {
     .join("");
 }
 
-const SECRET_SALT = "duluwa-salt-2024";
-
 export async function verifyPassword(pw: string, hash: string): Promise<boolean> {
   const h = await hashPassword(pw);
   return h === hash;
 }
 
-export async function updateUser(id: string, data: { name?: string; email?: string; password?: string; role?: "admin" | "user" }) {
-  const users = await load();
-  const idx = users.findIndex((u) => u.id === id);
-  if (idx === -1) return null;
-  if (data.name) users[idx].name = data.name;
-  if (data.email) users[idx].email = data.email;
-  if (data.password) users[idx].password = data.password;
-  if (data.role) users[idx].role = data.role;
-  await save(users);
-  return users[idx];
+export async function updateUser(
+  id: string,
+  data: { name?: string; email?: string; password?: string; role?: "admin" | "user" },
+): Promise<StoredUser | null> {
+  try {
+    const u = await prisma.user.update({
+      where: { id },
+      data: {
+        ...(data.name !== undefined && { name: data.name }),
+        ...(data.email !== undefined && { email: data.email }),
+        ...(data.password !== undefined && { password: data.password }),
+        ...(data.role !== undefined && { role: data.role === "admin" ? "ADMIN" : "USER" }),
+      },
+    });
+    return toStoredUser(u);
+  } catch {
+    return null;
+  }
 }
 
 export async function getAllUsers(): Promise<StoredUser[]> {
-  return load();
+  const users = await prisma.user.findMany({ orderBy: { createdAt: "desc" } });
+  return users.map(toStoredUser);
 }
 
-export async function deleteUser(id: string) {
-  const users = await load();
-  const filtered = users.filter((u) => u.id !== id);
-  if (filtered.length === users.length) return false;
-  await save(filtered);
-  return true;
+export async function deleteUser(id: string): Promise<boolean> {
+  try {
+    await prisma.user.delete({ where: { id } });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export { hashPassword };

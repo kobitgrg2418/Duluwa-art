@@ -3,13 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin";
 import {
-  getArtworks, saveArtworks,
-  getCollections, saveCollections,
-  getProcess, saveProcess,
-  getTestimonials, saveTestimonials,
+  getArtworks, saveArtwork, deleteArtworkById, batchUpdateArtworkStatus,
+  getCollections, saveCollection, deleteCollectionById,
+  getProcess, saveProcessStep, deleteProcessStepByNo,
+  getTestimonials, getTestimonialIds, saveTestimonial, deleteTestimonialById,
 } from "@/lib/store";
 import { getAllUsers, updateUser, deleteUser, createUser, hashPassword } from "@/lib/users";
-import type { Artwork, Collection, ProcessStep, Testimonial } from "@/lib/data";
+import type { Artwork, ArtworkStatus, Collection, ProcessStep, Testimonial } from "@/lib/data";
 
 export type AdminState = { ok?: boolean; error?: string } | undefined;
 
@@ -29,23 +29,20 @@ export async function upsertArtwork(_prev: AdminState, fd: FormData): Promise<Ad
   const note = (fd.get("note") as string)?.trim() || "";
   const image = (fd.get("image") as string)?.trim() || "";
   const price = Number(fd.get("price")) || 0;
+  const status = (fd.get("status") as string) === "SOLD_OUT" ? "SOLD_OUT" : "IN_SALE";
 
   if (!title || !year || !medium || !coll) {
     return { error: "Title, year, medium, and collection are required." };
   }
 
-  const items = await getArtworks();
-  const artwork: Artwork = { id: id || `a${Date.now()}`, title, year, medium, size, coll, hue, ratio, feat, note, image, price };
+  const artwork: Artwork = { id: id || `a${Date.now()}`, title, year, medium, size, coll, hue, ratio, feat, note, image, price, status: status as ArtworkStatus };
 
   if (id) {
-    const idx = items.findIndex((a) => a.id === id);
-    if (idx === -1) return { error: "Artwork not found." };
-    items[idx] = artwork;
-  } else {
-    items.push(artwork);
+    const items = await getArtworks();
+    if (!items.find((a) => a.id === id)) return { error: "Artwork not found." };
   }
 
-  await saveArtworks(items);
+  await saveArtwork(artwork);
   revalidatePath("/admin/artworks");
   revalidatePath("/");
   return { ok: true };
@@ -53,12 +50,21 @@ export async function upsertArtwork(_prev: AdminState, fd: FormData): Promise<Ad
 
 export async function deleteArtwork(id: string): Promise<AdminState> {
   await requireAdmin();
-  const items = await getArtworks();
-  const filtered = items.filter((a) => a.id !== id);
-  if (filtered.length === items.length) return { error: "Not found." };
-  await saveArtworks(filtered);
+  const ok = await deleteArtworkById(id);
+  if (!ok) return { error: "Not found." };
   revalidatePath("/admin/artworks");
   revalidatePath("/");
+  return { ok: true };
+}
+
+export async function batchSetArtworkStatus(ids: string[], status: ArtworkStatus): Promise<AdminState> {
+  await requireAdmin();
+  if (ids.length === 0) return { error: "No artworks selected." };
+  await batchUpdateArtworkStatus(ids, status);
+  revalidatePath("/admin/artworks");
+  revalidatePath("/");
+  revalidatePath("/collections");
+  revalidatePath("/gallery");
   return { ok: true };
 }
 
@@ -78,19 +84,18 @@ export async function upsertCollection(_prev: AdminState, fd: FormData): Promise
     return { error: "ID, number, and title are required." };
   }
 
-  const items = await getCollections();
   const coll: Collection = { id, no, title, count, hue, blurb };
 
   if (editId) {
-    const idx = items.findIndex((c) => c.id === editId);
-    if (idx === -1) return { error: "Collection not found." };
-    items[idx] = coll;
+    const items = await getCollections();
+    if (!items.find((c) => c.id === editId)) return { error: "Collection not found." };
+    await saveCollection(coll, editId);
   } else {
+    const items = await getCollections();
     if (items.find((c) => c.id === id)) return { error: "A collection with this ID already exists." };
-    items.push(coll);
+    await saveCollection(coll);
   }
 
-  await saveCollections(items);
   revalidatePath("/admin/collections");
   revalidatePath("/");
   return { ok: true };
@@ -98,10 +103,8 @@ export async function upsertCollection(_prev: AdminState, fd: FormData): Promise
 
 export async function deleteCollection(id: string): Promise<AdminState> {
   await requireAdmin();
-  const items = await getCollections();
-  const filtered = items.filter((c) => c.id !== id);
-  if (filtered.length === items.length) return { error: "Not found." };
-  await saveCollections(filtered);
+  const ok = await deleteCollectionById(id);
+  if (!ok) return { error: "Not found." };
   revalidatePath("/admin/collections");
   revalidatePath("/");
   return { ok: true };
@@ -121,18 +124,16 @@ export async function upsertProcess(_prev: AdminState, fd: FormData): Promise<Ad
     return { error: "Number and title are required." };
   }
 
-  const items = await getProcess();
   const step: ProcessStep = { no, title, hue, text };
 
   if (editNo) {
-    const idx = items.findIndex((s) => s.no === editNo);
-    if (idx === -1) return { error: "Step not found." };
-    items[idx] = step;
+    const items = await getProcess();
+    if (!items.find((s) => s.no === editNo)) return { error: "Step not found." };
+    await saveProcessStep(step, editNo);
   } else {
-    items.push(step);
+    await saveProcessStep(step);
   }
 
-  await saveProcess(items);
   revalidatePath("/admin/process");
   revalidatePath("/");
   return { ok: true };
@@ -140,10 +141,8 @@ export async function upsertProcess(_prev: AdminState, fd: FormData): Promise<Ad
 
 export async function deleteProcess(no: string): Promise<AdminState> {
   await requireAdmin();
-  const items = await getProcess();
-  const filtered = items.filter((s) => s.no !== no);
-  if (filtered.length === items.length) return { error: "Not found." };
-  await saveProcess(filtered);
+  const ok = await deleteProcessStepByNo(no);
+  if (!ok) return { error: "Not found." };
   revalidatePath("/admin/process");
   revalidatePath("/");
   return { ok: true };
@@ -162,18 +161,17 @@ export async function upsertTestimonial(_prev: AdminState, fd: FormData): Promis
     return { error: "Quote and name are required." };
   }
 
-  const items = await getTestimonials();
   const testimonial: Testimonial = { quote, who, role: role || "" };
 
   if (editIdx !== null && editIdx !== "") {
     const idx = Number(editIdx);
-    if (idx < 0 || idx >= items.length) return { error: "Testimonial not found." };
-    items[idx] = testimonial;
+    const ids = await getTestimonialIds();
+    if (idx < 0 || idx >= ids.length) return { error: "Testimonial not found." };
+    await saveTestimonial(testimonial, ids[idx]);
   } else {
-    items.push(testimonial);
+    await saveTestimonial(testimonial);
   }
 
-  await saveTestimonials(items);
   revalidatePath("/admin/testimonials");
   revalidatePath("/");
   return { ok: true };
@@ -181,10 +179,10 @@ export async function upsertTestimonial(_prev: AdminState, fd: FormData): Promis
 
 export async function deleteTestimonial(idx: number): Promise<AdminState> {
   await requireAdmin();
-  const items = await getTestimonials();
-  if (idx < 0 || idx >= items.length) return { error: "Not found." };
-  items.splice(idx, 1);
-  await saveTestimonials(items);
+  const ids = await getTestimonialIds();
+  if (idx < 0 || idx >= ids.length) return { error: "Not found." };
+  const ok = await deleteTestimonialById(ids[idx]);
+  if (!ok) return { error: "Not found." };
   revalidatePath("/admin/testimonials");
   revalidatePath("/");
   return { ok: true };
@@ -232,4 +230,37 @@ export async function adminCreateUser(_prev: AdminState, fd: FormData): Promise<
   }
   revalidatePath("/admin/users");
   return { ok: true };
+}
+
+// ── Orders ──
+
+import { getAllOrders, updateOrderStatus } from "@/lib/orders";
+import { prisma } from "@/lib/db";
+import type { OrderStatus } from "@/generated/prisma/client";
+
+export async function adminGetOrders() {
+  await requireAdmin();
+  return getAllOrders();
+}
+
+export async function adminUpdateOrderStatus(orderId: string, status: string): Promise<AdminState> {
+  await requireAdmin();
+  try {
+    await updateOrderStatus(orderId, status as OrderStatus);
+    revalidatePath("/admin/orders");
+    return { ok: true };
+  } catch {
+    return { error: "Order not found." };
+  }
+}
+
+export async function adminDeleteOrder(orderId: string): Promise<AdminState> {
+  await requireAdmin();
+  try {
+    await prisma.order.delete({ where: { id: orderId } });
+    revalidatePath("/admin/orders");
+    return { ok: true };
+  } catch {
+    return { error: "Order not found." };
+  }
 }

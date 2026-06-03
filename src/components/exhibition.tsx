@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { ArtFrame, Reveal, Eyebrow } from "./atoms";
-import { ARTWORKS } from "@/lib/data";
+import type { Artwork } from "@/lib/data";
 
-export function Exhibition() {
-  const A = ARTWORKS;
-  const wall = [A[0], A[8], A[2], A[6], A[3]];
+export function Exhibition({ artworks }: { artworks: Artwork[] }) {
+  const wall = [artworks[0], artworks[8], artworks[2], artworks[6], artworks[3]].filter(Boolean);
 
   return (
     <section className="section--tight section exhibition" id="exhibition">

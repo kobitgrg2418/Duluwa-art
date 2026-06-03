@@ -739,8 +739,8 @@ p { margin: 0 0 1.1em; max-width: 60ch; }
    GALLERY — Bento grid
    ========================================================================= */
 
-body:has(.gl-page) { background: var(--dark); }
-.gl-page { background: var(--dark); }
+body:has(.gl-page) { background: #fff; }
+.gl-page { background: #fff; }
 
 .gl-hero {
   padding: clamp(140px, 18vh, 220px) 0 clamp(40px, 6vw, 72px);
@@ -749,39 +749,45 @@ body:has(.gl-page) { background: var(--dark); }
 
 .gl-filters {
   position: sticky; top: 0; z-index: 40;
-  background: rgba(13,15,20,0.88); backdrop-filter: blur(12px);
-  border-block: 1px solid rgba(250,248,243,0.07); padding-block: 1rem;
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+  border-block: 1px solid rgba(0,0,0,0.06); padding-block: 1rem;
 }
 .gl-filters__row { display: flex; flex-wrap: wrap; gap: .5rem; }
 .gl-chip {
   display: inline-flex; align-items: center; gap: .5em; padding: .6em 1.1em;
-  border: 1px solid rgba(250,248,243,0.12); border-radius: 40px;
+  border: 1px solid rgba(0,0,0,0.12); border-radius: 40px;
   font-family: var(--sans); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
-  color: rgba(250,248,243,0.5); background: none; cursor: pointer; transition: all .4s var(--ease);
+  color: rgba(0,0,0,0.45); background: none; cursor: pointer; transition: all .4s var(--ease);
 }
-.gl-chip:hover { border-color: rgba(250,248,243,0.3); color: rgba(250,248,243,0.8); }
-.gl-chip.on { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.gl-chip:hover { border-color: rgba(0,0,0,0.3); color: rgba(0,0,0,0.7); }
+.gl-chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .gl-chip__n { font-family: var(--mono); font-size: .62rem; opacity: .55; }
-.gl-chip.on .gl-chip__n { color: var(--gold); opacity: 1; }
+.gl-chip.on .gl-chip__n { color: var(--gold-bright); opacity: 1; }
 
-.gl-grid-section { background: var(--dark); padding-block: clamp(2.5rem, 5vw, 4rem) clamp(5rem, 10vw, 9rem); }
+.gl-grid-section { background: #fff; padding-block: clamp(2.5rem, 5vw, 4rem) clamp(5rem, 10vw, 9rem); }
 
 .gl-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-rows: clamp(160px, 18vw, 260px);
-  gap: clamp(.6rem, 1.2vw, 1rem);
+  gap: clamp(.8rem, 1.4vw, 1.2rem);
 }
 
 .gl-card { min-height: 0; }
 .gl-card__inner {
   position: relative; width: 100%; height: 100%; overflow: hidden;
-  border-radius: 12px; border: 1px solid rgba(250,248,243,0.08);
-  background: var(--dark-2); cursor: pointer; display: block; padding: 0;
+  border-radius: 12px; border: 1px solid rgba(0,0,0,0.06);
+  background: #f8f8f8; cursor: pointer; display: block; padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  transition: box-shadow .5s var(--ease), transform .5s var(--ease);
+}
+.gl-card__inner:hover {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
 }
 .gl-card__placeholder {
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(250,248,243,0.04), rgba(250,248,243,0.01));
+  background: linear-gradient(135deg, rgba(0,0,0,0.03), rgba(0,0,0,0.01));
 }
 
 .gl-card__overlay {
@@ -810,6 +816,7 @@ body:has(.gl-page) { background: var(--dark); }
   font-family: var(--sans); font-size: .68rem; font-weight: 500;
   letter-spacing: .22em; text-transform: uppercase; color: var(--paper);
   padding: .8em 1.5em; background: rgba(26,25,22,0.55); backdrop-filter: blur(3px);
+  border-radius: 6px;
   opacity: 0; transition: opacity .5s var(--ease);
 }
 .gl-card__overlay--active .gl-card__view { opacity: 1; }
@@ -1242,4 +1249,53 @@ body:has(.gl-page) { background: var(--dark); }
   .adm__side-bot { display: none; }
   .adm__form-grid { grid-template-columns: 1fr; }
   .adm__page-head { flex-direction: column; align-items: flex-start; gap: .8rem; }
+}
+
+/* ── Batch toolbar ── */
+.adm__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.adm__batch-bar {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background: #f0f0f5;
+  border-radius: 8px;
+  padding: .4rem .8rem;
+}
+.adm__batch-count {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-right: .25rem;
+}
+
+/* ── Sold Out badge (public pages) ── */
+.sold-out-badge {
+  opacity: .55;
+  pointer-events: none;
+  background: #ef4444 !important;
+  color: #fff !important;
+  border: none !important;
+  cursor: default !important;
+}
+
+.gl-card__sold-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #ef4444;
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+  z-index: 3;
+  pointer-events: none;
 }

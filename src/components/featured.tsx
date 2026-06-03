@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { ArtFrame, Reveal, Eyebrow, useLightbox } from "./atoms";
-import { ARTWORKS, artIndex } from "@/lib/data";
+import type { Artwork } from "@/lib/data";
 
-export function Featured() {
+export function Featured({ artworks }: { artworks: Artwork[] }) {
   const { open } = useLightbox();
-  const items = ARTWORKS.filter((a) => a.feat);
+  const items = artworks.filter((a) => a.feat);
+  const artIndex = (id: string) => artworks.findIndex((a) => a.id === id);
 
   const collLabel = (coll: string) => {
     if (coll === "himalaya") return "Himalayan Landscapes";

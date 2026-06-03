@@ -2,19 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { ArtFrame, Reveal, Eyebrow } from "./atoms";
-import { ARTWORKS } from "@/lib/data";
+import type { Artwork } from "@/lib/data";
 
-const SLIDES = ARTWORKS.filter((a) => a.image).slice(0, 6);
-
-export function ArtistStory() {
+export function ArtistStory({ artworks }: { artworks: Artwork[] }) {
+  const SLIDES = artworks.filter((a) => a.image).slice(0, 6);
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
+    if (SLIDES.length === 0) return;
     const t = setInterval(() => setIdx((p) => (p + 1) % SLIDES.length), 2000);
     return () => clearInterval(t);
-  }, []);
+  }, [SLIDES.length]);
 
   const cur = SLIDES[idx];
+  if (!cur) return null;
 
   return (
     <section className="section story" id="story">

@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { getArtworks, getCollections, getProcess, getTestimonials } from "@/lib/store";
 import { getAllUsers } from "@/lib/users";
+import { getAllOrders } from "@/lib/orders";
 
 export default async function AdminDashboard() {
-  const [artworks, collections, process, testimonials, users] = await Promise.all([
+  const [artworks, collections, process, testimonials, users, orders] = await Promise.all([
     getArtworks(),
     getCollections(),
     getProcess(),
     getTestimonials(),
     getAllUsers(),
+    getAllOrders(),
   ]);
 
   const totalItems = artworks.length + collections.length + process.length + testimonials.length;
@@ -49,6 +51,7 @@ export default async function AdminDashboard() {
               { label: "Process", count: process.length, href: "/admin/process", color: "#c084fc" },
               { label: "Testimonials", count: testimonials.length, href: "/admin/testimonials", color: "#fb923c" },
               { label: "Users", count: users.length, href: "/admin/users", color: "#f472b6" },
+              { label: "Orders", count: orders.length, href: "/admin/orders", color: "#22d3ee" },
             ].map((c) => (
               <Link key={c.label} href={c.href} className="adm__card">
                 <span className="adm__card-count">{c.count}</span>

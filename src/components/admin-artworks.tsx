@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useActionState } from "react";
-import { upsertArtwork, deleteArtwork } from "@/app/actions/admin";
+import { upsertArtwork, deleteArtwork, batchSetArtworkStatus } from "@/app/actions/admin";
 import type { Artwork, Collection } from "@/lib/data";
 import type { AdminState } from "@/app/actions/admin";
 
@@ -9,6 +9,8 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
   const [editing, setEditing] = useState<Artwork | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [state, formAction, pending] = useActionState(upsertArtwork, undefined as AdminState);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [batchPending, setBatchPending] = useState(false);
 
   function openNew() {
     setEditing(null);
@@ -29,6 +31,34 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
     window.location.reload();
   }
 
+  function toggleSelect(id: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    if (selected.size === artworks.length) {
+      setSelected(new Set());
+    } else {
+      setSelected(new Set(artworks.map((a) => a.id)));
+    }
+  }
+
+  async function handleBatch(status: "IN_SALE" | "SOLD_OUT") {
+    if (selected.size === 0) return;
+    const label = status === "SOLD_OUT" ? "Sold Out" : "In Sale";
+    if (!confirm(`Mark ${selected.size} artwork(s) as ${label}?`)) return;
+    setBatchPending(true);
+    await batchSetArtworkStatus(Array.from(selected), status);
+    setBatchPending(false);
+    setSelected(new Set());
+    window.location.reload();
+  }
+
   if (state?.ok && showForm) {
     close();
     window.location.reload();
@@ -36,7 +66,37 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
 
   return (
     <>
-      <button className="adm__btn adm__btn--primary" onClick={openNew}>+ Add Artwork</button>
+      <div className="adm__toolbar">
+        <button className="adm__btn adm__btn--primary" onClick={openNew}>+ Add Artwork</button>
+
+        {selected.size > 0 && (
+          <div className="adm__batch-bar">
+            <span className="adm__batch-count">{selected.size} selected</span>
+            <button
+              className="adm__btn adm__btn--sm"
+              style={{ background: "#4ade80", color: "#fff", border: "none" }}
+              disabled={batchPending}
+              onClick={() => handleBatch("IN_SALE")}
+            >
+              Mark In Sale
+            </button>
+            <button
+              className="adm__btn adm__btn--sm"
+              style={{ background: "#ef4444", color: "#fff", border: "none" }}
+              disabled={batchPending}
+              onClick={() => handleBatch("SOLD_OUT")}
+            >
+              Mark Sold Out
+            </button>
+            <button
+              className="adm__btn adm__btn--sm"
+              onClick={() => setSelected(new Set())}
+            >
+              Clear
+            </button>
+          </div>
+        )}
+      </div>
 
       {showForm && (
         <div className="adm__modal-overlay" onClick={close}>
@@ -95,6 +155,13 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
                   <textarea name="note" rows={2} defaultValue={editing?.note} />
                 </div>
                 <div className="adm__field">
+                  <label>Status</label>
+                  <select name="status" defaultValue={editing?.status || "IN_SALE"}>
+                    <option value="IN_SALE">In Sale</option>
+                    <option value="SOLD_OUT">Sold Out</option>
+                  </select>
+                </div>
+                <div className="adm__field">
                   <label className="adm__checkbox">
                     <input type="checkbox" name="feat" defaultChecked={editing?.feat} />
                     Featured
@@ -116,19 +183,33 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
         <table className="adm__table">
           <thead>
             <tr>
+              <th style={{ width: 40 }}>
+                <input
+                  type="checkbox"
+                  checked={selected.size === artworks.length && artworks.length > 0}
+                  onChange={toggleSelectAll}
+                />
+              </th>
               <th>Image</th>
               <th>Title</th>
               <th>Collection</th>
               <th>Year</th>
-              <th>Medium</th>
               <th>Price</th>
+              <th>Status</th>
               <th>Featured</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {artworks.map((a) => (
-              <tr key={a.id}>
+              <tr key={a.id} style={selected.has(a.id) ? { background: "rgba(99,102,241,0.06)" } : undefined}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selected.has(a.id)}
+                    onChange={() => toggleSelect(a.id)}
+                  />
+                </td>
                 <td>
                   {a.image ? (
                     <img src={a.image} alt={a.title} style={{ width: 48, height: 48, objectFit: "cover" }} />
@@ -139,8 +220,21 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
                 <td><strong>{a.title}</strong></td>
                 <td>{collections.find((c) => c.id === a.coll)?.title || a.coll}</td>
                 <td>{a.year}</td>
-                <td>{a.medium}</td>
                 <td>Rs {a.price}</td>
+                <td>
+                  <span
+                    className="adm__status"
+                    style={{
+                      color: a.status === "SOLD_OUT" ? "#ef4444" : "#4ade80",
+                    }}
+                  >
+                    <span
+                      className="adm__status-dot"
+                      style={{ background: a.status === "SOLD_OUT" ? "#ef4444" : "#4ade80" }}
+                    />
+                    {a.status === "SOLD_OUT" ? "Sold Out" : "In Sale"}
+                  </span>
+                </td>
                 <td>{a.feat ? "Yes" : "No"}</td>
                 <td>
                   <div className="adm__actions">
@@ -151,7 +245,7 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
               </tr>
             ))}
             {artworks.length === 0 && (
-              <tr><td colSpan={8} style={{ textAlign: "center", padding: "2rem", color: "var(--ink-faint)" }}>No artworks yet</td></tr>
+              <tr><td colSpan={9} style={{ textAlign: "center", padding: "2rem", color: "var(--ink-faint)" }}>No artworks yet</td></tr>
             )}
           </tbody>
         </table>

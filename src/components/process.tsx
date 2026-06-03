@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Eyebrow } from "./atoms";
-import { PROCESS } from "@/lib/data";
+import type { ProcessStep } from "@/lib/data";
 
-export function Process() {
-  const P = PROCESS;
+export function Process({ steps }: { steps: ProcessStep[] }) {
+  const P = steps;
   const [active, setActive] = useState(0);
   const refs = useRef<(HTMLLIElement | null)[]>([]);
 
@@ -18,6 +18,8 @@ export function Process() {
     refs.current.forEach((r) => r && io.observe(r));
     return () => io.disconnect();
   }, []);
+
+  if (P.length === 0) return null;
 
   return (
     <section className="section is-dark process" id="process">
@@ -34,7 +36,7 @@ export function Process() {
             >
               <source src="/assets/1733206571917552.mov" type="video/mp4" />
             </video>
-            <span className="process__viz-no mono">{P[active].no} / 04</span>
+            <span className="process__viz-no mono">{P[active]?.no} / {String(P.length).padStart(2, "0")}</span>
           </div>
         </div>
         <ol className="process__steps">

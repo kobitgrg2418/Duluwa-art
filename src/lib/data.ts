@@ -7,6 +7,8 @@ export interface Collection {
   blurb: string;
 }
 
+export type ArtworkStatus = "IN_SALE" | "SOLD_OUT";
+
 export interface Artwork {
   id: string;
   title: string;
@@ -20,6 +22,7 @@ export interface Artwork {
   note: string;
   image?: string;
   price: number;
+  status: ArtworkStatus;
 }
 
 export interface ProcessStep {
@@ -52,40 +55,40 @@ export const COLLECTIONS: Collection[] = [
 
 export const ARTWORKS: Artwork[] = [
   { id: "a1", title: "Indra Jatra, Dusk", year: "2024", medium: "Watercolour on cotton rag", size: "76 × 56 cm",
-    coll: "culture", hue: 26, ratio: 0.78, feat: true, price: 1200,
+    coll: "culture", hue: 26, ratio: 0.78, feat: true, price: 1200, status: "IN_SALE",
     note: "Masked dancers under the last copper light of the festival square.", image: "/assets/IMG_3838.jpeg" },
   { id: "a2", title: "The Lama's Hands", year: "2023", medium: "Watercolour & graphite", size: "40 × 50 cm",
-    coll: "portrait", hue: 42, ratio: 1.28, feat: true, price: 650,
+    coll: "portrait", hue: 42, ratio: 1.28, feat: true, price: 650, status: "IN_SALE",
     note: "A study of stillness — beads, knuckles, ninety winters.", image: "/assets/IMG_20230519_0002.jpeg" },
   { id: "a3", title: "Machhapuchhre, First Light", year: "2024", medium: "Watercolour on cotton rag", size: "90 × 60 cm",
-    coll: "himalaya", hue: 218, ratio: 0.7, feat: true, price: 1800,
+    coll: "himalaya", hue: 218, ratio: 0.7, feat: true, price: 1800, status: "IN_SALE",
     note: "The fishtail summit emerging from the cold blue of dawn.", image: "/assets/IMG_6277.jpeg" },
   { id: "a4", title: "Bengal Tiger, Bardiya", year: "2023", medium: "Watercolour on rag", size: "70 × 50 cm",
-    coll: "wildlife", hue: 92, ratio: 0.82, feat: true, price: 1400,
+    coll: "wildlife", hue: 92, ratio: 0.82, feat: true, price: 1400, status: "IN_SALE",
     note: "Wet-in-wet stripes dissolving into the tall grass.", image: "/assets/IMG_0536.jpeg" },
   { id: "a5", title: "Tea Pickers, Ilam", year: "2022", medium: "Watercolour on cotton rag", size: "64 × 48 cm",
-    coll: "lifestyle", hue: 62, ratio: 1.18, feat: false, price: 950,
+    coll: "lifestyle", hue: 62, ratio: 1.18, feat: false, price: 950, status: "IN_SALE",
     note: "Bent backs and baskets across the green terraces.", image: "/assets/IMG_0645.jpg" },
   { id: "a6", title: "Boudhanath in Rain", year: "2024", medium: "Watercolour sketch", size: "30 × 30 cm",
-    coll: "sketches", hue: 34, ratio: 1, feat: false, price: 380,
+    coll: "sketches", hue: 34, ratio: 1, feat: false, price: 380, status: "IN_SALE",
     note: "Fifteen minutes, one brush, the great stupa under monsoon.", image: "/assets/IMG_0798.jpeg" },
   { id: "a7", title: "Woman of Mustang", year: "2023", medium: "Watercolour & graphite", size: "42 × 56 cm",
-    coll: "portrait", hue: 38, ratio: 0.75, feat: false, price: 850,
+    coll: "portrait", hue: 38, ratio: 0.75, feat: false, price: 850, status: "IN_SALE",
     note: "Coral, turquoise and a gaze that has crossed the high desert.", image: "/assets/IMG_2873.jpeg" },
   { id: "a8", title: "Danphe in Snow", year: "2024", medium: "Watercolour on rag", size: "38 × 46 cm",
-    coll: "wildlife", hue: 200, ratio: 0.84, feat: false, price: 720,
+    coll: "wildlife", hue: 200, ratio: 0.84, feat: false, price: 720, status: "IN_SALE",
     note: "The Himalayan monal — iridescence built in transparent layers.", image: "/assets/IMG_2875.jpeg" },
   { id: "a9", title: "Prayer Flags, Langtang", year: "2022", medium: "Watercolour on cotton rag", size: "80 × 54 cm",
-    coll: "culture", hue: 30, ratio: 0.74, feat: false, price: 1100,
+    coll: "culture", hue: 30, ratio: 0.74, feat: false, price: 1100, status: "IN_SALE",
     note: "Lungta scattering colour across a thin mountain wind.", image: "/assets/IMG_2877.jpeg" },
   { id: "a10", title: "Annapurna Sanctuary", year: "2023", medium: "Watercolour on rag", size: "100 × 56 cm",
-    coll: "himalaya", hue: 224, ratio: 0.56, feat: false, price: 2200,
+    coll: "himalaya", hue: 224, ratio: 0.56, feat: false, price: 2200, status: "IN_SALE",
     note: "A panorama held in one continuous wet wash.", image: "/assets/IMG_3246.jpeg" },
   { id: "a11", title: "Potter of Bhaktapur", year: "2024", medium: "Watercolour sketch", size: "32 × 40 cm",
-    coll: "lifestyle", hue: 48, ratio: 0.8, feat: false, price: 420,
+    coll: "lifestyle", hue: 48, ratio: 0.8, feat: false, price: 420, status: "IN_SALE",
     note: "Clay, wheel, and hands that have never hurried.", image: "/assets/IMG_3956.jpeg" },
   { id: "a12", title: "River Otter, Karnali", year: "2022", medium: "Watercolour sketch", size: "28 × 28 cm",
-    coll: "sketches", hue: 70, ratio: 1, feat: false, price: 350,
+    coll: "sketches", hue: 70, ratio: 1, feat: false, price: 350, status: "IN_SALE",
     note: "A quick gesture — wet fur, wet paper, wet light.", image: "/assets/IMG_3957.jpeg" },
 ];
 

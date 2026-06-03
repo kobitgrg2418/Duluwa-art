@@ -2,18 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { Reveal, Eyebrow } from "./atoms";
-import { TESTIMONIALS } from "@/lib/data";
+import type { Testimonial } from "@/lib/data";
 
-export function Testimonials() {
-  const T = TESTIMONIALS;
+export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
+  const T = testimonials;
   const [i, setI] = useState(0);
   const go = (d: number) => setI((p) => (p + d + T.length) % T.length);
 
   useEffect(() => {
+    if (T.length === 0) return;
     const t = setInterval(() => setI((p) => (p + 1) % T.length), 7000);
     return () => clearInterval(t);
   }, [T.length]);
 
+  if (T.length === 0) return null;
   const t = T[i];
 
   return (

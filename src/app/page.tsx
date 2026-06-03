@@ -1,39 +1,22 @@
-"use client";
+export const dynamic = "force-dynamic";
 
-import { useRevealEngine, useParallaxEngine } from "@/components/atoms";
-import { Nav } from "@/components/nav";
-import { LightboxProvider } from "@/components/lightbox";
-import { Hero } from "@/components/hero";
-import { Featured } from "@/components/featured";
-import { CollectionsPreview } from "@/components/collections-preview";
-import { ArtistStory } from "@/components/artist-story";
+import { getArtworks, getCollections, getProcess, getTestimonials } from "@/lib/store";
+import { HomeClient } from "@/components/home-client";
 
-import { Process } from "@/components/process";
-
-import { Testimonials } from "@/components/testimonials";
-import { CommissionSection } from "@/components/commission-section";
-import { Footer } from "@/components/footer";
-import { ARTWORKS } from "@/lib/data";
-
-export default function HomePage() {
-  useRevealEngine();
-  useParallaxEngine();
+export default async function HomePage() {
+  const [artworks, collections, process, testimonials] = await Promise.all([
+    getArtworks(),
+    getCollections(),
+    getProcess(),
+    getTestimonials(),
+  ]);
 
   return (
-    <LightboxProvider items={ARTWORKS}>
-      <Nav onDark />
-      <main>
-        <Hero />
-        <Featured />
-        <CollectionsPreview />
-        <ArtistStory />
-
-        <Process />
-
-        <Testimonials />
-        <CommissionSection />
-      </main>
-      <Footer />
-    </LightboxProvider>
+    <HomeClient
+      artworks={artworks}
+      collections={collections}
+      process={process}
+      testimonials={testimonials}
+    />
   );
 }
