@@ -10,8 +10,9 @@ import { logout } from "@/app/actions/auth";
 const NAV_LINKS = [
   { n: "01", label: "Works", href: "/#featured" },
   { n: "02", label: "Collections", href: "/collections" },
-  { n: "03", label: "Story", href: "/#story" },
-  { n: "04", label: "Process", href: "/#process" },
+  { n: "03", label: "Gallery", href: "/gallery" },
+  { n: "04", label: "Story", href: "/#story" },
+  { n: "05", label: "Process", href: "/#process" },
 ];
 
 export function Nav({ onDark }: { onDark?: boolean }) {
