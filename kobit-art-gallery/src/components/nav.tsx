@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "./cart";
 import { useAuth } from "./auth-provider";
 import { logout } from "@/app/actions/auth";
@@ -16,6 +17,8 @@ const NAV_LINKS = [
 export function Nav({ onDark }: { onDark?: boolean }) {
   const [solid, setSolid] = useState(false);
   const [menu, setMenu] = useState(false);
+  const [dropOpen, setDropOpen] = useState(false);
+  const dropRef = useRef<HTMLDivElement>(null);
   const { count, setOpen } = useCart();
   const { user, loading: authLoading } = useAuth();
 
@@ -30,13 +33,25 @@ export function Nav({ onDark }: { onDark?: boolean }) {
     document.body.style.overflow = menu ? "hidden" : "";
   }, [menu]);
 
+  useEffect(() => {
+    if (!dropOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (dropRef.current && !dropRef.current.contains(e.target as Node)) {
+        setDropOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [dropOpen]);
+
   const dark = onDark && !solid;
 
   return (
     <>
       <nav className={`nav ${solid ? "nav--solid" : ""} ${dark ? "on-dark" : ""}`}>
         <Link href="/" className="nav__brand">
-          Duluwa Art<small>Watercolours & Sketches · Kobit Gurung</small>
+          <Image src="/assets/logo.jpg" alt="Duluwa Art Gallery" width={42} height={42} className="nav__logo" priority />
+          <span>Duluwa Art<small>Watercolours & Sketches · Kobit Gurung</small></span>
         </Link>
         <div className="nav__links">
           {NAV_LINKS.map((l) => (
@@ -48,9 +63,34 @@ export function Nav({ onDark }: { onDark?: boolean }) {
           </button>
           {!authLoading && (
             user ? (
-              <div className="nav__user">
-                <Link href="/profile" className="nav__user-name">{user.name.split(" ")[0]}</Link>
-                <form action={logout}><button type="submit" className="nav__logout">Logout</button></form>
+              <div className="nav__dropdown" ref={dropRef}>
+                <button
+                  className="nav__avatar-btn"
+                  onClick={() => setDropOpen((p) => !p)}
+                  aria-expanded={dropOpen}
+                  aria-label="User menu"
+                >
+                  <span className="nav__avatar-name">{user.name}</span>
+                  <span className="nav__avatar-arrow">{dropOpen ? "▲" : "▼"}</span>
+                </button>
+                {dropOpen && (
+                  <div className="nav__drop">
+                    <div className="nav__drop-header">
+                      <span className="nav__drop-name">{user.name}</span>
+                      <span className="nav__drop-email">{user.email}</span>
+                    </div>
+                    <div className="nav__drop-divider" />
+                    <Link href="/profile" className="nav__drop-item" onClick={() => setDropOpen(false)}>
+                      Profile
+                    </Link>
+                    <div className="nav__drop-divider" />
+                    <form action={logout}>
+                      <button type="submit" className="nav__drop-item nav__drop-item--logout">
+                        Sign Out
+                      </button>
+                    </form>
+                  </div>
+                )}
               </div>
             ) : (
               <Link href="/login" className="nav__cta">Sign In</Link>
@@ -76,8 +116,10 @@ export function Nav({ onDark }: { onDark?: boolean }) {
         </div>
         {!authLoading && (
           user ? (
-            <div style={{ marginTop: "1.4rem", display: "flex", alignItems: "center", gap: "1rem" }}>
-              <span className="meta" style={{ fontSize: ".9rem" }}>Signed in as {user.name}</span>
+            <div style={{ marginTop: "1.4rem", display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+              <Link href="/profile" onClick={() => setMenu(false)} className="meta" style={{ fontSize: ".9rem" }}>
+                {user.name} — Profile
+              </Link>
               <form action={logout}><button type="submit" className="nav__logout" style={{ fontSize: ".9rem" }}>Logout</button></form>
             </div>
           ) : (
@@ -88,7 +130,7 @@ export function Nav({ onDark }: { onDark?: boolean }) {
           )
         )}
         <div className="mmenu__foot meta">
-          <span>kobit.gurung@studio.np</span><span>Kathmandu · Nepal</span>
+          <span>kobit.gurung@studio.np</span><span>Pokhara · Nepal</span>
         </div>
       </div>
     </>

@@ -22,7 +22,7 @@ export default function LoginPage() {
         <div className="auth-split__img-overlay" />
         <div className="auth-split__img-text">
           <Link href="/" className="auth-split__brand">
-            Duluwa<small>Art Studio</small>
+            <img src="/assets/logo.jpg" alt="Duluwa Art Gallery" className="auth-split__logo" />
           </Link>
           <blockquote className="auth-split__quote">
             Every brushstroke carries the weight of tradition and the lightness of a child&apos;s wonder.

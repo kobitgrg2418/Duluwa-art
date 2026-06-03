@@ -33,7 +33,7 @@ export function Featured() {
           {items.map((a, i) => (
             <Reveal clip key={a.id} className={`featured__row ${i % 2 ? "rev" : ""}`}>
               <ArtFrame
-                hue={a.hue} ratio={a.ratio} clickable
+                hue={a.hue} ratio={1} clickable
                 image={a.image}
                 onOpen={() => open(artIndex(a.id))}
                 label={a.title.toLowerCase()} sub={a.size} className="featured__art"

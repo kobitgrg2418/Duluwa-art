@@ -45,7 +45,7 @@ export function ArtistStory() {
               I am not painting the mountain. I am painting the morning the mountain let me see it.
             </Reveal>
             <p className="serif-body">
-              Two decades on, his works hang in collections from Kathmandu to Zürich — yet each begins the same way, with torn paper and a glass of clean water at dawn.
+              Two decades on, his works hang in collections from Pokhara to Zürich — yet each begins the same way, with torn paper and a glass of clean water at dawn.
             </p>
             <div className="story__stats">
               <div><span className="display" style={{ fontSize: "2.6rem" }}>17</span><span className="meta">Years painting</span></div>
