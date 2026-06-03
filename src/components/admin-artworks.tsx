@@ -140,7 +140,7 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
                 <td>{collections.find((c) => c.id === a.coll)?.title || a.coll}</td>
                 <td>{a.year}</td>
                 <td>{a.medium}</td>
-                <td>${a.price}</td>
+                <td>Rs {a.price}</td>
                 <td>{a.feat ? "Yes" : "No"}</td>
                 <td>
                   <div className="adm__actions">

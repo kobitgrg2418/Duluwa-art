@@ -51,7 +51,7 @@ export default async function AdminDashboard() {
               { label: "Users", count: users.length, href: "/admin/users", color: "#f472b6" },
             ].map((c) => (
               <Link key={c.label} href={c.href} className="adm__card">
-                <span className="adm__card-count" style={{ color: c.color }}>{c.count}</span>
+                <span className="adm__card-count">{c.count}</span>
                 <span className="adm__card-label">{c.label}</span>
                 <span className="adm__card-action">Manage &rarr;</span>
               </Link>
@@ -86,7 +86,7 @@ export default async function AdminDashboard() {
                     </td>
                     <td>{collections.find((c) => c.id === a.coll)?.title || a.coll}</td>
                     <td>{a.year}</td>
-                    <td className="adm__cell-mono">${a.price?.toLocaleString()}</td>
+                    <td className="adm__cell-mono">Rs {a.price?.toLocaleString()}</td>
                     <td>
                       <span className={`adm__status ${a.feat ? "adm__status--yes" : "adm__status--no"}`}>
                         <span className="adm__status-dot" />
@@ -116,17 +116,17 @@ export default async function AdminDashboard() {
                 </defs>
               </svg>
               <div className="adm__gauge-text">
-                <span className="adm__gauge-val">${(totalValue / 1000).toFixed(1)}k</span>
+                <span className="adm__gauge-val">Rs {(totalValue / 1000).toFixed(1)}k</span>
                 <span className="adm__gauge-sub">{totalItems} items</span>
               </div>
             </div>
             <div className="adm__panel-row">
               <div>
-                <span className="adm__panel-metric">${avgPrice.toLocaleString()}</span>
+                <span className="adm__panel-metric">Rs {avgPrice.toLocaleString()}</span>
                 <span className="adm__panel-label">Avg. price</span>
               </div>
               <div>
-                <span className="adm__panel-metric">${totalValue.toLocaleString()}</span>
+                <span className="adm__panel-metric">Rs {totalValue.toLocaleString()}</span>
                 <span className="adm__panel-label">Total value</span>
               </div>
             </div>
