@@ -49,8 +49,11 @@ export function AdminShell({ children, userName }: { children: React.ReactNode; 
         <div className="adm__side-bot">
           <div className="adm__side-divider" />
           <div className="adm__user">
-            <span className="adm__user-greeting">Signed in as</span>
-            <span className="adm__user-name">{userName}</span>
+            <span className="adm__user-avatar">{userName.charAt(0).toUpperCase()}</span>
+            <div className="adm__user-info">
+              <span className="adm__user-greeting">Signed in as</span>
+              <span className="adm__user-name">{userName}</span>
+            </div>
           </div>
           <div className="adm__side-actions">
             <Link href="/" className="adm__side-link">

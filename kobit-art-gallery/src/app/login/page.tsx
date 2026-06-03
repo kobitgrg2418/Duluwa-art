@@ -1,12 +1,38 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import Script from "next/script";
+import { useRouter } from "next/navigation";
 import { login, AuthState } from "@/app/actions/auth";
 import { AuthSlideshow } from "@/components/auth-slideshow";
 
+declare global {
+  interface Window {
+    handleGoogleCredential?: (response: { credential: string }) => void;
+  }
+}
+
 export default function LoginPage() {
   const [state, action, pending] = useActionState<AuthState, FormData>(login, undefined);
+  const router = useRouter();
+  const googleBtnRef = useRef<HTMLDivElement>(null);
+
+  const handleGoogle = useCallback(async (response: { credential: string }) => {
+    const res = await fetch("/api/auth/google", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ credential: response.credential }),
+    });
+    if (res.ok) {
+      router.push("/");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    window.handleGoogleCredential = handleGoogle;
+    return () => { delete window.handleGoogleCredential; };
+  }, [handleGoogle]);
 
   return (
     <div className="auth-split">
@@ -53,6 +79,29 @@ export default function LoginPage() {
                 {pending ? "Signing in…" : "Sign In"} <span className="arr">&rarr;</span>
               </button>
             </form>
+
+            <div className="auth-divider">
+              <span>or</span>
+            </div>
+
+            <div
+              id="g_id_onload"
+              data-client_id={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+              data-callback="handleGoogleCredential"
+              data-auto_prompt="false"
+            />
+            <div
+              ref={googleBtnRef}
+              className="g_id_signin"
+              data-type="standard"
+              data-shape="rectangular"
+              data-theme="outline"
+              data-text="signin_with"
+              data-size="large"
+              data-logo_alignment="left"
+              data-width="360"
+            />
+            <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
 
             <p className="auth-switch">
               Don&apos;t have an account?{" "}
