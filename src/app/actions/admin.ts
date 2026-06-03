@@ -7,9 +7,10 @@ import {
   getCollections, saveCollection, deleteCollectionById,
   getProcess, saveProcessStep, deleteProcessStepByNo,
   getTestimonials, getTestimonialIds, saveTestimonial, deleteTestimonialById,
+  getSiteMedia, saveSiteMedia, deleteSiteMediaByKey,
 } from "@/lib/store";
 import { getAllUsers, updateUser, deleteUser, createUser, hashPassword } from "@/lib/users";
-import type { Artwork, ArtworkStatus, Collection, ProcessStep, Testimonial } from "@/lib/data";
+import type { Artwork, ArtworkStatus, Collection, ProcessStep, SiteMedia, Testimonial } from "@/lib/data";
 
 export type AdminState = { ok?: boolean; error?: string } | undefined;
 
@@ -28,6 +29,7 @@ export async function upsertArtwork(_prev: AdminState, fd: FormData): Promise<Ad
   const feat = fd.get("feat") === "on";
   const note = (fd.get("note") as string)?.trim() || "";
   const image = (fd.get("image") as string)?.trim() || "";
+  const video = (fd.get("video") as string)?.trim() || "";
   const price = Number(fd.get("price")) || 0;
   const status = (fd.get("status") as string) === "SOLD_OUT" ? "SOLD_OUT" : "IN_SALE";
 
@@ -35,7 +37,7 @@ export async function upsertArtwork(_prev: AdminState, fd: FormData): Promise<Ad
     return { error: "Title, year, medium, and collection are required." };
   }
 
-  const artwork: Artwork = { id: id || `a${Date.now()}`, title, year, medium, size, coll, hue, ratio, feat, note, image, price, status: status as ArtworkStatus };
+  const artwork: Artwork = { id: id || `a${Date.now()}`, title, year, medium, size, coll, hue, ratio, feat, note, image, video, price, status: status as ArtworkStatus };
 
   if (id) {
     const items = await getArtworks();
@@ -263,4 +265,31 @@ export async function adminDeleteOrder(orderId: string): Promise<AdminState> {
   } catch {
     return { error: "Order not found." };
   }
+}
+
+// ── Site Media ──
+
+export async function upsertSiteMedia(_prev: AdminState, fd: FormData): Promise<AdminState> {
+  await requireAdmin();
+  const key = (fd.get("key") as string)?.trim();
+  const value = (fd.get("value") as string)?.trim() || "";
+  const label = (fd.get("label") as string)?.trim() || "";
+
+  if (!key) {
+    return { error: "Key is required." };
+  }
+
+  await saveSiteMedia({ key, value, label });
+  revalidatePath("/admin/media");
+  revalidatePath("/");
+  return { ok: true };
+}
+
+export async function deleteSiteMedia(key: string): Promise<AdminState> {
+  await requireAdmin();
+  const ok = await deleteSiteMediaByKey(key);
+  if (!ok) return { error: "Not found." };
+  revalidatePath("/admin/media");
+  revalidatePath("/");
+  return { ok: true };
 }

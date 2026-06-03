@@ -1,18 +1,18 @@
 import "server-only";
 import { prisma } from "./db";
-import type { Artwork, ArtworkStatus, Collection, ProcessStep, Testimonial } from "./data";
+import type { Artwork, ArtworkStatus, Collection, ProcessStep, SiteMedia, Testimonial } from "./data";
 
 // ── Artworks ──
 
 function toArtwork(a: {
   id: string; title: string; year: string; medium: string; size: string;
   collectionId: string; hue: number; ratio: number; featured: boolean;
-  note: string; image: string; price: number; status: string;
+  note: string; image: string; video: string; price: number; status: string;
 }): Artwork {
   return {
     id: a.id, title: a.title, year: a.year, medium: a.medium, size: a.size,
     coll: a.collectionId, hue: a.hue, ratio: a.ratio, feat: a.featured,
-    note: a.note, image: a.image, price: a.price,
+    note: a.note, image: a.image, video: a.video, price: a.price,
     status: a.status as ArtworkStatus,
   };
 }
@@ -28,12 +28,12 @@ export async function saveArtwork(item: Artwork) {
     update: {
       title: item.title, year: item.year, medium: item.medium, size: item.size,
       collectionId: item.coll, hue: item.hue, ratio: item.ratio, featured: item.feat,
-      note: item.note, image: item.image ?? "", price: item.price, status: item.status,
+      note: item.note, image: item.image ?? "", video: item.video ?? "", price: item.price, status: item.status,
     },
     create: {
       id: item.id, title: item.title, year: item.year, medium: item.medium, size: item.size,
       collectionId: item.coll, hue: item.hue, ratio: item.ratio, featured: item.feat,
-      note: item.note, image: item.image ?? "", price: item.price, status: item.status,
+      note: item.note, image: item.image ?? "", video: item.video ?? "", price: item.price, status: item.status,
     },
   });
 }
@@ -154,6 +154,35 @@ export async function saveTestimonial(item: Testimonial, editId?: string) {
 export async function deleteTestimonialById(id: string): Promise<boolean> {
   try {
     await prisma.testimonial.delete({ where: { id } });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// ── Site Media ──
+
+export async function getSiteMedia(): Promise<SiteMedia[]> {
+  const rows = await prisma.siteMedia.findMany();
+  return rows.map((r) => ({ key: r.key, value: r.value, label: r.label }));
+}
+
+export async function getSiteMediaValue(key: string): Promise<string> {
+  const row = await prisma.siteMedia.findUnique({ where: { key } });
+  return row?.value ?? "";
+}
+
+export async function saveSiteMedia(item: SiteMedia) {
+  await prisma.siteMedia.upsert({
+    where: { key: item.key },
+    update: { value: item.value, label: item.label },
+    create: { key: item.key, value: item.value, label: item.label },
+  });
+}
+
+export async function deleteSiteMediaByKey(key: string): Promise<boolean> {
+  try {
+    await prisma.siteMedia.delete({ where: { key } });
     return true;
   } catch {
     return false;

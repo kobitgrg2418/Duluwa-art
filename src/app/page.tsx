@@ -1,14 +1,15 @@
 export const dynamic = "force-dynamic";
 
-import { getArtworks, getCollections, getProcess, getTestimonials } from "@/lib/store";
+import { getArtworks, getCollections, getProcess, getTestimonials, getSiteMedia } from "@/lib/store";
 import { HomeClient } from "@/components/home-client";
 
 export default async function HomePage() {
-  const [artworks, collections, process, testimonials] = await Promise.all([
+  const [artworks, collections, process, testimonials, siteMedia] = await Promise.all([
     getArtworks(),
     getCollections(),
     getProcess(),
     getTestimonials(),
+    getSiteMedia(),
   ]);
 
   return (
@@ -17,6 +18,7 @@ export default async function HomePage() {
       collections={collections}
       process={process}
       testimonials={testimonials}
+      siteMedia={siteMedia}
     />
   );
 }

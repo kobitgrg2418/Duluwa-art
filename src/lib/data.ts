@@ -21,8 +21,15 @@ export interface Artwork {
   feat: boolean;
   note: string;
   image?: string;
+  video?: string;
   price: number;
   status: ArtworkStatus;
+}
+
+export interface SiteMedia {
+  key: string;
+  value: string;
+  label: string;
 }
 
 export interface ProcessStep {

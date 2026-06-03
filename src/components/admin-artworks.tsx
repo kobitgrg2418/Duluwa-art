@@ -151,6 +151,10 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
                   <input name="image" defaultValue={editing?.image} placeholder="/assets/filename.jpeg" />
                 </div>
                 <div className="adm__field adm__field--full">
+                  <label>Video Path</label>
+                  <input name="video" defaultValue={editing?.video} placeholder="/assets/filename.mp4 (optional)" />
+                </div>
+                <div className="adm__field adm__field--full">
                   <label>Note</label>
                   <textarea name="note" rows={2} defaultValue={editing?.note} />
                 </div>

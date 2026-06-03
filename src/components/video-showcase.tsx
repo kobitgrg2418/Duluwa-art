@@ -3,9 +3,17 @@
 import { useState, useRef } from "react";
 import { ArtFrame, Reveal, Eyebrow } from "./atoms";
 
-export function VideoShowcase() {
+interface Props {
+  videoSrc?: string;
+  posterImage?: string;
+}
+
+export function VideoShowcase({ videoSrc, posterImage }: Props) {
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const src = videoSrc || "/assets/1733206571917552.mov";
+  const poster = posterImage || "/assets/IMG_9195.jpeg";
 
   const handlePlay = () => {
     setPlaying(true);
@@ -25,17 +33,17 @@ export function VideoShowcase() {
           {!playing ? (
             <>
               <ArtFrame hue={30} fill style={{ height: "100%" }} label="studio film · poster" sub="1920 × 1080" parallax={4}
-                        image="/assets/IMG_9195.jpeg" />
+                        image={poster} />
               <div className="video__overlay" />
               <button className="video__play" onClick={handlePlay} aria-label="Play film">
-                <span className="video__play-ring"><span className="video__play-tri">▶</span></span>
+                <span className="video__play-ring"><span className="video__play-tri">&#9654;</span></span>
                 <span className="meta" style={{ color: "var(--paper)", letterSpacing: ".22em" }}>Watch · 3:48</span>
               </button>
             </>
           ) : (
             <video
               ref={videoRef}
-              src="/assets/1733206571917552.mov"
+              src={src}
               controls
               autoPlay
               style={{ width: "100%", height: "100%", objectFit: "cover" }}

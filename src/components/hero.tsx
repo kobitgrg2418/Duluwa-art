@@ -12,10 +12,12 @@ function ScrollCue({ dark }: { dark?: boolean }) {
   );
 }
 
-function HeroImmersion() {
+function HeroImmersion({ heroImage }: { heroImage?: string }) {
+  const bg = heroImage || "/assets/auth-brushes.png";
+
   return (
     <header className="hero hero--imm" id="top">
-      <div className="hero--imm__bg" style={{ backgroundImage: "url(/assets/auth-brushes.png)" }} />
+      <div className="hero--imm__bg" style={{ backgroundImage: `url(${bg})` }} />
       <div className="hero--imm__scrim" />
       <div className="wrap hero--imm__inner">
         <Reveal className="hero--imm__top"><Eyebrow>Watercolour · Sketches · Nepal · Est. 2009</Eyebrow></Reveal>
@@ -40,6 +42,6 @@ function HeroImmersion() {
   );
 }
 
-export function Hero() {
-  return <HeroImmersion />;
+export function Hero({ heroImage }: { heroImage?: string }) {
+  return <HeroImmersion heroImage={heroImage} />;
 }

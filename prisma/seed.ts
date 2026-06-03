@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import {
@@ -7,7 +8,8 @@ import {
   TESTIMONIALS,
 } from "../src/lib/data";
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
+const url = process.env.DIRECT_DATABASE_URL || process.env.DATABASE_URL!;
+const adapter = new PrismaPg({ connectionString: url });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
@@ -30,12 +32,12 @@ async function main() {
       update: {
         title: a.title, year: a.year, medium: a.medium, size: a.size,
         collectionId: a.coll, hue: a.hue, ratio: a.ratio, featured: a.feat,
-        note: a.note, image: a.image ?? "", price: a.price, status: a.status,
+        note: a.note, image: a.image ?? "", video: a.video ?? "", price: a.price, status: a.status,
       },
       create: {
         id: a.id, title: a.title, year: a.year, medium: a.medium, size: a.size,
         collectionId: a.coll, hue: a.hue, ratio: a.ratio, featured: a.feat,
-        note: a.note, image: a.image ?? "", price: a.price, status: a.status,
+        note: a.note, image: a.image ?? "", video: a.video ?? "", price: a.price, status: a.status,
       },
     });
   }
@@ -63,6 +65,21 @@ async function main() {
   } else {
     console.log(`  testimonials already exist, skipping`);
   }
+
+  // Site media
+  const siteMediaDefaults = [
+    { key: "hero_image", value: "/assets/auth-brushes.png", label: "Hero Background Image" },
+    { key: "video_src", value: "/assets/1733206571917552.mov", label: "Studio Video Source" },
+    { key: "video_poster", value: "/assets/IMG_9195.jpeg", label: "Studio Video Poster Image" },
+  ];
+  for (const m of siteMediaDefaults) {
+    await prisma.siteMedia.upsert({
+      where: { key: m.key },
+      update: {},
+      create: { key: m.key, value: m.value, label: m.label },
+    });
+  }
+  console.log(`  ${siteMediaDefaults.length} site media entries`);
 
   // Admin user
   const adminEmail = "admin@duluwa.art";

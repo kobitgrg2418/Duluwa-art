@@ -46,11 +46,19 @@ model Artwork {
   featured     Boolean       @default(false)
   note         String        @default("")
   image        String        @default("")
+  video        String        @default("")
   price        Float         @default(0)
   status       ArtworkStatus @default(IN_SALE)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   orderItems   OrderItem[]
+}
+
+model SiteMedia {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @default("")
+  label String @default("")
 }
 
 enum ArtworkStatus {

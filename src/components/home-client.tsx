@@ -8,31 +8,36 @@ import { Featured } from "@/components/featured";
 import { CollectionsPreview } from "@/components/collections-preview";
 import { ArtistStory } from "@/components/artist-story";
 import { Process } from "@/components/process";
+import { VideoShowcase } from "@/components/video-showcase";
 import { Testimonials } from "@/components/testimonials";
 import { CommissionSection } from "@/components/commission-section";
 import { Footer } from "@/components/footer";
-import type { Artwork, Collection, ProcessStep, Testimonial } from "@/lib/data";
+import type { Artwork, Collection, ProcessStep, SiteMedia, Testimonial } from "@/lib/data";
 
 interface Props {
   artworks: Artwork[];
   collections: Collection[];
   process: ProcessStep[];
   testimonials: Testimonial[];
+  siteMedia: SiteMedia[];
 }
 
-export function HomeClient({ artworks, collections, process, testimonials }: Props) {
+export function HomeClient({ artworks, collections, process, testimonials, siteMedia }: Props) {
   useRevealEngine();
   useParallaxEngine();
+
+  const mediaMap = Object.fromEntries(siteMedia.map((m) => [m.key, m.value]));
 
   return (
     <LightboxProvider items={artworks}>
       <Nav onDark />
       <main>
-        <Hero />
+        <Hero heroImage={mediaMap.hero_image} />
         <Featured artworks={artworks} />
         <CollectionsPreview collections={collections} artworks={artworks} />
         <ArtistStory artworks={artworks} />
         <Process steps={process} />
+        <VideoShowcase videoSrc={mediaMap.video_src} posterImage={mediaMap.video_poster} />
         <Testimonials testimonials={testimonials} />
         <CommissionSection />
       </main>
