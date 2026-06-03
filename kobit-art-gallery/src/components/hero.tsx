@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArtFrame, Reveal, Eyebrow } from "./atoms";
-import { ARTWORKS } from "@/lib/data";
+import { Reveal, Eyebrow } from "./atoms";
 
 function ScrollCue({ dark }: { dark?: boolean }) {
   return (
@@ -14,14 +13,12 @@ function ScrollCue({ dark }: { dark?: boolean }) {
 }
 
 function HeroImmersion() {
-  const hero = ARTWORKS[2];
   return (
     <header className="hero hero--imm" id="top">
-      <ArtFrame hue={hero.hue} fill parallax={14} className="hero--imm__bg"
-                image={hero.image} label={hero.title.toLowerCase()} sub={hero.size} />
+      <div className="hero--imm__bg" style={{ backgroundImage: "url(/assets/auth-brushes.png)" }} />
       <div className="hero--imm__scrim" />
       <div className="wrap hero--imm__inner">
-        <Reveal className="hero--imm__top"><Eyebrow>Watercolour · Nepal · Est. 2009</Eyebrow></Reveal>
+        <Reveal className="hero--imm__top"><Eyebrow>Watercolour · Sketches · Nepal · Est. 2009</Eyebrow></Reveal>
         <div className="hero--imm__btm">
           <Reveal delay={1}>
             <h1 className="display h-xl" style={{ color: "var(--paper)" }}>
@@ -30,7 +27,7 @@ function HeroImmersion() {
           </Reveal>
           <Reveal delay={2} className="hero--imm__meta">
             <p className="serif-body" style={{ color: "rgba(250,248,243,0.82)", maxWidth: "34ch" }}>
-              The watercolours of Kobit Gurung — a self-taught painter of Nepal&apos;s people, peaks and wild places.
+              The watercolours and sketches of Kobit Gurung — a self-taught painter and sketch artist of Nepal&apos;s people, peaks and wild places.
             </p>
             <Link href="#featured" className="btn" style={{ background: "var(--paper)", color: "var(--ink)" }}>
               Enter the gallery <span className="arr">→</span>

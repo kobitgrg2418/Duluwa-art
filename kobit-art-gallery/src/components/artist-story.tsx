@@ -1,17 +1,30 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { ArtFrame, Reveal, Eyebrow } from "./atoms";
+import { ARTWORKS } from "@/lib/data";
+
+const SLIDES = ARTWORKS.filter((a) => a.image).slice(0, 6);
 
 export function ArtistStory() {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx((p) => (p + 1) % SLIDES.length), 2000);
+    return () => clearInterval(t);
+  }, []);
+
+  const cur = SLIDES[idx];
+
   return (
     <section className="section story" id="story">
       <div className="wrap story__grid">
         <div className="story__col-img">
           <Reveal clip>
-            <ArtFrame hue={44} ratio={1.22} parallax={8} label="kobit gurung · portrait" sub="studio, patan"
-                      image="/assets/IMG_0286.jpg" />
+            <ArtFrame hue={cur.hue} ratio={1.22} label={cur.title.toLowerCase()} sub={cur.size}
+                      image={cur.image} />
           </Reveal>
-          <Reveal delay={2} className="story__cap meta">Kobit in the courtyard studio, Patan — 2025</Reveal>
+          <Reveal delay={2} className="story__cap meta">{cur.title} · {cur.year}</Reveal>
         </div>
         <div className="story__col-txt">
           <Reveal><Eyebrow idx="03">The Artist</Eyebrow></Reveal>
@@ -22,10 +35,10 @@ export function ArtistStory() {
           </Reveal>
           <Reveal delay={2} className="story__body">
             <p className="serif-body">
-              Kobit Gurung never sat in an art academy. He learned to paint the way the rivers of his country learned to carve stone — slowly, by returning to the same place again and again.
+              Kobit Gurung never sat in an art academy. He learned to paint and sketch the way the rivers of his country learned to carve stone — slowly, by returning to the same place again and again.
             </p>
             <p className="serif-body">
-              Born in the hills above Pokhara, he traded a first brush for a week&apos;s wages and taught himself the patience that watercolour demands: that light cannot be added, only protected; that the medium rewards the honest and humbles the rest.
+              Born in the hills above Pokhara, he traded a first brush for a week&apos;s wages and taught himself the patience that watercolour and pencil demand: that light cannot be added, only protected; that a single sketch line can hold as much truth as a finished wash.
             </p>
             <Reveal className="story__quote" as="blockquote">
               <span className="story__mark">&ldquo;</span>

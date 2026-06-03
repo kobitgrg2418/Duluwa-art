@@ -13,7 +13,7 @@ export function Footer() {
           <div>
             <h5>The Studio</h5>
             <p style={{ fontFamily: "var(--serif)", fontSize: "1.25rem", lineHeight: 1.45, color: "rgba(250,248,243,0.82)" }}>
-              Duluwa Art is the studio of Kobit Gurung — a self-taught watercolourist working from a Kathmandu courtyard, painting the people, peaks and wildlife of Nepal.
+              Duluwa Art is the studio of Kobit Gurung — a self-taught watercolourist and sketch artist working from a Kathmandu courtyard, painting and drawing the people, peaks and wildlife of Nepal.
             </p>
           </div>
           <div>

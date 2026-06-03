@@ -3,7 +3,12 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { ArtFrame, Reveal, Eyebrow } from "./atoms";
-import { COLLECTIONS } from "@/lib/data";
+import { COLLECTIONS, ARTWORKS } from "@/lib/data";
+
+function coverImage(collId: string) {
+  const art = ARTWORKS.find((a) => a.coll === collId && a.image);
+  return art?.image;
+}
 
 export function CollectionsPreview() {
   const C = COLLECTIONS;
@@ -14,44 +19,57 @@ export function CollectionsPreview() {
   const secRef = useRef<HTMLElement>(null);
   const [paused, setPaused] = useState(false);
   const [inView, setInView] = useState(false);
+  const [ready, setReady] = useState(false);
 
   const recalc = useCallback(() => {
     const card = cardRefs.current[active];
     const vp = trackRef.current?.parentElement;
     if (!card || !vp) return;
-    setOffset(vp.clientWidth / 2 - (card.offsetLeft + card.offsetWidth / 2));
+    const vpCenter = vp.clientWidth / 2;
+    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+    setOffset(vpCenter - cardCenter);
   }, [active]);
 
   useEffect(() => {
-    recalc();
-    const t = setTimeout(recalc, 350);
-    window.addEventListener("resize", recalc);
-    return () => { clearTimeout(t); window.removeEventListener("resize", recalc); };
-  }, [recalc]);
+    setReady(true);
+  }, []);
 
   useEffect(() => {
-    const check = () => {
-      const el = secRef.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      setInView(r.top < vh * 0.7 && r.bottom > vh * 0.3);
+    if (!ready) return;
+    recalc();
+    const raf = requestAnimationFrame(() => recalc());
+    const handleResize = () => recalc();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", handleResize);
     };
-    check();
-    window.addEventListener("scroll", check, { passive: true });
-    window.addEventListener("resize", check);
-    return () => { window.removeEventListener("scroll", check); window.removeEventListener("resize", check); };
+  }, [recalc, ready]);
+
+  useEffect(() => {
+    const el = secRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.2 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => {
     if (paused || !inView) return;
     const t = setInterval(() => {
       setActive((p) => (p + 1) % C.length);
-    }, 3800);
+    }, 3000);
     return () => clearInterval(t);
   }, [paused, inView, C.length]);
 
-  const go = (d: number) => setActive((p) => Math.min(C.length - 1, Math.max(0, p + d)));
+  const go = useCallback(
+    (d: number) => setActive((p) => Math.min(C.length - 1, Math.max(0, p + d))),
+    [C.length]
+  );
+
   const cur = C[active];
 
   return (
@@ -73,18 +91,31 @@ export function CollectionsPreview() {
       </div>
 
       <div className="cslider__viewport">
-        <div className="cslider__track" ref={trackRef} style={{ transform: `translate3d(${offset}px,0,0)` }}>
+        <div
+          className="cslider__track"
+          ref={trackRef}
+          style={{
+            transform: `translate3d(${offset}px,0,0)`,
+            transition: ready ? "transform 0.9s cubic-bezier(0.22,1,0.36,1)" : "none",
+          }}
+        >
           {C.map((c, i) => (
             <button
               key={c.id}
               ref={(el) => { cardRefs.current[i] = el; }}
               className={`ccard ${i === active ? "on" : ""}`}
               aria-label={c.title}
-              onClick={() => (i === active ? window.location.assign(`/collections#${c.id}`) : setActive(i))}
+              onClick={() => {
+                if (i === active) {
+                  window.location.assign(`/collections#${c.id}`);
+                } else {
+                  setActive(i);
+                }
+              }}
             >
               <span className="ccard__no mono">{c.no}</span>
               <div className="ccard__art">
-                <ArtFrame hue={c.hue} fill style={{ height: "100%" }} label={c.title.toLowerCase()} sub={`${c.count} works`} />
+                <ArtFrame hue={c.hue} fill style={{ height: "100%" }} label={c.title.toLowerCase()} sub={`${c.count} works`} image={coverImage(c.id)} />
               </div>
               <div className="ccard__cap">
                 <h3 className="display">{c.title}</h3>

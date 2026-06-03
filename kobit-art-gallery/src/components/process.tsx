@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { ArtFrame, Eyebrow } from "./atoms";
+import { Eyebrow } from "./atoms";
 import { PROCESS } from "@/lib/data";
 
 export function Process() {
@@ -28,11 +28,12 @@ export function Process() {
             <h2 className="display h-md" style={{ color: "var(--paper)", marginTop: "1rem" }}>How a wash<br />becomes a world</h2>
           </div>
           <div className="process__viz">
-            {P.map((p, i) => (
-              <div key={p.no} className={`process__viz-img ${active === i ? "on" : ""}`}>
-                <ArtFrame hue={p.hue} fill style={{ height: "100%" }} label={p.title.toLowerCase()} sub={`stage ${p.no}`} />
-              </div>
-            ))}
+            <video
+              autoPlay muted loop playsInline
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            >
+              <source src="/assets/1733206571917552.mov" type="video/mp4" />
+            </video>
             <span className="process__viz-no mono">{P[active].no} / 04</span>
           </div>
         </div>
