@@ -9,6 +9,7 @@ import { CollectionsPreview } from "@/components/collections-preview";
 import { ArtistStory } from "@/components/artist-story";
 import { Process } from "@/components/process";
 import { Testimonials } from "@/components/testimonials";
+import { AboutSection } from "@/components/about-section";
 import { CommissionSection } from "@/components/commission-section";
 import { Footer } from "@/components/footer";
 import type { Artwork, Collection, ProcessStep, SiteMedia, Testimonial } from "@/lib/data";
@@ -37,6 +38,7 @@ export function HomeClient({ artworks, collections, process, testimonials, siteM
         <ArtistStory artworks={artworks} />
         <Process steps={process} />
         <Testimonials testimonials={testimonials} />
+        <AboutSection />
         <CommissionSection />
       </main>
       <Footer />

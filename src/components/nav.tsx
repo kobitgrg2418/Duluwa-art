@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { n: "03", label: "Gallery", href: "/gallery" },
   { n: "04", label: "Story", href: "/#story" },
   { n: "05", label: "Process", href: "/#process" },
+  { n: "06", label: "About", href: "/#about" },
 ];
 
 export function Nav({ onDark }: { onDark?: boolean }) {
@@ -117,7 +118,7 @@ export function Nav({ onDark }: { onDark?: boolean }) {
             </Link>
           ))}
           <Link href="/commission" onClick={() => setMenu(false)}>
-            <span className="n">06</span>Commission
+            <span className="n">07</span>Commission
           </Link>
         </div>
         {!authLoading && (
