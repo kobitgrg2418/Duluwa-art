@@ -81,7 +81,9 @@ function GalleryContent({ artworks, collections }: { artworks: Artwork[]; collec
   return (
     <main className="gl-page">
       <header className="gl-hero">
-        <div className="wrap">
+        <div className="gl-hero__bg" style={{ backgroundImage: "url(/assets/IMG_3957.jpeg)" }} />
+        <div className="gl-hero__scrim" />
+        <div className="wrap" style={{ position: "relative", zIndex: 2 }}>
           <Reveal><Eyebrow style={{ color: "rgba(250,248,243,0.5)" }}>The Collection</Eyebrow></Reveal>
           <Reveal delay={1}><h1 className="display h-lg" style={{ color: "var(--paper)", marginTop: ".6rem" }}>Gallery</h1></Reveal>
           <Reveal delay={2}>
