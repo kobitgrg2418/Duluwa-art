@@ -4,7 +4,7 @@ import { jwtVerify } from "jose";
 import path from "path";
 import fs from "fs/promises";
 
-const SECRET = process.env.SESSION_SECRET ?? "duluwa-art-dev-secret-change-in-prod";
+const SECRET = process.env.SESSION_SECRET || "duluwa-art-dev-secret-local-only";
 const key = new TextEncoder().encode(SECRET);
 
 async function isAdmin(): Promise<boolean> {

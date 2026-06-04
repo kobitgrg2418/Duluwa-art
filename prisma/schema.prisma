@@ -82,6 +82,20 @@ model Testimonial {
   role  String @default("")
 }
 
+model CommissionInquiry {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  type      String   @default("")
+  size      String   @default("")
+  medium    String   @default("")
+  budget    String   @default("")
+  message   String   @default("")
+  refImage  String   @default("")
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+}
+
 model Order {
   id            String      @id @default(cuid())
   userId        String

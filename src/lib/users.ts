@@ -1,5 +1,6 @@
 import "server-only";
 import { prisma } from "./db";
+import bcrypt from "bcryptjs";
 import type { Role } from "@/generated/prisma/client";
 
 export interface StoredUser {
@@ -35,19 +36,27 @@ export async function createUser(name: string, email: string, hashedPw: string):
   return toStoredUser(u);
 }
 
-const SECRET_SALT = "duluwa-salt-2024";
+const BCRYPT_ROUNDS = 12;
 
 async function hashPassword(pw: string): Promise<string> {
-  const data = new TextEncoder().encode(pw + SECRET_SALT);
-  const hash = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(hash))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+  return bcrypt.hash(pw, BCRYPT_ROUNDS);
 }
 
 export async function verifyPassword(pw: string, hash: string): Promise<boolean> {
-  const h = await hashPassword(pw);
-  return h === hash;
+  // Support legacy SHA-256 hashes (64 hex chars) during migration
+  if (/^[a-f0-9]{64}$/.test(hash)) {
+    const legacySalt = "duluwa-salt-2024";
+    const data = new TextEncoder().encode(pw + legacySalt);
+    const digest = await crypto.subtle.digest("SHA-256", data);
+    const legacyHash = Array.from(new Uint8Array(digest))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    if (legacyHash === hash) {
+      return true; // Caller should re-hash with bcrypt on next login
+    }
+    return false;
+  }
+  return bcrypt.compare(pw, hash);
 }
 
 export async function updateUser(

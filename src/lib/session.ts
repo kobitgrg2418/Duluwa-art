@@ -2,8 +2,11 @@ import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 
-const SECRET = process.env.SESSION_SECRET ?? "duluwa-art-dev-secret-change-in-prod";
-const key = new TextEncoder().encode(SECRET);
+const SECRET = process.env.SESSION_SECRET;
+if (!SECRET && process.env.NODE_ENV === "production") {
+  throw new Error("SESSION_SECRET environment variable is required in production");
+}
+const key = new TextEncoder().encode(SECRET || "duluwa-art-dev-secret-local-only");
 const COOKIE = "session";
 const TTL = 7 * 24 * 60 * 60 * 1000;
 

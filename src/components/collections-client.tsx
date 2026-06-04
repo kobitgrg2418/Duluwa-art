@@ -125,7 +125,7 @@ export function CollectionsClient({ collections, artworks }: { collections: Coll
 
   return (
     <LightboxProvider items={artworks}>
-      <Nav />
+      <Nav onDark />
       <CollectionsContent collections={collections} artworks={artworks} />
       <Footer />
     </LightboxProvider>
