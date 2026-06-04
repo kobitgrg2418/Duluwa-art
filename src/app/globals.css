@@ -503,6 +503,62 @@ p { margin: 0 0 1.1em; max-width: 60ch; }
   display: grid; place-items: center; color: var(--gold-bright); font-size: 1.4rem; margin-bottom: .6rem; }
 @media (max-width: 820px){ .commission__grid { grid-template-columns: 1fr; } }
 
+/* Commission dropdowns & dropzone */
+.comm-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 600px){ .comm-row2 { grid-template-columns: 1fr; } }
+
+.comm-select {
+  width: 100%; padding: .7rem .9rem; font-family: var(--sans); font-size: .92rem;
+  border: 1px solid rgba(250,248,243,0.18); border-radius: 6px;
+  background: rgba(250,248,243,0.06); color: var(--paper);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FAF8F3' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .9rem center;
+  cursor: pointer; transition: border-color .2s;
+}
+.comm-select:focus { outline: none; border-color: var(--gold-bright); }
+.comm-select option { background: var(--dark); color: var(--paper); }
+
+/* Commission page (light bg) overrides */
+.cm-form .comm-select {
+  border-color: var(--line); background: var(--paper);
+  color: var(--ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23232120' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .9rem center;
+}
+.cm-form .comm-select:focus { border-color: var(--gold); }
+.cm-form .comm-select option { background: var(--paper); color: var(--ink); }
+
+.comm-dropzone {
+  border: 2px dashed rgba(250,248,243,0.2); border-radius: 8px;
+  padding: 1.5rem 1rem; text-align: center; cursor: pointer;
+  transition: border-color .2s, background .2s;
+  min-height: 110px; display: flex; align-items: center; justify-content: center;
+}
+.comm-dropzone--over { border-color: var(--gold-bright); background: rgba(166,132,62,0.06); }
+.comm-dropzone:hover { border-color: rgba(250,248,243,0.35); }
+.comm-dropzone__empty { display: flex; flex-direction: column; gap: .4rem; color: rgba(250,248,243,0.55); font-size: .88rem; }
+.comm-dropzone__icon { font-size: 1.6rem; }
+.comm-dropzone__hint { font-size: .75rem; opacity: .6; }
+.comm-dropzone__empty u { color: var(--gold-bright); text-decoration-color: var(--gold-bright); }
+.comm-dropzone__preview { position: relative; width: 100%; }
+.comm-dropzone__preview img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 6px; display: block; }
+.comm-dropzone__clear {
+  position: absolute; top: 6px; right: 6px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(0,0,0,0.65); color: #fff; border: none;
+  cursor: pointer; font-size: 16px; display: grid; place-items: center;
+  line-height: 1; transition: background .15s;
+}
+.comm-dropzone__clear:hover { background: rgba(0,0,0,0.85); }
+
+/* Light variant for commission page */
+.cm-form .comm-dropzone { border-color: var(--line); }
+.cm-form .comm-dropzone--over { border-color: var(--gold); background: rgba(166,132,62,0.04); }
+.cm-form .comm-dropzone:hover { border-color: var(--ink-faint); }
+.cm-form .comm-dropzone__empty { color: var(--ink-faint); }
+.cm-form .comm-dropzone__empty u { color: var(--gold); text-decoration-color: var(--gold); }
+
 /* Collections page */
 .cp-hero, .cm-hero { padding: clamp(140px, 18vh, 220px) 0 clamp(48px, 7vw, 90px); }
 .cp-hero h1, .cm-hero h1 { margin-top: .6rem; }
