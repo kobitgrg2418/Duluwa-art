@@ -57,9 +57,9 @@ export async function deleteArtworkById(id: string): Promise<boolean> {
 // ── Collections ──
 
 function toCollection(c: {
-  id: string; no: string; title: string; count: number; hue: number; blurb: string; cover: string;
+  id: string; no: string; title: string; count: number; hue: number; blurb: string; cover?: string | null;
 }): Collection {
-  return { id: c.id, no: c.no, title: c.title, count: c.count, hue: c.hue, blurb: c.blurb, cover: c.cover };
+  return { id: c.id, no: c.no, title: c.title, count: c.count, hue: c.hue, blurb: c.blurb, cover: c.cover ?? "" };
 }
 
 export async function getCollections(): Promise<Collection[]> {
