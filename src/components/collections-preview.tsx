@@ -9,6 +9,8 @@ export function CollectionsPreview({ collections, artworks }: { collections: Col
   const C = collections;
 
   function coverImage(collId: string) {
+    const coll = collections.find((c) => c.id === collId);
+    if (coll?.cover) return coll.cover;
     const art = artworks.find((a) => a.coll === collId && a.image);
     return art?.image;
   }

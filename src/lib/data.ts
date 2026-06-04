@@ -5,6 +5,7 @@ export interface Collection {
   count: number;
   hue: number;
   blurb: string;
+  cover: string;
 }
 
 export type ArtworkStatus = "IN_SALE" | "SOLD_OUT";
@@ -46,17 +47,17 @@ export interface Testimonial {
 }
 
 export const COLLECTIONS: Collection[] = [
-  { id: "culture", no: "01", title: "Nepalese Culture", count: 18, hue: 28,
+  { id: "culture", no: "01", title: "Nepalese Culture", count: 18, hue: 28, cover: "",
     blurb: "Festivals, prayer flags and the quiet rituals of the courtyards of Kathmandu." },
-  { id: "portrait", no: "02", title: "Portraits", count: 24, hue: 44,
+  { id: "portrait", no: "02", title: "Portraits", count: 24, hue: 44, cover: "",
     blurb: "Faces weathered by altitude and devotion — studies in patience and pigment." },
-  { id: "himalaya", no: "03", title: "Himalayan Landscapes", count: 21, hue: 220,
+  { id: "himalaya", no: "03", title: "Himalayan Landscapes", count: 21, hue: 220, cover: "",
     blurb: "First light on snow, monsoon valleys, the long blue distance of the high passes." },
-  { id: "wildlife", no: "04", title: "Wildlife", count: 16, hue: 96,
+  { id: "wildlife", no: "04", title: "Wildlife", count: 16, hue: 96, cover: "",
     blurb: "The tiger, the danphe, the river otter — caught in a single held breath of water." },
-  { id: "lifestyle", no: "05", title: "Traditional Lifestyle", count: 19, hue: 64,
+  { id: "lifestyle", no: "05", title: "Traditional Lifestyle", count: 19, hue: 64, cover: "",
     blurb: "Tea fields, terraced farms and the slow choreography of mountain daily life." },
-  { id: "sketches", no: "06", title: "Watercolour Sketches", count: 32, hue: 36,
+  { id: "sketches", no: "06", title: "Watercolour Sketches", count: 32, hue: 36, cover: "",
     blurb: "Loose, fast, unguarded — the notebook where every finished work begins." },
 ];
 

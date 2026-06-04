@@ -30,6 +30,7 @@ model Collection {
   count    Int       @default(0)
   hue      Int       @default(0)
   blurb    String    @default("")
+  cover    String    @default("")
   artworks Artwork[]
 }
 

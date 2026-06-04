@@ -80,13 +80,14 @@ export async function upsertCollection(_prev: AdminState, fd: FormData): Promise
   const count = Number(fd.get("count")) || 0;
   const hue = Number(fd.get("hue")) || 0;
   const blurb = (fd.get("blurb") as string)?.trim() || "";
+  const cover = (fd.get("cover") as string)?.trim() || "";
   const editId = fd.get("editId") as string;
 
   if (!id || !no || !title) {
     return { error: "ID, number, and title are required." };
   }
 
-  const coll: Collection = { id, no, title, count, hue, blurb };
+  const coll: Collection = { id, no, title, count, hue, blurb, cover };
 
   if (editId) {
     const items = await getCollections();

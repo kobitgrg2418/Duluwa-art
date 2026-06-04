@@ -57,9 +57,9 @@ export async function deleteArtworkById(id: string): Promise<boolean> {
 // ── Collections ──
 
 function toCollection(c: {
-  id: string; no: string; title: string; count: number; hue: number; blurb: string;
+  id: string; no: string; title: string; count: number; hue: number; blurb: string; cover: string;
 }): Collection {
-  return { id: c.id, no: c.no, title: c.title, count: c.count, hue: c.hue, blurb: c.blurb };
+  return { id: c.id, no: c.no, title: c.title, count: c.count, hue: c.hue, blurb: c.blurb, cover: c.cover };
 }
 
 export async function getCollections(): Promise<Collection[]> {
@@ -71,11 +71,11 @@ export async function saveCollection(item: Collection, editId?: string) {
   if (editId) {
     await prisma.collection.update({
       where: { id: editId },
-      data: { id: item.id, no: item.no, title: item.title, count: item.count, hue: item.hue, blurb: item.blurb },
+      data: { id: item.id, no: item.no, title: item.title, count: item.count, hue: item.hue, blurb: item.blurb, cover: item.cover },
     });
   } else {
     await prisma.collection.create({
-      data: { id: item.id, no: item.no, title: item.title, count: item.count, hue: item.hue, blurb: item.blurb },
+      data: { id: item.id, no: item.no, title: item.title, count: item.count, hue: item.hue, blurb: item.blurb, cover: item.cover },
     });
   }
 }

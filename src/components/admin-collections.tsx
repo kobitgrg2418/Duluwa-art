@@ -2,6 +2,7 @@
 
 import { useState, useActionState } from "react";
 import { upsertCollection, deleteCollection } from "@/app/actions/admin";
+import { ImageUploader } from "@/components/image-uploader";
 import type { Collection } from "@/lib/data";
 import type { AdminState } from "@/app/actions/admin";
 
@@ -60,6 +61,7 @@ export function CollectionsManager({ collections }: { collections: Collection[] 
                   <label>Blurb</label>
                   <textarea name="blurb" rows={2} defaultValue={editing?.blurb} />
                 </div>
+                <ImageUploader name="cover" label="Cover Image" defaultValue={editing?.cover} accept="image/*" placeholder="JPEG, PNG, WebP" />
               </div>
               <div className="adm__form-actions">
                 <button type="button" onClick={close} className="adm__btn">Cancel</button>
@@ -74,7 +76,7 @@ export function CollectionsManager({ collections }: { collections: Collection[] 
       <div className="adm__table-wrap">
         <table className="adm__table">
           <thead>
-            <tr><th>No</th><th>ID</th><th>Title</th><th>Count</th><th>Hue</th><th>Actions</th></tr>
+            <tr><th>No</th><th>ID</th><th>Title</th><th>Cover</th><th>Count</th><th>Hue</th><th>Actions</th></tr>
           </thead>
           <tbody>
             {collections.map((c) => (
@@ -82,6 +84,7 @@ export function CollectionsManager({ collections }: { collections: Collection[] 
                 <td>{c.no}</td>
                 <td><code>{c.id}</code></td>
                 <td><strong>{c.title}</strong></td>
+                <td>{c.cover ? <img src={c.cover} alt="" style={{ width: 48, height: 48, objectFit: "cover", borderRadius: 4 }} /> : "—"}</td>
                 <td>{c.count}</td>
                 <td><span className="adm__hue-dot" style={{ background: `hsl(${c.hue}, 60%, 50%)` }} /> {c.hue}</td>
                 <td>
@@ -93,7 +96,7 @@ export function CollectionsManager({ collections }: { collections: Collection[] 
               </tr>
             ))}
             {collections.length === 0 && (
-              <tr><td colSpan={6} style={{ textAlign: "center", padding: "2rem", color: "var(--ink-faint)" }}>No collections yet</td></tr>
+              <tr><td colSpan={7} style={{ textAlign: "center", padding: "2rem", color: "var(--ink-faint)" }}>No collections yet</td></tr>
             )}
           </tbody>
         </table>
