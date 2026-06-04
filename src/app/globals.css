@@ -1390,3 +1390,189 @@ body:has(.gl-page) { background: #fff; }
   z-index: 3;
   pointer-events: none;
 }
+
+/* =========================================================================
+   MOBILE — Comprehensive responsive overrides
+   ========================================================================= */
+
+/* ── Touch-friendly tap targets ── */
+@media (max-width: 860px) {
+  .btn { padding: 1.1em 1.7em; font-size: .76rem; }
+  .link-u { font-size: .78rem; padding: .4rem 0; }
+  .chip { padding: .8em 1.2em; font-size: .74rem; }
+  .add-cart-btn { padding: .75em 1.3em; font-size: .74rem; }
+}
+
+/* ── Hero mobile ── */
+@media (max-width: 640px) {
+  .hero { min-height: 90svh; }
+  .hero--imm__inner { padding-block: 6rem 4rem; }
+  .hero--imm__top .eyebrow { font-size: .58rem; letter-spacing: .18em; }
+  .hero-cue { bottom: 1.2rem; }
+  .hero-cue__line { height: 36px; }
+}
+
+/* ── Nav mobile polish ── */
+@media (max-width: 860px) {
+  .nav { padding: 1rem var(--gut); }
+  .nav--solid { padding-block: .8rem; }
+  .nav__brand { font-size: 1.2rem; gap: .5rem; }
+  .nav__logo { width: 34px !important; height: 34px !important; }
+  .nav__brand small { font-size: .48rem; letter-spacing: .22em; }
+  .nav__burger { padding: 8px 0; }
+}
+
+/* ── Mobile menu polish ── */
+@media (max-width: 640px) {
+  .mmenu { padding: 1.4rem; }
+  .mmenu a { font-size: clamp(1.8rem, 9vw, 2.8rem); }
+  .mmenu a .n { font-size: .65rem; }
+  .mmenu__close { top: 1rem; right: 1.4rem; }
+  .mmenu__foot { bottom: 1.2rem; left: 1.4rem; right: 1.4rem; flex-direction: column; gap: .5rem; }
+}
+
+/* ── Featured section mobile ── */
+@media (max-width: 640px) {
+  .featured__head-r { gap: 1rem; }
+  .featured__no { font-size: 2rem; }
+  .featured__txt { gap: .8rem; }
+}
+
+/* ── Collections slider mobile ── */
+@media (max-width: 640px) {
+  .ccard { width: clamp(180px, 55vw, 260px); }
+  .ccard__cap h3 { font-size: 1.2rem; }
+  .cslider__ctrl button { width: 44px; height: 44px; font-size: 1.4rem; }
+  .cslider__ctrl .mono { min-width: 50px; font-size: .65rem; }
+  .cslider__dots { gap: .4rem; margin-top: 1.4rem; }
+}
+
+/* ── Story / About mobile ── */
+@media (max-width: 640px) {
+  .story__stats { gap: 1.6rem; }
+  .story__stats > div { min-width: 0; }
+  .story__stats .display { font-size: 2rem; }
+  .story__sign { font-size: 1.8rem; }
+  .story__quote { font-size: 1.3rem; }
+
+  .about__values { grid-template-columns: 1fr; gap: 1.2rem; }
+  .about__cta { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .about__quote { font-size: 1.1rem; }
+}
+
+/* ── Testimonials mobile ── */
+@media (max-width: 640px) {
+  .testimonials__quote { font-size: clamp(1.6rem, 5vw, 2.4rem); max-width: 18ch; }
+  .testimonials__mark { font-size: 4.5rem; height: 2rem; }
+  .testimonials__ctrl button { font-size: 1.3rem; padding: .4rem; }
+}
+
+/* ── Process section mobile ── */
+@media (max-width: 640px) {
+  .process__viz { max-width: 100%; aspect-ratio: 1/1; }
+}
+
+/* ── Commission form mobile ── */
+@media (max-width: 640px) {
+  .commission__form { gap: 1.4rem; }
+  .commission__list li { font-size: 1rem; padding-bottom: .8rem; }
+  .field input, .field textarea { font-size: 1.1rem; }
+  .field__label { font-size: .65rem; }
+  .comm-dropzone { min-height: 100px; padding: 1.2rem .8rem; }
+  .comm-dropzone__empty { font-size: .82rem; }
+  .comm-dropzone__preview img { max-height: 140px; }
+  .comm-select { font-size: .88rem; padding: .65rem .8rem; }
+}
+
+/* ── Commission page mobile ── */
+@media (max-width: 640px) {
+  .cm-form-card { padding: 1.4rem; }
+  .cm-form { gap: 1.4rem; }
+  .cm-step { gap: 1rem; padding: 1.2rem 0; }
+  .cm-step__no { font-size: 1.8rem; }
+  .cm-step h3 { font-size: 1.2rem; }
+  .cm-pricing { gap: 1rem; }
+  .cm-price { padding: 1.2rem; }
+  .cm-price .amt { font-size: 1.6rem; }
+}
+
+/* ── Collections page mobile ── */
+@media (max-width: 640px) {
+  .cp-hero, .cm-hero { padding: clamp(110px, 16vh, 180px) 0 clamp(32px, 5vw, 60px); }
+  .cp-filters { padding-block: .8rem; }
+  .cp-chip { padding: .6em 1em; font-size: .68rem; }
+  .cp-item__cap { flex-direction: column; gap: .3rem; }
+  .cp-item__cap .meta { margin-top: 0; }
+}
+
+/* ── Gallery page mobile ── */
+@media (max-width: 640px) {
+  .gl-hero { padding: clamp(110px, 16vh, 180px) 0 clamp(32px, 5vw, 48px); }
+  .gl-filters { padding-block: .8rem; }
+  .gl-chip { padding: .5em .9em; font-size: .66rem; }
+  .gl-card__overlay { padding: .6rem; }
+  .gl-card__title { font-size: .9rem; }
+  .gl-card__coll { font-size: .52rem; }
+}
+
+/* ── Lightbox mobile ── */
+@media (max-width: 640px) {
+  .lb__stage { width: 94vw; gap: .8rem; }
+  .lb__bar { flex-direction: column; gap: .4rem; }
+  .lb__bar h3 { font-size: 1.2rem; }
+  .lb__close { top: .8rem; right: 1rem; font-size: .68rem; }
+  .lb__nav { width: 44px; height: 44px; font-size: 1.5rem; }
+  .lb__nav--prev { left: 4px; }
+  .lb__nav--next { right: 4px; }
+}
+
+/* ── Cart drawer mobile ── */
+@media (max-width: 640px) {
+  .cart-drawer { width: 100vw; }
+  .cart-drawer__head { padding: 1.2rem 1.2rem; }
+  .cart-drawer__items { padding: .8rem 1.2rem; }
+  .cart-drawer__foot { padding: 1rem 1.2rem; }
+  .cart-item__title { font-size: 1rem; }
+}
+
+/* ── Checkout mobile ── */
+@media (max-width: 640px) {
+  .checkout-grid { gap: 2rem; }
+  .checkout-form .field input { font-size: 1.05rem; }
+  .checkout-pay { padding: 1.4rem; }
+  .pay-method { padding: .8rem; }
+  .pay-method__label { font-size: 1rem; }
+}
+
+/* ── Auth pages mobile ── */
+@media (max-width: 640px) {
+  .auth-split__img { min-height: 28svh; }
+  .auth-split__form { padding: 1.4rem 1.2rem; }
+  .auth-split__heading .display { font-size: 2rem; }
+  .auth-form .field input { font-size: 1.05rem; }
+}
+
+/* ── Footer mobile ── */
+@media (max-width: 520px) {
+  .footer { padding-block: clamp(50px, 9vw, 100px) 2rem; }
+  .footer__word { font-size: clamp(2.8rem, 14vw, 8rem); }
+  .footer__fine { flex-direction: column; gap: .4rem; text-align: center; }
+}
+
+/* ── Prevent horizontal overflow ── */
+@media (max-width: 640px) {
+  html, body { overflow-x: hidden; }
+  .wrap { padding-inline: clamp(16px, 4.5vw, 40px); }
+}
+
+/* ── Smooth scroll offset for mobile nav ── */
+@media (max-width: 860px) {
+  html { scroll-padding-top: 60px; }
+}
+
+/* ── Better text readability on small screens ── */
+@media (max-width: 480px) {
+  .serif-body { font-size: clamp(1.05rem, 4vw, 1.25rem); }
+  .lede { font-size: clamp(1.1rem, 4.5vw, 1.4rem); }
+  p { max-width: 100%; }
+}
