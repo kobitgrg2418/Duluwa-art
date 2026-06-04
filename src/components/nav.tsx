@@ -137,7 +137,7 @@ export function Nav({ onDark }: { onDark?: boolean }) {
           )
         )}
         <div className="mmenu__foot meta">
-          <span>kobit.gurung@studio.np</span><span>Pokhara · Nepal</span>
+          <span>kobitgrg22@gmail.com</span><span>Pokhara · Nepal</span>
         </div>
       </div>
     </>

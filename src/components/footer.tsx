@@ -35,12 +35,12 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <h5>Visit</h5>
+            <h5>Location</h5>
             <p style={{ color: "rgba(250,248,243,0.78)" }}>
-              Studio by appointment<br />Lakeside<br />Pokhara, Nepal
+              Online based<br />Pokhara, Nepal
             </p>
-            <a href="mailto:kobit.gurung@studio.np" className="link-u" style={{ color: "var(--paper)", marginTop: ".4rem" }}>
-              kobit.gurung@studio.np <span className="arr">→</span>
+            <a href="mailto:kobitgrg22@gmail.com" className="link-u" style={{ color: "var(--paper)", marginTop: ".4rem" }}>
+              kobitgrg22@gmail.com <span className="arr">→</span>
             </a>
           </div>
         </div>

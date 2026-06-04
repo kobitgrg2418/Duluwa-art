@@ -31,22 +31,22 @@ export function ArtistStory({ artworks }: { artworks: Artwork[] }) {
           <Reveal><Eyebrow idx="03">The Artist</Eyebrow></Reveal>
           <Reveal delay={1}>
             <h2 className="display h-md" style={{ marginTop: "1.2rem" }}>
-              No school taught these hands. The mountains did.
+              It started with tiny stickers and a brother to beat.
             </h2>
           </Reveal>
           <Reveal delay={2} className="story__body">
             <p className="serif-body">
-              Kobit Gurung never sat in an art academy. He learned to paint and sketch the way the rivers of his country learned to carve stone — slowly, by returning to the same place again and again.
+              At seven or eight, Kobit Gurung was hunched over anime stickers with his brother, racing to see who could copy the characters more faithfully. It was never homework &mdash; it was a dare, a game, a quiet obsession that refused to stay quiet.
             </p>
             <p className="serif-body">
-              Born in the hills above Pokhara, he traded a first brush for a week&apos;s wages and taught himself the patience that watercolour and pencil demand: that light cannot be added, only protected; that a single sketch line can hold as much truth as a finished wash.
+              As the years passed, the stickers gave way to sketchbooks, and the kitchen-table rivalry grew into something larger. He began representing his school in district-level competitions, discovering that the thing he did for fun was also the thing he did best.
             </p>
             <Reveal className="story__quote" as="blockquote">
               <span className="story__mark">&ldquo;</span>
-              I am not painting the mountain. I am painting the morning the mountain let me see it.
+              Sketching, drawing, painting &mdash; I never chose this path. It simply never let me choose another.
             </Reveal>
             <p className="serif-body">
-              Two decades on, his works hang in collections from Pokhara to Zürich — yet each begins the same way, with torn paper and a glass of clean water at dawn.
+              No academy shaped his hand. The passion came first, and the craft followed &mdash; built one line, one wash, one late night at a time. Today, from a studio in Pokhara, that same childhood impulse drives every brushstroke: the pure, stubborn love of making marks on paper.
             </p>
             <div className="story__stats">
               <div><span className="display" style={{ fontSize: "2.6rem" }}>17</span><span className="meta">Years painting</span></div>
