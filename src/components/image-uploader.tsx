@@ -38,8 +38,8 @@ export function ImageUploader({ name, label, defaultValue, accept = "image/*", p
 
       setValue(data.path);
       setPreview(data.path);
-    } catch {
-      setError("Upload failed");
+    } catch (err) {
+      setError("Upload failed: " + (err instanceof Error ? err.message : "network error"));
     } finally {
       setUploading(false);
     }

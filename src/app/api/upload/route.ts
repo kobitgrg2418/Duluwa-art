@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAdmin } from "@/lib/admin";
+import { getSession } from "@/lib/session";
 import path from "path";
 import fs from "fs/promises";
 
 export async function POST(req: NextRequest) {
-  try {
-    await requireAdmin();
-  } catch {
+  const session = await getSession();
+  if (!session || session.role !== "admin") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
