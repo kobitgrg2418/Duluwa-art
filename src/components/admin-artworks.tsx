@@ -2,6 +2,7 @@
 
 import { useState, useActionState } from "react";
 import { upsertArtwork, deleteArtwork, batchSetArtworkStatus } from "@/app/actions/admin";
+import { ImageUploader } from "@/components/image-uploader";
 import type { Artwork, Collection } from "@/lib/data";
 import type { AdminState } from "@/app/actions/admin";
 
@@ -146,14 +147,20 @@ export function ArtworksManager({ artworks, collections }: { artworks: Artwork[]
                   <label>Ratio</label>
                   <input name="ratio" type="number" step="0.01" defaultValue={editing?.ratio || 1} />
                 </div>
-                <div className="adm__field adm__field--full">
-                  <label>Image Path</label>
-                  <input name="image" defaultValue={editing?.image} placeholder="/assets/filename.jpeg" />
-                </div>
-                <div className="adm__field adm__field--full">
-                  <label>Video Path</label>
-                  <input name="video" defaultValue={editing?.video} placeholder="/assets/filename.mp4 (optional)" />
-                </div>
+                <ImageUploader
+                  name="image"
+                  label="Image"
+                  defaultValue={editing?.image}
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  placeholder="JPEG, PNG, WebP — drag & drop or browse"
+                />
+                <ImageUploader
+                  name="video"
+                  label="Video (optional)"
+                  defaultValue={editing?.video}
+                  accept="video/mp4,video/quicktime,video/webm"
+                  placeholder="MP4, MOV, WebM — drag & drop or browse"
+                />
                 <div className="adm__field adm__field--full">
                   <label>Note</label>
                   <textarea name="note" rows={2} defaultValue={editing?.note} />
