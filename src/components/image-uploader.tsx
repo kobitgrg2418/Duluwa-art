@@ -29,7 +29,15 @@ export function ImageUploader({ name, label, defaultValue, accept = "image/*", p
 
     try {
       const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
+      const text = await res.text();
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        setError(res.status === 401 || res.redirected ? "Not authorized — please log in as admin" : `Server error (${res.status})`);
+        return;
+      }
 
       if (!res.ok) {
         setError(data.error || "Upload failed");

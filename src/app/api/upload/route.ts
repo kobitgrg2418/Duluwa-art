@@ -1,11 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@/lib/session";
+import { cookies } from "next/headers";
+import { jwtVerify } from "jose";
 import path from "path";
 import fs from "fs/promises";
 
+const SECRET = process.env.SESSION_SECRET ?? "duluwa-art-dev-secret-change-in-prod";
+const key = new TextEncoder().encode(SECRET);
+
+async function isAdmin(): Promise<boolean> {
+  try {
+    const jar = await cookies();
+    const token = jar.get("session")?.value;
+    if (!token) return false;
+    const { payload } = await jwtVerify(token, key, { algorithms: ["HS256"] });
+    return (payload as Record<string, unknown>).role === "admin";
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(req: NextRequest) {
-  const session = await getSession();
-  if (!session || session.role !== "admin") {
+  if (!(await isAdmin())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
