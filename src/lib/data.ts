@@ -59,6 +59,8 @@ export const COLLECTIONS: Collection[] = [
     blurb: "Tea fields, terraced farms and the slow choreography of mountain daily life." },
   { id: "sketches", no: "06", title: "Watercolour Sketches", count: 32, hue: 36, cover: "",
     blurb: "Loose, fast, unguarded — the notebook where every finished work begins." },
+  { id: "still-life", no: "07", title: "Still Life", count: 14, hue: 160, cover: "",
+    blurb: "Fruit, flowers and familiar objects — stillness observed until it speaks in colour and shadow." },
 ];
 
 export const ARTWORKS: Artwork[] = [

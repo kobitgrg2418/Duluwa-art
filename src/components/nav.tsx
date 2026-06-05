@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "./cart";
 import { useAuth } from "./auth-provider";
@@ -17,12 +18,18 @@ const NAV_LINKS = [
 ];
 
 export function Nav({ onDark }: { onDark?: boolean }) {
+  const pathname = usePathname();
   const [solid, setSolid] = useState(false);
   const [menu, setMenu] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
   const dropRef = useRef<HTMLDivElement>(null);
   const { count, setOpen } = useCart();
   const { user, loading: authLoading } = useAuth();
+
+  function isActive(href: string) {
+    if (href.startsWith("/#")) return pathname === "/";
+    return pathname === href || pathname.startsWith(href + "/");
+  }
 
   useEffect(() => {
     const onScroll = () => setSolid(window.scrollY > 80);
@@ -57,7 +64,7 @@ export function Nav({ onDark }: { onDark?: boolean }) {
         </Link>
         <div className="nav__links">
           {NAV_LINKS.map((l) => (
-            <Link key={l.label} href={l.href}>{l.label}</Link>
+            <Link key={l.label} href={l.href} className={isActive(l.href) ? "active" : ""}>{l.label}</Link>
           ))}
           <Link href="/commission" className="nav__cta">Commission</Link>
           <button className="cart-badge" onClick={() => setOpen(true)} aria-label="Cart" style={{ background: "none", border: 0, cursor: "pointer", color: "inherit", fontSize: "1.2rem" }}>
@@ -113,7 +120,7 @@ export function Nav({ onDark }: { onDark?: boolean }) {
         <button className="mmenu__close" onClick={() => setMenu(false)}>Close ✕</button>
         <div className="col" style={{ display: "flex", flexDirection: "column", gap: ".2rem" }}>
           {NAV_LINKS.map((l) => (
-            <Link key={l.label} href={l.href} onClick={() => setMenu(false)}>
+            <Link key={l.label} href={l.href} onClick={() => setMenu(false)} className={isActive(l.href) ? "active" : ""}>
               <span className="n">{l.n}</span>{l.label}
             </Link>
           ))}
