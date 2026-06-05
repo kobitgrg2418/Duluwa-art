@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
-import path from "path";
-import fs from "fs/promises";
+import { put } from "@vercel/blob";
 
 const SECRET = process.env.SESSION_SECRET || "duluwa-art-dev-secret-local-only";
 const key = new TextEncoder().encode(SECRET);
@@ -42,22 +41,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "File too large (max 50MB)" }, { status: 400 });
     }
 
-    const ext = path.extname(file.name) || `.${file.type.split("/")[1]}`;
+    const ext = file.name.match(/\.[^.]+$/)?.[0] || `.${file.type.split("/")[1]}`;
     const safeName = file.name
-      .replace(ext, "")
+      .replace(/\.[^.]+$/, "")
       .replace(/[^a-zA-Z0-9_-]/g, "_")
       .slice(0, 60);
     const uniqueName = `${safeName}_${Date.now()}${ext}`;
 
-    const assetsDir = path.join(process.cwd(), "public", "assets");
-    await fs.mkdir(assetsDir, { recursive: true });
+    const blob = await put(`artworks/${uniqueName}`, file, { access: "public" });
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const filePath = path.join(assetsDir, uniqueName);
-    await fs.writeFile(filePath, buffer);
-
-    const publicPath = `/assets/${uniqueName}`;
-    return NextResponse.json({ path: publicPath });
+    return NextResponse.json({ path: blob.url });
   } catch (err) {
     console.error("Upload error:", err);
     return NextResponse.json(
