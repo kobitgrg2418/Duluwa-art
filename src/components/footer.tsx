@@ -29,9 +29,7 @@ export function Footer() {
             <h5>Connect</h5>
             <ul>
               <li><Link href="/commission">Commission a Work</Link></li>
-              <li><a href="#">Instagram</a></li>
-              <li><a href="#">Behance</a></li>
-              <li><a href="#">Newsletter</a></li>
+              <li><a href="https://www.instagram.com/duluwa_art/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
             </ul>
           </div>
           <div>
