@@ -59,7 +59,11 @@ function RefImageUploader({ onFileChange }: { onFileChange: (file: File | null) 
           </div>
         ) : (
           <div className="comm-dropzone__empty">
-            <span className="comm-dropzone__icon">&#128247;</span>
+            <svg className="comm-dropzone__icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <path d="m21 15-5-5L5 21" />
+            </svg>
             <span>Drag & drop your reference photo or <u>browse</u></span>
             <span className="comm-dropzone__hint">JPG, PNG, WebP &middot; Max 10 MB</span>
           </div>
