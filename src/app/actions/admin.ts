@@ -8,6 +8,8 @@ import {
   getProcess, saveProcessStep, deleteProcessStepByNo,
   getTestimonials, getTestimonialIds, saveTestimonial, deleteTestimonialById,
   getSiteMedia, saveSiteMedia, deleteSiteMediaByKey,
+  getCommissionPricing, saveCommissionPricing,
+  type CommissionTier,
 } from "@/lib/store";
 import { getAllUsers, updateUser, deleteUser, createUser, hashPassword } from "@/lib/users";
 import type { Artwork, ArtworkStatus, Collection, ProcessStep, SiteMedia, Testimonial } from "@/lib/data";
@@ -291,6 +293,26 @@ export async function deleteSiteMedia(key: string): Promise<AdminState> {
   const ok = await deleteSiteMediaByKey(key);
   if (!ok) return { error: "Not found." };
   revalidatePath("/admin/media");
+  revalidatePath("/");
+  return { ok: true };
+}
+
+// ── Commission Pricing ──
+
+export async function adminGetCommissionPricing(): Promise<CommissionTier[]> {
+  await requireAdmin();
+  return getCommissionPricing();
+}
+
+export async function adminSaveCommissionPricing(tiers: CommissionTier[]): Promise<AdminState> {
+  await requireAdmin();
+  if (!tiers.length) return { error: "At least one pricing tier is required." };
+  for (const t of tiers) {
+    if (!t.label || !t.price) return { error: "Each tier needs a label and price." };
+  }
+  await saveCommissionPricing(tiers);
+  revalidatePath("/admin/commission");
+  revalidatePath("/commission");
   revalidatePath("/");
   return { ok: true };
 }

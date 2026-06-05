@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
-import { put } from "@vercel/blob";
 
 const SECRET = process.env.SESSION_SECRET || "duluwa-art-dev-secret-local-only";
 const key = new TextEncoder().encode(SECRET);
@@ -36,26 +35,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "File type not allowed" }, { status: 400 });
     }
 
-    const maxSize = 50 * 1024 * 1024;
+    // Limit to 10MB for base64 storage
+    const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
-      return NextResponse.json({ error: "File too large (max 50MB)" }, { status: 400 });
+      return NextResponse.json({ error: "File too large (max 10MB)" }, { status: 400 });
     }
 
-    const ext = file.name.match(/\.[^.]+$/)?.[0] || `.${file.type.split("/")[1]}`;
-    const safeName = file.name
-      .replace(/\.[^.]+$/, "")
-      .replace(/[^a-zA-Z0-9_-]/g, "_")
-      .slice(0, 60);
-    const uniqueName = `${safeName}_${Date.now()}${ext}`;
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const base64 = buffer.toString("base64");
+    const dataUrl = `data:${file.type};base64,${base64}`;
 
-    const blob = await put(`artworks/${uniqueName}`, file, { access: "public" });
-
-    return NextResponse.json({ path: blob.url });
+    return NextResponse.json({ path: dataUrl });
   } catch (err) {
     console.error("Upload error:", err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Upload failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

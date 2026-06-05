@@ -46,6 +46,7 @@ const LINKS = [
   { href: "/admin/testimonials", label: "Testimonials", icon: "testimonials" },
   { href: "/admin/users", label: "Users", icon: "users" },
   { href: "/admin/orders", label: "Orders", icon: "orders" },
+  { href: "/admin/commission", label: "Commission", icon: "settings" },
   { href: "/admin/media", label: "Site Media", icon: "media" },
 ];
 

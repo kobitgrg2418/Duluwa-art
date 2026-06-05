@@ -180,6 +180,28 @@ export async function saveSiteMedia(item: SiteMedia) {
   });
 }
 
+export interface CommissionTier {
+  label: string;
+  price: string;
+  desc: string;
+}
+
+const DEFAULT_COMMISSION_PRICING: CommissionTier[] = [
+  { label: "Small", price: "Rs 48,000", desc: "up to 30 × 40 cm · sketch & portrait studies" },
+  { label: "Medium", price: "Rs 98,000", desc: "up to 56 × 76 cm · portraits & landscapes" },
+  { label: "Large", price: "Rs 1,90,000", desc: "76 cm and beyond · statement panoramas" },
+];
+
+export async function getCommissionPricing(): Promise<CommissionTier[]> {
+  const raw = await getSiteMediaValue("commission_pricing");
+  if (!raw) return DEFAULT_COMMISSION_PRICING;
+  try { return JSON.parse(raw); } catch { return DEFAULT_COMMISSION_PRICING; }
+}
+
+export async function saveCommissionPricing(tiers: CommissionTier[]) {
+  await saveSiteMedia({ key: "commission_pricing", value: JSON.stringify(tiers), label: "Commission Pricing" });
+}
+
 export async function deleteSiteMediaByKey(key: string): Promise<boolean> {
   try {
     await prisma.siteMedia.delete({ where: { key } });
