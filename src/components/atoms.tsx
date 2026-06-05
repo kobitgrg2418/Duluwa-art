@@ -131,7 +131,15 @@ export function useRevealEngine() {
     const timers = [120, 360, 800].map((ms) => setTimeout(() => { collect(); pass(); }, ms));
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", () => { collect(); onScroll(); });
-    return () => { timers.forEach(clearTimeout); window.removeEventListener("scroll", onScroll); };
+
+    // Watch for new elements added by React re-renders (e.g. filter changes)
+    const observer = new MutationObserver(() => {
+      collect();
+      if (!ticking) { ticking = true; requestAnimationFrame(pass); }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => { timers.forEach(clearTimeout); window.removeEventListener("scroll", onScroll); observer.disconnect(); };
   }, []);
 }
 
