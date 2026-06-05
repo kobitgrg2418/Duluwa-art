@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/components/cart";
 import { AuthProvider } from "@/components/auth-provider";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: {
@@ -38,7 +39,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body><AuthProvider><CartProvider>{children}</CartProvider></AuthProvider></body>
+      <body>
+        <AuthProvider>
+          <CartProvider>{children}</CartProvider>
+        </AuthProvider>
+        <Analytics />
+      </body>
     </html>
   );
 }
