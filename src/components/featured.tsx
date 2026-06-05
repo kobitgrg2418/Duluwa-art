@@ -22,10 +22,10 @@ export function Featured({ artworks }: { artworks: Artwork[] }) {
         <div className="featured__head">
           <div className="featured__head-l">
             <Reveal><Eyebrow idx="01">Selected Works</Eyebrow></Reveal>
-            <Reveal delay={1}><h2 className="display h-lg">Paintings worth<br />standing still for</h2></Reveal>
+            <Reveal delay={1}><h2 className="display h-lg">From sketch<br />to masterpiece</h2></Reveal>
           </div>
           <Reveal delay={2} className="featured__head-r">
-            <p className="serif-body">Four works from the studio — each a single, unrepeatable conversation between water, pigment and the tooth of the paper.</p>
+            <p className="serif-body">Hand-picked originals from the studio &mdash; watercolours, graphite sketches and mixed media, each carrying the quiet energy of the moment it was made.</p>
             <Link href="/collections" className="link-u">All collections <span className="arr">→</span></Link>
           </Reveal>
         </div>

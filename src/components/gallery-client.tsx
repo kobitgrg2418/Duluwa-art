@@ -29,15 +29,15 @@ function collTitle(id: string, collections: Collection[]): string {
   return c ? c.title : id;
 }
 
-function GalleryCard({ artwork, index, onOpen, collections }: { artwork: Artwork; index: number; onOpen: () => void; collections: Collection[] }) {
+function GalleryCard({ artwork, index, onOpen, collections, useBento }: { artwork: Artwork; index: number; onOpen: () => void; collections: Collection[]; useBento: boolean }) {
   const [hovered, setHovered] = useState(false);
-  const pattern = BENTO_PATTERNS[index % BENTO_PATTERNS.length];
+  const pattern = useBento ? BENTO_PATTERNS[index % BENTO_PATTERNS.length] : undefined;
 
   return (
     <Reveal
       delay={(index % 3) + 1}
       className="gl-card"
-      style={{ gridColumn: pattern.col, gridRow: pattern.row }}
+      style={pattern ? { gridColumn: pattern.col, gridRow: pattern.row } : undefined}
     >
       <button
         className="gl-card__inner"
@@ -75,7 +75,14 @@ function GalleryCard({ artwork, index, onOpen, collections }: { artwork: Artwork
 function GalleryContent({ artworks, collections }: { artworks: Artwork[]; collections: Collection[] }) {
   const { open } = useLightbox();
   const [filter, setFilter] = useState("all");
-  const shown = filter === "all" ? artworks : artworks.filter((a) => a.coll === filter);
+  const [search, setSearch] = useState("");
+  const isFiltered = filter !== "all" || search.length > 0;
+  const q = search.toLowerCase();
+  const shown = artworks.filter((a) => {
+    if (filter !== "all" && a.coll !== filter) return false;
+    if (q && !a.title.toLowerCase().includes(q) && !a.medium.toLowerCase().includes(q) && !a.year.includes(q) && !collTitle(a.coll, collections).toLowerCase().includes(q)) return false;
+    return true;
+  });
   const idxOf = (id: string) => artworks.findIndex((a) => a.id === id);
 
   return (
@@ -96,8 +103,28 @@ function GalleryContent({ artworks, collections }: { artworks: Artwork[]; collec
 
       <section className="gl-filters">
         <div className="wrap">
+          <div className="gl-search-row">
+            <div className="gl-search">
+              <span className="gl-search__icon">&#128269;</span>
+              <input
+                type="text"
+                className="gl-search__input"
+                placeholder="Search by title, medium, year..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              {search && (
+                <button className="gl-search__clear" onClick={() => setSearch("")}>&times;</button>
+              )}
+            </div>
+            {search && (
+              <span className="gl-search__count mono">
+                {shown.length} result{shown.length !== 1 ? "s" : ""}
+              </span>
+            )}
+          </div>
           <div className="gl-filters__row">
-            <button className={`gl-chip ${filter === "all" ? "on" : ""}`} onClick={() => setFilter("all")}>
+            <button className={`gl-chip ${filter === "all" ? "on" : ""}`} onClick={() => { setFilter("all"); setSearch(""); }}>
               All <span className="gl-chip__n">{artworks.length}</span>
             </button>
             {collections.map((c) => (
@@ -111,11 +138,19 @@ function GalleryContent({ artworks, collections }: { artworks: Artwork[]; collec
 
       <section className="gl-grid-section">
         <div className="wrap">
-          <div className="gl-grid">
-            {shown.map((a, i) => (
-              <GalleryCard key={a.id} artwork={a} index={i} onOpen={() => open(idxOf(a.id))} collections={collections} />
-            ))}
-          </div>
+          {shown.length === 0 ? (
+            <div className="gl-empty">
+              <p className="serif-body" style={{ textAlign: "center", color: "var(--ink-faint)" }}>
+                No artworks in this collection yet.
+              </p>
+            </div>
+          ) : (
+            <div className={`gl-grid ${isFiltered ? "gl-grid--flat" : ""}`}>
+              {shown.map((a, i) => (
+                <GalleryCard key={a.id} artwork={a} index={i} onOpen={() => open(idxOf(a.id))} collections={collections} useBento={!isFiltered} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

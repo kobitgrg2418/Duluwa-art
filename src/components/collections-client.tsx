@@ -18,6 +18,7 @@ function CollectionsContent({ collections, artworks }: { collections: Collection
   const C = collections;
   const A = artworks;
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
   const { open } = useLightbox();
   const { add, remove, items } = useCart();
   const inCart = (id: string) => items.some((i) => i.artwork.id === id);
@@ -27,10 +28,14 @@ function CollectionsContent({ collections, artworks }: { collections: Collection
     if (h && C.some((c) => c.id === h)) setFilter(h);
   }, [C]);
 
-  const shown = useMemo(
-    () => (filter === "all" ? A : A.filter((a) => a.coll === filter)),
-    [filter, A]
-  );
+  const shown = useMemo(() => {
+    const q = search.toLowerCase();
+    return A.filter((a) => {
+      if (filter !== "all" && a.coll !== filter) return false;
+      if (q && !a.title.toLowerCase().includes(q) && !a.medium.toLowerCase().includes(q) && !a.year.includes(q)) return false;
+      return true;
+    });
+  }, [filter, search, A]);
   const idxOf = (id: string) => A.findIndex((a) => a.id === id);
 
   return (
@@ -50,54 +55,90 @@ function CollectionsContent({ collections, artworks }: { collections: Collection
       </header>
 
       <div className="cp-filters">
-        <div className="wrap cp-filters__row">
-          <button className={`cp-chip ${filter === "all" ? "on" : ""}`} onClick={() => setFilter("all")}>
-            All works <span className="cp-chip__n mono">{A.length}</span>
-          </button>
-          {C.map((c) => (
-            <button key={c.id} className={`cp-chip ${filter === c.id ? "on" : ""}`} onClick={() => setFilter(c.id)}>
-              {c.title} <span className="cp-chip__n mono">{c.count}</span>
+        <div className="wrap">
+          <div className="cp-search-row">
+            <div className="cp-search">
+              <span className="cp-search__icon">&#128269;</span>
+              <input
+                type="text"
+                className="cp-search__input"
+                placeholder="Search artworks..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              {search && (
+                <button className="cp-search__clear" onClick={() => setSearch("")}>&times;</button>
+              )}
+            </div>
+            {search && (
+              <span className="cp-search__count mono">
+                {shown.length} result{shown.length !== 1 ? "s" : ""}
+              </span>
+            )}
+          </div>
+          <div className="cp-filters__row">
+            <button className={`cp-chip ${filter === "all" ? "on" : ""}`} onClick={() => { setFilter("all"); setSearch(""); }}>
+              All works <span className="cp-chip__n mono">{A.length}</span>
             </button>
-          ))}
+            {C.map((c) => {
+              const count = A.filter((a) => a.coll === c.id).length;
+              return (
+                <button key={c.id} className={`cp-chip ${filter === c.id ? "on" : ""}`} onClick={() => setFilter(c.id)}>
+                  {c.title} <span className="cp-chip__n mono">{count}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <section className="section--tight section">
         <div className="wrap">
-          <div className="cp-grid">
-            {shown.map((a, i) => (
-              <Reveal key={a.id} delay={(i % 3) + 1} className="cp-item">
-                <ArtFrame
-                  hue={a.hue} ratio={1.25} clickable
-                  image={a.image}
-                  onOpen={() => open(idxOf(a.id))}
-                  label={a.title.toLowerCase()} sub={a.size}
-                />
-                <div className="cp-item__cap">
-                  <div>
-                    <h3 className="display" style={{ fontSize: "1.5rem", margin: 0 }}>{a.title}</h3>
-                    <span className="meta">{collTitle(a.coll, collections)}</span>
+          {shown.length === 0 ? (
+            <div style={{ padding: "clamp(4rem, 10vw, 8rem) 0", textAlign: "center" }}>
+              <p className="serif-body" style={{ color: "var(--ink-faint)" }}>
+                No artworks in this collection yet.
+              </p>
+              <button className="link-u" style={{ marginTop: "1rem" }} onClick={() => setFilter("all")}>
+                View all works <span className="arr">&rarr;</span>
+              </button>
+            </div>
+          ) : (
+            <div className="cp-grid">
+              {shown.map((a, i) => (
+                <Reveal key={a.id} delay={(i % 3) + 1} className="cp-item">
+                  <ArtFrame
+                    hue={a.hue} ratio={1.25} clickable
+                    image={a.image}
+                    onOpen={() => open(idxOf(a.id))}
+                    label={a.title.toLowerCase()} sub={a.size}
+                  />
+                  <div className="cp-item__cap">
+                    <div>
+                      <h3 className="display" style={{ fontSize: "1.5rem", margin: 0 }}>{a.title}</h3>
+                      <span className="meta">{collTitle(a.coll, collections)}</span>
+                    </div>
+                    <span className="meta">{a.year}</span>
                   </div>
-                  <span className="meta">{a.year}</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span className="display" style={{ fontSize: "1.2rem", color: a.status === "SOLD_OUT" ? "var(--ink-faint)" : "var(--gold)" }}>
-                    {a.status === "SOLD_OUT" ? "Sold Out" : `Rs ${a.price.toLocaleString()}`}
-                  </span>
-                  {a.status === "SOLD_OUT" ? (
-                    <span className="add-cart-btn sold-out-badge">Sold Out</span>
-                  ) : (
-                    <button
-                      className={`add-cart-btn ${inCart(a.id) ? "added" : ""}`}
-                      onClick={() => inCart(a.id) ? remove(a.id) : add(a)}
-                    >
-                      {inCart(a.id) ? "Remove" : "Add to Cart"}
-                    </button>
-                  )}
-                </div>
-              </Reveal>
-            ))}
-          </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span className="display" style={{ fontSize: "1.2rem", color: a.status === "SOLD_OUT" ? "var(--ink-faint)" : "var(--gold)" }}>
+                      {a.status === "SOLD_OUT" ? "Sold Out" : `Rs ${a.price.toLocaleString()}`}
+                    </span>
+                    {a.status === "SOLD_OUT" ? (
+                      <span className="add-cart-btn sold-out-badge">Sold Out</span>
+                    ) : (
+                      <button
+                        className={`add-cart-btn ${inCart(a.id) ? "added" : ""}`}
+                        onClick={() => inCart(a.id) ? remove(a.id) : add(a)}
+                      >
+                        {inCart(a.id) ? "Remove" : "Add to Cart"}
+                      </button>
+                    )}
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

@@ -85,10 +85,10 @@ export function CollectionsPreview({ collections, artworks }: { collections: Col
         <div className="cslider-head">
           <div className="cslider-head__l">
             <Reveal><Eyebrow idx="02">Collections</Eyebrow></Reveal>
-            <Reveal delay={1}><h2 className="display h-lg" style={{ color: "var(--paper)" }}>Six bodies<br />of work</h2></Reveal>
+            <Reveal delay={1}><h2 className="display h-lg" style={{ color: "var(--paper)" }}>Explore the<br />collections</h2></Reveal>
           </div>
           <Reveal delay={2} className="cslider-head__r">
-            <p className="serif-body">Six recurring worlds the artist returns to. Bring one into focus.</p>
+            <p className="serif-body">Each collection is a world of its own &mdash; sketches, portraits, landscapes and wildlife, all painted by hand in watercolour and graphite.</p>
           </Reveal>
         </div>
       </div>
@@ -118,11 +118,13 @@ export function CollectionsPreview({ collections, artworks }: { collections: Col
             >
               <span className="ccard__no mono">{c.no}</span>
               <div className="ccard__art">
-                <ArtFrame hue={c.hue} fill style={{ height: "100%" }} label={c.title.toLowerCase()} sub={`${c.count} works`} image={coverImage(c.id)} />
+                {(() => { const n = artworks.filter((a) => a.coll === c.id).length; return (
+                  <ArtFrame hue={c.hue} fill style={{ height: "100%" }} label={c.title.toLowerCase()} sub={`${n} works`} image={coverImage(c.id)} />
+                ); })()}
               </div>
               <div className="ccard__cap">
                 <h3 className="display">{c.title}</h3>
-                <span className="meta">{c.count} works</span>
+                <span className="meta">{artworks.filter((a) => a.coll === c.id).length} works</span>
               </div>
             </button>
           ))}
