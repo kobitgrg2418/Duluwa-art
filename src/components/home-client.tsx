@@ -33,7 +33,7 @@ export function HomeClient({ artworks, collections, process, testimonials, siteM
       <Nav onDark />
       <main>
         <Hero heroImage={mediaMap.hero_image} />
-        <Featured artworks={artworks} />
+        <Featured artworks={artworks} collections={collections} />
         <CollectionsPreview collections={collections} artworks={artworks} />
         <ArtistStory artworks={artworks} />
         <Process steps={process} />

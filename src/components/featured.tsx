@@ -2,18 +2,16 @@
 
 import Link from "next/link";
 import { ArtFrame, Reveal, Eyebrow, useLightbox } from "./atoms";
-import type { Artwork } from "@/lib/data";
+import type { Artwork, Collection } from "@/lib/data";
 
-export function Featured({ artworks }: { artworks: Artwork[] }) {
+export function Featured({ artworks, collections }: { artworks: Artwork[]; collections?: Collection[] }) {
   const { open } = useLightbox();
   const items = artworks.filter((a) => a.feat);
   const artIndex = (id: string) => artworks.findIndex((a) => a.id === id);
 
   const collLabel = (coll: string) => {
-    if (coll === "himalaya") return "Himalayan Landscapes";
-    if (coll === "portrait") return "Portraits";
-    if (coll === "wildlife") return "Wildlife";
-    return "Nepalese Culture";
+    const c = collections?.find((x) => x.id === coll);
+    return c ? c.title : coll;
   };
 
   return (
