@@ -10,6 +10,51 @@ interface Props {
   placeholder?: string;
 }
 
+const MAX_WIDTH = 1200;
+const MAX_HEIGHT = 1200;
+const QUALITY = 0.75;
+
+function compressImage(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    // Videos can't be compressed client-side — just convert to base64
+    if (file.type.startsWith("video/")) {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error("Failed to read file"));
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+
+      let { width, height } = img;
+      if (width > MAX_WIDTH) {
+        height = Math.round(height * (MAX_WIDTH / width));
+        width = MAX_WIDTH;
+      }
+      if (height > MAX_HEIGHT) {
+        width = Math.round(width * (MAX_HEIGHT / height));
+        height = MAX_HEIGHT;
+      }
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) { reject(new Error("Canvas not supported")); return; }
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const dataUrl = canvas.toDataURL("image/jpeg", QUALITY);
+      resolve(dataUrl);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Failed to load image")); };
+    img.src = url;
+  });
+}
+
 export function ImageUploader({ name, label, defaultValue, accept = "image/*", placeholder }: Props) {
   const [value, setValue] = useState(defaultValue || "");
   const [preview, setPreview] = useState(defaultValue || "");
@@ -18,36 +63,26 @@ export function ImageUploader({ name, label, defaultValue, accept = "image/*", p
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const isVideo = (path: string) => /\.(mp4|mov|webm)$/i.test(path);
+  const isVideo = (path: string) => /\.(mp4|mov|webm)$/i.test(path) || path.startsWith("data:video/");
 
   const upload = useCallback(async (file: File) => {
     setError("");
     setUploading(true);
 
-    const fd = new FormData();
-    fd.append("file", file);
-
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const text = await res.text();
+      const dataUrl = await compressImage(file);
 
-      let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        setError(res.status === 401 || res.redirected ? "Not authorized — please log in as admin" : `Server error (${res.status})`);
+      // Check compressed size (base64 is ~4/3 of original)
+      const sizeKB = Math.round((dataUrl.length * 3) / 4 / 1024);
+      if (sizeKB > 800) {
+        setError(`Image still too large after compression (${sizeKB}KB). Try a smaller image.`);
         return;
       }
 
-      if (!res.ok) {
-        setError(data.error || "Upload failed");
-        return;
-      }
-
-      setValue(data.path);
-      setPreview(data.path);
+      setValue(dataUrl);
+      setPreview(dataUrl);
     } catch (err) {
-      setError("Upload failed: " + (err instanceof Error ? err.message : "network error"));
+      setError("Failed to process: " + (err instanceof Error ? err.message : "unknown error"));
     } finally {
       setUploading(false);
     }
@@ -100,7 +135,7 @@ export function ImageUploader({ name, label, defaultValue, accept = "image/*", p
       >
         {uploading ? (
           <div style={{ color: "#6366f1", fontSize: "0.85rem" }}>
-            <div style={{ marginBottom: 4 }}>Uploading...</div>
+            <div style={{ marginBottom: 4 }}>Processing...</div>
             <div style={{ width: 40, height: 40, border: "3px solid #e5e7eb", borderTopColor: "#6366f1", borderRadius: "50%", animation: "spin 0.8s linear infinite", margin: "0 auto" }} />
           </div>
         ) : preview ? (
@@ -124,22 +159,13 @@ export function ImageUploader({ name, label, defaultValue, accept = "image/*", p
             >
               &times;
             </button>
-            <div style={{
-              position: "absolute", bottom: 0, left: 0, right: 0,
-              background: "rgba(0,0,0,0.5)", color: "#fff",
-              fontSize: "0.75rem", padding: "4px 8px",
-              borderRadius: "0 0 6px 6px",
-              whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-            }}>
-              {value}
-            </div>
           </div>
         ) : (
           <div style={{ color: "#9ca3af", fontSize: "0.85rem" }}>
             <div style={{ fontSize: "1.5rem", marginBottom: 4 }}>📁</div>
             <div>Drag & drop or <span style={{ color: "#6366f1", textDecoration: "underline" }}>browse</span></div>
             <div style={{ fontSize: "0.75rem", marginTop: 4, opacity: 0.7 }}>
-              {placeholder || "JPEG, PNG, WebP, MP4"}
+              {placeholder || "JPEG, PNG, WebP"}
             </div>
           </div>
         )}
