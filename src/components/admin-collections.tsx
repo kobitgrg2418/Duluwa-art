@@ -16,8 +16,9 @@ export function CollectionsManager({ collections }: { collections: Collection[] 
   function close() { setShowForm(false); setEditing(null); }
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this collection?")) return;
-    await deleteCollection(id);
+    if (!confirm("Delete this collection and all its artworks?")) return;
+    const result = await deleteCollection(id);
+    if (result?.error) { alert(result.error); return; }
     window.location.reload();
   }
 

@@ -104,13 +104,13 @@ export const ARTWORKS: Artwork[] = [
 
 export const PROCESS: ProcessStep[] = [
   { no: "01", title: "The Paper", hue: 40,
-    text: "Every painting begins with cold-pressed cotton rag, torn by hand and stretched the night before. The tooth of the paper decides how the water will move." },
-  { no: "02", title: "First Wash", hue: 28,
-    text: "Working wet-into-wet, the largest shapes go down first — sky, distance, shadow — in a single uninterrupted breath before the paper dries." },
+    text: "Every painting begins with cold-pressed cotton rag, torn by hand and stretched the night before. The tooth and weight of the paper decide how the water will pool, bleed and settle." },
+  { no: "02", title: "Wet on Wet", hue: 28,
+    text: "The paper is soaked and pigment is dropped into the wet surface — colours bloom, merge and push into one another with a life of their own. This wet-on-wet technique creates the soft, atmospheric washes that no dry brush can imitate. Timing is everything: too early and the colour vanishes, too late and hard edges appear." },
   { no: "03", title: "Building Light", hue: 52,
-    text: "Layer over transparent layer, the light is never added — it is the paper, protected. Each glaze is a decision that cannot be taken back." },
+    text: "Once the first wash dries, transparent glazes are layered one over another. The light is never painted — it is the white of the paper, carefully protected. Each new layer deepens tone while preserving luminosity beneath." },
   { no: "04", title: "The Detail", hue: 36,
-    text: "Only at the end, with a near-dry brush, do the eyes, the stitch, the single blade of grass arrive. Restraint is the whole discipline." },
+    text: "Only at the end, with a near-dry brush, do the eyes, the stitch, the single blade of grass arrive. Restraint is the whole discipline — knowing when to stop is what separates watercolour from every other medium." },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [

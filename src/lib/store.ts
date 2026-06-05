@@ -82,6 +82,8 @@ export async function saveCollection(item: Collection, editId?: string) {
 
 export async function deleteCollectionById(id: string): Promise<boolean> {
   try {
+    // Remove any artworks linked to this collection first
+    await prisma.artwork.deleteMany({ where: { collectionId: id } });
     await prisma.collection.delete({ where: { id } });
     return true;
   } catch {
