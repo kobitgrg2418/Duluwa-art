@@ -1,27 +1,25 @@
-/**
- * Simple in-memory rate limiter.
- * For production at scale, replace with Redis-backed (e.g. @upstash/ratelimit).
- */
-
 interface Entry {
   count: number;
   resetAt: number;
 }
 
 const store = new Map<string, Entry>();
+let lastCleanup = Date.now();
 
-// Clean up expired entries every 5 minutes
-setInterval(() => {
+function cleanup() {
   const now = Date.now();
+  if (now - lastCleanup < 60_000) return;
+  lastCleanup = now;
   for (const [key, entry] of store) {
     if (now > entry.resetAt) store.delete(key);
   }
-}, 5 * 60 * 1000);
+}
 
 export function rateLimit(
   key: string,
   { max, windowMs }: { max: number; windowMs: number }
 ): { success: boolean; remaining: number } {
+  cleanup();
   const now = Date.now();
   const entry = store.get(key);
 

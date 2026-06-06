@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 import { getArtworks, getCollections, getProcess, getTestimonials, getSiteMedia } from "@/lib/store";
 import { HomeClient } from "@/components/home-client";
