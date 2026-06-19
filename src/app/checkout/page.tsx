@@ -6,6 +6,7 @@ import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { useCart } from "@/components/cart";
 import { Reveal, Eyebrow } from "@/components/atoms";
+import { placeOrder } from "@/app/actions/orders";
 
 type PayMethod = "esewa" | "khalti" | "card" | "bank";
 
@@ -13,6 +14,8 @@ export default function CheckoutPage() {
   const { items, total, remove, clear } = useCart();
   const [method, setMethod] = useState<PayMethod>("esewa");
   const [step, setStep] = useState<"review" | "payment" | "success">("review");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const [form, setForm] = useState({
     name: "", email: "", phone: "", address: "", city: "",
@@ -22,8 +25,28 @@ export default function CheckoutPage() {
 
   const set = (k: string, v: string) => setForm((p) => ({ ...p, [k]: v }));
 
-  const handlePayment = (e: FormEvent) => {
+  const handlePayment = async (e: FormEvent) => {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
+    setError("");
+
+    const res = await placeOrder({
+      paymentMethod: method,
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      address: form.address,
+      city: form.city,
+      items: items.map((i) => ({ artworkId: i.artwork.id, qty: i.qty, price: i.artwork.price })),
+      reference: method === "esewa" ? form.esewaId : undefined,
+    });
+
+    setSubmitting(false);
+    if ("error" in res) {
+      setError(res.error);
+      return;
+    }
     setStep("success");
   };
 
@@ -55,12 +78,12 @@ export default function CheckoutPage() {
           <section className="section" style={{ minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ textAlign: "center", maxWidth: "480px" }}>
               <div className="cm-thanks-mark" style={{ margin: "0 auto 1.5rem" }}>&#x2713;</div>
-              <h2 className="display h-md">Payment Successful</h2>
+              <h2 className="display h-md">Order Placed</h2>
               <p className="serif-body" style={{ marginTop: "1rem" }}>
-                Thank you for your purchase, {form.name || "collector"}. You will receive a confirmation email shortly with shipping details.
+                Thank you, {form.name || "collector"}. We&rsquo;ve emailed your order confirmation to {form.email || "your inbox"}. Once we verify your payment, you&rsquo;ll receive a payment-confirmation email and we&rsquo;ll prepare your artwork for shipping.
               </p>
               <p className="meta" style={{ marginTop: "1.5rem" }}>
-                Order Total: <strong>Rs {total.toLocaleString()}</strong> &middot; Paid via {method === "esewa" ? "eSewa" : method === "khalti" ? "Khalti" : method === "card" ? "Card" : "Bank Transfer"}
+                Order Total: <strong>Rs {total.toLocaleString()}</strong> &middot; via {method === "esewa" ? "eSewa" : method === "khalti" ? "Khalti" : method === "card" ? "Card" : "Nabil Bank"}
               </p>
               <Link href="/" className="btn" style={{ marginTop: "2rem", display: "inline-flex" }} onClick={() => clear()}>
                 Back to Home <span className="arr">&rarr;</span>
@@ -232,13 +255,17 @@ export default function CheckoutPage() {
                         </div>
                       )}
 
+                      {error && (
+                        <p className="meta" role="alert" style={{ color: "#c0392b", marginTop: ".25rem" }}>{error}</p>
+                      )}
+
                       <div style={{ display: "flex", gap: "1rem", marginTop: ".5rem" }}>
-                        <button type="button" className="btn" onClick={() => setStep("review")}
+                        <button type="button" className="btn" onClick={() => setStep("review")} disabled={submitting}
                           style={{ background: "transparent", color: "var(--ink)", border: "1px solid var(--line)" }}>
                           Back
                         </button>
-                        <button type="submit" className="btn" style={{ flex: 1, justifyContent: "center" }}>
-                          Pay Rs {total.toLocaleString()} <span className="arr">&rarr;</span>
+                        <button type="submit" className="btn" disabled={submitting} style={{ flex: 1, justifyContent: "center", opacity: submitting ? 0.6 : 1 }}>
+                          {submitting ? "Placing Order…" : <>Confirm Order &middot; Rs {total.toLocaleString()} <span className="arr">&rarr;</span></>}
                         </button>
                       </div>
                     </form>

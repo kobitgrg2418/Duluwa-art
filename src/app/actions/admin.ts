@@ -239,7 +239,8 @@ export async function adminCreateUser(_prev: AdminState, fd: FormData): Promise<
 
 // ── Orders ──
 
-import { getAllOrders, updateOrderStatus } from "@/lib/orders";
+import { getAllOrders, getOrderById, updateOrderStatus } from "@/lib/orders";
+import { sendPaymentConfirmation } from "@/lib/mail";
 import { prisma } from "@/lib/db";
 import type { OrderStatus } from "@/generated/prisma/client";
 
@@ -251,8 +252,18 @@ export async function adminGetOrders() {
 export async function adminUpdateOrderStatus(orderId: string, status: string): Promise<AdminState> {
   await requireAdmin();
   try {
+    const before = await getOrderById(orderId);
     await updateOrderStatus(orderId, status as OrderStatus);
     revalidatePath("/admin/orders");
+
+    // Notify the customer the first time their payment is confirmed.
+    if (status === "PAID" && before && before.status !== "PAID") {
+      try {
+        await sendPaymentConfirmation(before);
+      } catch (err) {
+        console.error("adminUpdateOrderStatus: payment confirmation email failed", err);
+      }
+    }
     return { ok: true };
   } catch {
     return { error: "Order not found." };
