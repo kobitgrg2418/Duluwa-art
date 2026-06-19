@@ -10,7 +10,7 @@ export default function NotFound() {
         alignItems: "center",
         justifyContent: "center",
         padding: "2rem",
-        fontFamily: "'Cormorant Garamond', Georgia, serif",
+        fontFamily: "'Fraunces', Georgia, serif",
         background: "#FAF8F3",
         color: "#232120",
         textAlign: "center",
@@ -18,7 +18,7 @@ export default function NotFound() {
     >
       <p
         style={{
-          fontFamily: "'Helvetica Neue', sans-serif",
+          fontFamily: "'Hanken Grotesk', 'Helvetica Neue', sans-serif",
           fontSize: ".7rem",
           fontWeight: 500,
           letterSpacing: ".3em",
@@ -39,7 +39,7 @@ export default function NotFound() {
         href="/"
         style={{
           padding: "1em 2em",
-          fontFamily: "'Helvetica Neue', sans-serif",
+          fontFamily: "'Hanken Grotesk', 'Helvetica Neue', sans-serif",
           fontSize: ".74rem",
           fontWeight: 500,
           letterSpacing: ".2em",

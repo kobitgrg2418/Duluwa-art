@@ -16,7 +16,7 @@ export default function Error({
         alignItems: "center",
         justifyContent: "center",
         padding: "2rem",
-        fontFamily: "'Cormorant Garamond', Georgia, serif",
+        fontFamily: "'Fraunces', Georgia, serif",
         background: "#FAF8F3",
         color: "#232120",
         textAlign: "center",
@@ -33,7 +33,7 @@ export default function Error({
           onClick={reset}
           style={{
             padding: "1em 2em",
-            fontFamily: "'Helvetica Neue', sans-serif",
+            fontFamily: "'Hanken Grotesk', 'Helvetica Neue', sans-serif",
             fontSize: ".74rem",
             fontWeight: 500,
             letterSpacing: ".2em",
@@ -50,7 +50,7 @@ export default function Error({
           href="/"
           style={{
             padding: "1em 2em",
-            fontFamily: "'Helvetica Neue', sans-serif",
+            fontFamily: "'Hanken Grotesk', 'Helvetica Neue', sans-serif",
             fontSize: ".74rem",
             fontWeight: 500,
             letterSpacing: ".2em",
