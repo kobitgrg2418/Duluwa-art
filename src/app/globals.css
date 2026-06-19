@@ -680,6 +680,8 @@ p { margin: 0 0 1.1em; max-width: 60ch; }
 .pay-method__label { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); transition: color .4s; }
 .pay-method.on .pay-method__label { color: var(--paper); }
 .pay-method.on .meta { color: rgba(250,248,243,0.6); }
+.pay-method.is-soon { opacity: .5; cursor: not-allowed; }
+.pay-method.is-soon:hover { border-color: var(--line); }
 .pay-bank-info { display: flex; flex-direction: column; gap: 1rem; }
 .pay-bank-details { display: flex; flex-direction: column; gap: .6rem; background: rgba(35,33,32,0.04); padding: 1.2rem; }
 .pay-bank-details > div { display: flex; justify-content: space-between; align-items: center; }

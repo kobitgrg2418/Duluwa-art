@@ -16,11 +16,11 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<"review" | "payment" | "success">("review");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [placedTotal, setPlacedTotal] = useState(0);
 
   const [form, setForm] = useState({
     name: "", email: "", phone: "", address: "", city: "",
-    cardNumber: "", cardExpiry: "", cardCvv: "",
-    esewaId: "", khaltiId: "",
+    esewaId: "",
   });
 
   const set = (k: string, v: string) => setForm((p) => ({ ...p, [k]: v }));
@@ -38,7 +38,7 @@ export default function CheckoutPage() {
       phone: form.phone,
       address: form.address,
       city: form.city,
-      items: items.map((i) => ({ artworkId: i.artwork.id, qty: i.qty, price: i.artwork.price })),
+      items: items.map((i) => ({ artworkId: i.artwork.id, qty: i.qty })),
       reference: method === "esewa" ? form.esewaId : undefined,
     });
 
@@ -47,6 +47,8 @@ export default function CheckoutPage() {
       setError(res.error);
       return;
     }
+    setPlacedTotal(res.total);
+    clear();
     setStep("success");
   };
 
@@ -83,11 +85,16 @@ export default function CheckoutPage() {
                 Thank you, {form.name || "collector"}. We&rsquo;ve emailed your order confirmation to {form.email || "your inbox"}. Once we verify your payment, you&rsquo;ll receive a payment-confirmation email and we&rsquo;ll prepare your artwork for shipping.
               </p>
               <p className="meta" style={{ marginTop: "1.5rem" }}>
-                Order Total: <strong>Rs {total.toLocaleString()}</strong> &middot; via {method === "esewa" ? "eSewa" : method === "khalti" ? "Khalti" : method === "card" ? "Card" : "Nabil Bank"}
+                Order Total: <strong>Rs {placedTotal.toLocaleString()}</strong> &middot; via {method === "bank" ? "Nabil Bank" : "eSewa"}
               </p>
-              <Link href="/" className="btn" style={{ marginTop: "2rem", display: "inline-flex" }} onClick={() => clear()}>
-                Back to Home <span className="arr">&rarr;</span>
-              </Link>
+              <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "2rem", flexWrap: "wrap" }}>
+                <Link href="/profile" className="btn" style={{ display: "inline-flex" }}>
+                  View My Orders <span className="arr">&rarr;</span>
+                </Link>
+                <Link href="/" className="btn" style={{ display: "inline-flex", background: "transparent", color: "var(--ink)", border: "1px solid var(--line)" }}>
+                  Back to Home
+                </Link>
+              </div>
             </div>
           </section>
         </main>
@@ -183,15 +190,17 @@ export default function CheckoutPage() {
                     <h3 className="display" style={{ fontSize: "1.4rem", marginBottom: "1.5rem" }}>Payment Method</h3>
                     <div className="pay-methods">
                       {([
-                        { id: "esewa" as const, label: "eSewa", desc: "Pay with eSewa wallet" },
-                        { id: "khalti" as const, label: "Khalti", desc: "Pay with Khalti wallet" },
-                        { id: "card" as const, label: "Card", desc: "Visa / Mastercard" },
-                        { id: "bank" as const, label: "Bank Transfer", desc: "Direct bank transfer" },
+                        { id: "esewa" as const, label: "eSewa", desc: "Scan QR to pay", soon: false },
+                        { id: "bank" as const, label: "Bank Transfer", desc: "Nabil Bank QR", soon: false },
+                        { id: "khalti" as const, label: "Khalti", desc: "Coming soon", soon: true },
+                        { id: "card" as const, label: "Card", desc: "Coming soon", soon: true },
                       ]).map((m) => (
                         <button
                           key={m.id}
-                          className={`pay-method ${method === m.id ? "on" : ""}`}
-                          onClick={() => setMethod(m.id)}
+                          type="button"
+                          disabled={m.soon}
+                          className={`pay-method ${method === m.id ? "on" : ""} ${m.soon ? "is-soon" : ""}`}
+                          onClick={() => !m.soon && setMethod(m.id)}
                         >
                           <span className="pay-method__label">{m.label}</span>
                           <span className="meta">{m.desc}</span>
@@ -212,32 +221,6 @@ export default function CheckoutPage() {
                           <div className="field">
                             <label className="field__label">eSewa Transaction ID <span className="meta">(after payment)</span></label>
                             <input type="text" value={form.esewaId} onChange={(e) => set("esewaId", e.target.value)} placeholder="e.g. 0AB1CD2" />
-                          </div>
-                        </>
-                      )}
-
-                      {method === "khalti" && (
-                        <div className="field">
-                          <label className="field__label">Khalti ID / Phone</label>
-                          <input type="text" required value={form.khaltiId} onChange={(e) => set("khaltiId", e.target.value)} placeholder="98XXXXXXXX" />
-                        </div>
-                      )}
-
-                      {method === "card" && (
-                        <>
-                          <div className="field">
-                            <label className="field__label">Card Number</label>
-                            <input type="text" required value={form.cardNumber} onChange={(e) => set("cardNumber", e.target.value)} placeholder="4242 4242 4242 4242" maxLength={19} />
-                          </div>
-                          <div className="cm-row2">
-                            <div className="field">
-                              <label className="field__label">Expiry</label>
-                              <input type="text" required value={form.cardExpiry} onChange={(e) => set("cardExpiry", e.target.value)} placeholder="MM / YY" maxLength={7} />
-                            </div>
-                            <div className="field">
-                              <label className="field__label">CVV</label>
-                              <input type="text" required value={form.cardCvv} onChange={(e) => set("cardCvv", e.target.value)} placeholder="123" maxLength={4} />
-                            </div>
                           </div>
                         </>
                       )}

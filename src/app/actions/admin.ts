@@ -256,8 +256,18 @@ export async function adminUpdateOrderStatus(orderId: string, status: string): P
     await updateOrderStatus(orderId, status as OrderStatus);
     revalidatePath("/admin/orders");
 
-    // Notify the customer the first time their payment is confirmed.
+    // On first transition to PAID: mark the purchased artworks sold out and notify the buyer.
     if (status === "PAID" && before && before.status !== "PAID") {
+      const artworkIds = before.items.map((i) => i.artworkId);
+      if (artworkIds.length) {
+        await prisma.artwork.updateMany({
+          where: { id: { in: artworkIds } },
+          data: { status: "SOLD_OUT" },
+        });
+        revalidatePath("/");
+        revalidatePath("/gallery");
+        revalidatePath("/collections");
+      }
       try {
         await sendPaymentConfirmation(before);
       } catch (err) {

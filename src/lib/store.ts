@@ -22,6 +22,12 @@ export async function getArtworks(): Promise<Artwork[]> {
   return rows.map(toArtwork);
 }
 
+export async function getArtworksByIds(ids: string[]): Promise<Artwork[]> {
+  if (ids.length === 0) return [];
+  const rows = await prisma.artwork.findMany({ where: { id: { in: ids } } });
+  return rows.map(toArtwork);
+}
+
 export async function saveArtwork(item: Artwork) {
   await prisma.artwork.upsert({
     where: { id: item.id },
