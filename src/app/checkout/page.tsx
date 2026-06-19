@@ -178,10 +178,19 @@ export default function CheckoutPage() {
 
                     <form className="checkout-form" onSubmit={handlePayment} style={{ marginTop: "1.5rem" }}>
                       {method === "esewa" && (
-                        <div className="field">
-                          <label className="field__label">eSewa ID / Phone</label>
-                          <input type="text" required value={form.esewaId} onChange={(e) => set("esewaId", e.target.value)} placeholder="98XXXXXXXX" />
-                        </div>
+                        <>
+                          <div className="pay-qr">
+                            <img className="pay-qr__img" src="/assets/esewa-qr.jpeg" alt="eSewa payment QR for Kobit Gurung" />
+                            <div className="pay-qr__meta">
+                              <span className="pay-qr__name">Kobit Gurung &middot; 9826629985</span>
+                              <span className="meta">Scan with your eSewa app to pay <strong style={{ color: "var(--gold)" }}>Rs {total.toLocaleString()}</strong></span>
+                            </div>
+                          </div>
+                          <div className="field">
+                            <label className="field__label">eSewa Transaction ID <span className="meta">(after payment)</span></label>
+                            <input type="text" value={form.esewaId} onChange={(e) => set("esewaId", e.target.value)} placeholder="e.g. 0AB1CD2" />
+                          </div>
+                        </>
                       )}
 
                       {method === "khalti" && (
@@ -212,12 +221,13 @@ export default function CheckoutPage() {
 
                       {method === "bank" && (
                         <div className="pay-bank-info">
-                          <p className="serif-body" style={{ margin: 0 }}>Transfer to the following account:</p>
-                          <div className="pay-bank-details">
-                            <div><span className="meta">Bank</span><span>Nepal Investment Mega Bank</span></div>
-                            <div><span className="meta">Account Name</span><span>Duluwa Art Pvt. Ltd.</span></div>
-                            <div><span className="meta">Account No.</span><span>01234567890123</span></div>
-                            <div><span className="meta">Amount</span><span style={{ color: "var(--gold)", fontWeight: 600 }}>Rs {total.toLocaleString()}</span></div>
+                          <p className="serif-body" style={{ margin: 0 }}>Scan the QR with your mobile banking or any QR-enabled app:</p>
+                          <div className="pay-qr">
+                            <img className="pay-qr__img" src="/assets/nabil-qr.png" alt="Nabil Bank payment QR" />
+                            <div className="pay-qr__meta">
+                              <span className="pay-qr__name">Nabil Bank</span>
+                              <span className="meta">Amount to pay <strong style={{ color: "var(--gold)" }}>Rs {total.toLocaleString()}</strong></span>
+                            </div>
                           </div>
                         </div>
                       )}

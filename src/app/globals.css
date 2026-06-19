@@ -684,6 +684,10 @@ p { margin: 0 0 1.1em; max-width: 60ch; }
 .pay-bank-details { display: flex; flex-direction: column; gap: .6rem; background: rgba(35,33,32,0.04); padding: 1.2rem; }
 .pay-bank-details > div { display: flex; justify-content: space-between; align-items: center; }
 .pay-bank-details .meta { min-width: 120px; }
+.pay-qr { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 1.4rem; background: #fff; border: 1px solid var(--line); }
+.pay-qr__img { width: 220px; max-width: 70%; height: auto; display: block; }
+.pay-qr__meta { display: flex; flex-direction: column; align-items: center; gap: .3rem; text-align: center; }
+.pay-qr__name { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); }
 @media (max-width: 860px){
   .checkout-grid { grid-template-columns: 1fr; }
   .checkout-summary { position: static; }
