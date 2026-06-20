@@ -1,7 +1,7 @@
 "use server";
 
 import { getSession } from "@/lib/session";
-import { createOrder, getOrderById } from "@/lib/orders";
+import { createOrder, getOrderById, getOrdersByUser } from "@/lib/orders";
 import { getArtworksByIds } from "@/lib/store";
 import { sendOrderConfirmation, sendNewOrderAdminAlert } from "@/lib/mail";
 
@@ -89,4 +89,29 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlaceOrderResu
   }
 
   return { ok: true, orderId, total };
+}
+
+export interface MyOrderItem { title: string; qty: number; price: number; }
+export interface MyOrder {
+  id: string;
+  status: string;
+  paymentMethod: string;
+  total: number;
+  createdAt: string;
+  items: MyOrderItem[];
+}
+
+/** Orders belonging to the currently logged-in user, newest first. */
+export async function getMyOrders(): Promise<MyOrder[]> {
+  const session = await getSession();
+  if (!session) return [];
+  const orders = await getOrdersByUser(session.id);
+  return orders.map((o) => ({
+    id: o.id,
+    status: o.status,
+    paymentMethod: o.paymentMethod,
+    total: o.total,
+    createdAt: o.createdAt.toISOString(),
+    items: o.items.map((i) => ({ title: i.artwork?.title ?? "Artwork", qty: i.qty, price: i.price })),
+  }));
 }

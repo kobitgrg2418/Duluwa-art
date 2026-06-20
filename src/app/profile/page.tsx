@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Nav } from "@/components/nav";
 import { useAuth } from "@/components/auth-provider";
 import { updateProfile, deleteAccount, ProfileState } from "@/app/actions/profile";
+import { MyOrders } from "@/components/my-orders";
 
 export default function ProfilePage() {
   const { user, loading } = useAuth();
@@ -106,6 +107,8 @@ export default function ProfilePage() {
               {pending ? "Saving…" : "Update Profile"} <span className="arr">→</span>
             </button>
           </form>
+
+          <MyOrders />
 
           <div className="profile-danger">
             <h3 className="profile-danger__title">Danger Zone</h3>

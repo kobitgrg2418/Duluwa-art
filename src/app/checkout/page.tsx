@@ -88,7 +88,7 @@ export default function CheckoutPage() {
                 Order Total: <strong>Rs {placedTotal.toLocaleString()}</strong> &middot; via {method === "bank" ? "Nabil Bank" : "eSewa"}
               </p>
               <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "2rem", flexWrap: "wrap" }}>
-                <Link href="/profile" className="btn" style={{ display: "inline-flex" }}>
+                <Link href="/profile#orders" className="btn" style={{ display: "inline-flex" }}>
                   View My Orders <span className="arr">&rarr;</span>
                 </Link>
                 <Link href="/" className="btn" style={{ display: "inline-flex", background: "transparent", color: "var(--ink)", border: "1px solid var(--line)" }}>

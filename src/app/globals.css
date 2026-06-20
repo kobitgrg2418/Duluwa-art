@@ -786,6 +786,28 @@ p { margin: 0 0 1.1em; max-width: 60ch; }
 .profile-divider {
   height: 1px; background: var(--line); margin-block: .6rem;
 }
+
+/* My Orders */
+.orders-sec { margin-top: 3rem; }
+.orders-empty { padding: 1.6rem; border: 1px solid var(--line); background: rgba(35,33,32,0.02); }
+.orders-list { display: flex; flex-direction: column; gap: 1.1rem; }
+.order-card { border: 1px solid var(--line); padding: 1.3rem 1.4rem; background: var(--paper); transition: border-color .4s var(--ease); }
+.order-card:hover { border-color: var(--ink-faint); }
+.order-card__head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.order-card__ref { display: block; font-family: var(--serif); font-size: 1.15rem; color: var(--ink); }
+.order-status {
+  font-family: var(--sans); font-size: .6rem; font-weight: 600; letter-spacing: .14em;
+  text-transform: uppercase; padding: .35em .8em; border: 1px solid; white-space: nowrap;
+}
+.order-card__items { margin: 1rem 0; display: flex; flex-direction: column; gap: .45rem; }
+.order-card__row { display: flex; justify-content: space-between; gap: 1rem; font-size: .9rem; }
+.order-card__title { color: var(--ink-soft); }
+.order-card__price { font-family: var(--serif); color: var(--ink); white-space: nowrap; }
+.order-card__foot {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding-top: .9rem; border-top: 1px solid var(--line-soft);
+}
+.order-card__total { font-family: var(--serif); font-size: 1.25rem; color: var(--gold); }
 .profile-danger {
   margin-top: 3rem; padding: 1.8rem; border: 1px solid rgba(180,60,60,0.2); background: rgba(180,60,60,0.03);
 }
