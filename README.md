@@ -2,12 +2,12 @@
 
 Original watercolours & sketches by Kobit Gurung — an art gallery e-commerce site.
 
-This repository is a **React + Node.js** application, split into two packages:
+This repository is a **React + Django** application, split into two packages:
 
 ```
 duluwa-art/
 ├── client/   # React 19 SPA — Vite + React Router (the UI)
-├── server/   # Express + TypeScript REST API — Prisma + PostgreSQL
+├── backend/  # Django REST API — PostgreSQL
 └── package.json   # orchestration scripts (run both at once)
 ```
 
@@ -17,44 +17,43 @@ became REST endpoints under `/api/*`, and the App Router became client-side rout
 ## Prerequisites
 
 - Node.js 20+
+- Python 3.10+
 - A PostgreSQL database
 
 ## Setup
 
 ```bash
-# 1. Install dependencies for both packages
+# 1. Install frontend and Django dependencies
 npm run install:all
 
 # 2. Configure environment
-#    server/.env  — copy from server/.env.example, fill in DATABASE_URL, SESSION_SECRET, etc.
+#    backend/.env — fill in DATABASE_URL and Django settings
 #    client/.env  — copy from client/.env.example (VITE_GOOGLE_CLIENT_ID is optional)
 
-# 3. Create the schema and seed starter data
-npm run db:push
-npm run db:seed        # seeds collections/artworks/etc. + admin@duluwa.art / admin123
+# 3. Apply Django migrations
+npm run db:migrate
 
-# 4. Run client + server together (server :4000, client :5173)
+# 4. Run client + Django together (Django :8000, client :5173)
 npm run dev
 ```
 
 Then open http://localhost:5173.
 
-In development, the Vite dev server proxies `/api` → `http://localhost:4000`, so the
+In development, the Vite dev server proxies `/api` → `http://localhost:8000`, so the
 browser stays single-origin and the session cookie works without CORS juggling.
 
 ## Environment variables
 
-**server/.env** (see `server/.env.example`):
+**backend/.env** (see `backend/.env.example`):
 
 | Variable | Purpose |
 | --- | --- |
-| `DATABASE_URL` / `DIRECT_DATABASE_URL` | PostgreSQL connection (Prisma) |
-| `SESSION_SECRET` | Signs JWT session cookies (required in production) |
+| `DATABASE_URL` | PostgreSQL connection used by Django |
+| `SECRET_KEY` | Django signing key |
 | `GOOGLE_CLIENT_ID` | Verifies Google sign-in credentials |
 | `GMAIL_USER` / `GMAIL_APP_PASSWORD` | Transactional email (orders, commissions) |
 | `BLOB_READ_WRITE_TOKEN` | Optional Vercel Blob for uploads (falls back to base64) |
-| `PORT` | API port (default 4000) |
-| `CLIENT_ORIGIN` | Allowed CORS origin (default http://localhost:5173) |
+| `CORS_ALLOWED_ORIGINS` | Allowed frontend origins |
 
 **client/.env** (see `client/.env.example`):
 
@@ -68,20 +67,18 @@ browser stays single-origin and the session cookie works without CORS juggling.
 | Script | Description |
 | --- | --- |
 | `npm run dev` | Start the API and the React dev server together |
-| `npm run build` | `prisma generate` + build the client to `client/dist` |
-| `npm start` | Run the API in production (also serves `client/dist`) |
-| `npm run typecheck` | Type-check both packages |
-| `npm run db:push` / `db:seed` / `db:studio` | Prisma helpers (delegate to `server/`) |
+| `npm run build` | Build the client to `client/dist` |
+| `npm start` | Run Django on port 8000 |
+| `npm run typecheck` | Type-check the client |
+| `npm run db:migrate` | Apply Django migrations |
 
 Each package can also be run on its own from its folder (`npm run dev`, etc.).
 
 ## Production
 
-`npm run build` then `npm start`. With `NODE_ENV=production` the Express server
-serves the built client from `client/dist`, so the whole app runs from a single
-origin/port. Run `prisma migrate deploy` (or `db:push`) against your database first.
+`npm run build` then deploy Django with Gunicorn and serve `client/dist` through a
+static web server. Run `npm run db:migrate` against your database first.
 
 ## Bootstrapping an admin
 
-`npm run db:seed` creates `admin@duluwa.art` / `admin123`. Alternatively, hit
-`GET /api/seed` once on a running server to create/promote that admin user.
+Use `python backend/manage.py createsuperuser` to create an administrator.

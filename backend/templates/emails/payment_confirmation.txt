@@ -1,0 +1,23 @@
+Dear {{ order.name }},
+
+Thank you for your purchase! Your payment for order {{ order.id }} has been confirmed.
+
+Order Details:
+{% for item in order.items.all %}
+- {{ item.qty }}x {{ item.artwork.title }} - ${{ item.price }}
+{% endfor %}
+
+Subtotal: ${{ order.subtotal }}
+Total: ${{ order.total }}
+
+Shipping Address:
+{{ order.name }}
+{{ order.address }}
+{{ order.city }}
+{{ order.phone }}
+{{ order.email }}
+
+If you have any questions, please contact us at support@duluwa.art
+
+Best regards,
+Duluwa Art Gallery

@@ -1,0 +1,227 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Simple, clean font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+@layer base {
+  :root {
+    /* Clean, minimal palette */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    
+    /* Simple black primary */
+    --primary: 0 0% 10%;
+    --primary-foreground: 0 0% 98%;
+    
+    /* Light gray secondary */
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 10%;
+    
+    /* Muted grays */
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 10%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 10%;
+    
+    --radius: 0.25rem;
+  }
+
+  .dark {
+    --background: 0 0% 5%;
+    --foreground: 0 0% 98%;
+    
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 10%;
+    
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+    
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 90%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Simple typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  
+  /* Clean focus */
+  *:focus-visible {
+    @apply outline-none ring-1 ring-foreground/20;
+  }
+  
+  /* Subtle selection */
+  ::selection {
+    @apply bg-foreground/10;
+  }
+}
+
+@layer components {
+  /* Simple card hover */
+  .card-simple {
+    @apply bg-card border border-border transition-all duration-300;
+  }
+  
+  .card-simple:hover {
+    @apply border-foreground/20;
+  }
+  
+  /* Minimal button */
+  .btn-minimal {
+    @apply transition-colors duration-200;
+  }
+  
+  /* Image fade on hover */
+  .img-fade {
+    @apply transition-opacity duration-300;
+  }
+  
+  .img-fade:hover {
+    @apply opacity-90;
+  }
+  
+  /* Vertical writing mode */
+  .writing-mode-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+  }
+}
+
+@layer utilities {
+  /* Clean spacing */
+  .section-padding {
+    @apply py-16 lg:py-24;
+  }
+  
+  /* Simple line hover */
+  .link-underline {
+    @apply border-b border-transparent hover:border-current transition-colors duration-200;
+  }
+  
+  /* Monochromatic gradient text utilities */
+  .text-gradient-mono-dark {
+    @apply bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-mono-light {
+    @apply bg-gradient-to-r from-gray-600 via-gray-800 to-gray-600 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-mono-medium {
+    @apply bg-gradient-to-r from-gray-700 via-gray-900 to-gray-700 bg-clip-text text-transparent;
+  }
+}
+
+/* Enhanced animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow-mono {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.5s ease-out;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow-mono {
+  animation: pulse-glow-mono 3s ease-in-out infinite;
+}
+
+/* Background patterns */
+.bg-dot-pattern-mono {
+  background-image: radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Monochromatic filter for images */
+.filter-mono {
+  filter: grayscale(100%) contrast(1.1) brightness(0.95);
+}

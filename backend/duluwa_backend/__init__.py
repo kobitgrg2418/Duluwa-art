@@ -1,0 +1,1 @@
+# Duluwa Art Gallery - Django Backend

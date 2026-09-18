@@ -1,15 +1,13 @@
 # Duluwa Art Gallery — architecture
 
-This project is a **React + Node.js** application, split into two packages:
+This project is a **React + Django** application, split into two packages:
 
 - `client/` — React 19 SPA built with **Vite** and **React Router**. All UI lives here.
-- `server/` — **Express** (TypeScript) REST API. Prisma + PostgreSQL, JWT cookie
-  sessions (`jose`), nodemailer, Google sign-in verification, file uploads.
+- `backend/` — **Django REST Framework** API backed by PostgreSQL, JWT
+  authentication, email, Google sign-in verification, and file uploads.
 
-The two talk over `/api/*`. In dev, Vite proxies `/api` to the Express server
-(`client/vite.config.ts`) so the browser stays single-origin and the session
-cookie flows automatically. In production the server can serve the built client
-from `client/dist` (single origin).
+The two talk over `/api/*`. In dev, Vite proxies `/api` to Django on port 8000
+(`client/vite.config.ts`) so the browser stays single-origin.
 
 ## Conventions
 
@@ -21,12 +19,10 @@ from `client/dist` (single origin).
   always sends credentials and throws an `ApiError` on non-2xx.
 - Pages fetch their data with `useApiData(...)` and render a presentational
   component once loaded.
-- **Server**: every route lives under `server/src/routes/*`; shared data access is
-  in `server/src/lib/*`. Auth is enforced with the `requireAuth` / `requireAdmin`
-  middleware. The Prisma client is generated into `server/src/generated/prisma`
-  (run `npm run build` / `prisma generate`).
+- **Backend**: routes live under `backend/*`; shared data access is handled by
+  Django models and serializers. Auth is enforced with DRF permissions and JWT.
 
 ## Running
 
-From the repo root: `npm run install:all`, then `npm run dev` (starts both).
+From the repo root: `npm run install:all`, then `npm run db:migrate` and `npm run dev`.
 See `README.md` for full setup, environment variables, and seeding.
