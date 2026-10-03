@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Simple, clean font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+/* Serenata Font */
+@import url('https://fonts.cdnfonts.com/css/serenata');
 
 @layer base {
   :root {
@@ -80,15 +80,15 @@
   
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Serenata', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   
   /* Simple typography */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Lora', Georgia, serif;
-    font-weight: 500;
+    font-family: 'Serenata', sans-serif;
+    font-weight: 400;
     line-height: 1.3;
   }
   
@@ -224,4 +224,9 @@
 /* Monochromatic filter for images */
 .filter-mono {
   filter: grayscale(100%) contrast(1.1) brightness(0.95);
+}
+
+/* Radial gradient for vignette effect */
+.bg-radial-gradient {
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.12));
 }

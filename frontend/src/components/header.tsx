@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ShoppingCart, User, LogOut, LayoutDashboard } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -20,7 +20,21 @@ import { useAuth } from "@/hooks/use-auth";
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolledPastHero, setScrolledPastHero] = useState(false);
   const { user, logout } = useAuth();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Hero section is 300vh tall, convert to pixels
+      const heroHeight = window.innerHeight * 3;
+      setScrolledPastHero(window.scrollY > heroHeight);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Check initial state
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -30,8 +44,16 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+    <header className={cn(
+      "fixed top-0 z-50 w-full border-b transition-all duration-300",
+      scrolledPastHero 
+        ? "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-border" 
+        : "bg-transparent backdrop-blur-none border-transparent"
+    )}>
+      <nav className={cn(
+        "mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8",
+        scrolledPastHero ? "text-foreground" : "text-white"
+      )} aria-label="Main navigation">
         <div className="flex items-center gap-8">
           <Link href="/" className="text-xl font-bold tracking-tight" aria-label="Duluwa Art Gallery Home">
             Duluwa Art
@@ -43,8 +65,11 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary",
-                  pathname === item.href ? "text-primary" : "text-muted-foreground"
+                  "text-sm font-medium transition-colors",
+                  scrolledPastHero 
+                    ? "hover:text-primary text-muted-foreground" 
+                    : "hover:text-white/80 text-white/90",
+                  pathname === item.href && (scrolledPastHero ? "text-primary" : "text-white")
                 )}
               >
                 {item.label}
@@ -56,7 +81,12 @@ export function Header() {
         <div className="flex items-center gap-4">
           <Link
             href="/cart"
-            className="relative p-2 text-muted-foreground hover:text-primary transition-colors"
+            className={cn(
+              "relative p-2 transition-colors",
+              scrolledPastHero 
+                ? "text-muted-foreground hover:text-primary" 
+                : "text-white/90 hover:text-white"
+            )}
             aria-label="Shopping cart"
           >
             <ShoppingCart className="h-5 w-5" />
@@ -118,7 +148,12 @@ export function Header() {
           )}
 
           <button
-            className="md:hidden p-2 text-muted-foreground hover:text-primary"
+            className={cn(
+              "md:hidden p-2 transition-colors",
+              scrolledPastHero 
+                ? "text-muted-foreground hover:text-primary" 
+                : "text-white/90 hover:text-white"
+            )}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
@@ -129,7 +164,10 @@ export function Header() {
       </nav>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-t px-4 py-4">
+        <div className={cn(
+          "md:hidden border-t px-4 py-4 transition-all duration-300",
+          scrolledPastHero ? "bg-background" : "bg-background/95 backdrop-blur"
+        )}>
           <div className="flex flex-col gap-2">
             {navItems.map((item) => (
               <Link

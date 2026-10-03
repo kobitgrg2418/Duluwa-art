@@ -1,15 +1,8 @@
 ﻿import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Duluwa Art Gallery",
@@ -23,10 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className="antialiased">
         <Providers>
           <Header />
-          <main>{children}</main>
+          <main className="relative">{children}</main>
           <Footer />
         </Providers>
       </body>

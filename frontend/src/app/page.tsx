@@ -1,5 +1,5 @@
 ﻿import { Metadata } from "next";
-import { Hero } from "@/components/hero";
+import { ScrollHero } from "@/components/scroll-hero";
 import { FeaturedArtworks } from "@/components/featured-artworks";
 import { CollectionsPreview } from "@/components/collections-preview";
 import { ArtistStory } from "@/components/artist-story";
@@ -133,7 +133,7 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen">
-      <Hero heroImage={data.heroImage} videoSrc={data.videoSrc} videoPoster={data.videoPoster} />
+      <ScrollHero heroImage={data.heroImage} />
       <FeaturedArtworks artworks={data.featuredArtworks} collections={data.collections} />
       <CollectionsPreview collections={data.collections} artworks={data.featuredArtworks} />
       <ArtistStory artworks={data.featuredArtworks} />
