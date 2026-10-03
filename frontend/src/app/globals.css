@@ -2,8 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Serenata Font */
-@import url('https://fonts.cdnfonts.com/css/serenata');
+/* Behind The Nineties Font */
+@font-face {
+  font-family: 'Behind The Nineties';
+  src: url('/fonts/Behind-The-Nineties-Rg.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Behind The Nineties';
+  src: url('/fonts/Behind-The-Nineties-It.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Behind The Nineties';
+  src: url('/fonts/Behind-The-Nineties-Md.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Behind The Nineties';
+  src: url('/fonts/Behind-The-Nineties-Md-It.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Behind The Nineties';
+  src: url('/fonts/Behind-The-Nineties-Bd.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Behind The Nineties';
+  src: url('/fonts/Behind-The-Nineties-Bd-It.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
 
 @layer base {
   :root {
@@ -80,15 +126,15 @@
   
   body {
     @apply bg-background text-foreground;
-    font-family: 'Serenata', sans-serif;
+    font-family: 'Behind The Nineties', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   
   /* Simple typography */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Serenata', sans-serif;
-    font-weight: 400;
+    font-family: 'Behind The Nineties', sans-serif;
+    font-weight: 500;
     line-height: 1.3;
   }
   
