@@ -65,23 +65,26 @@
 .duluwa-stats p{color:var(--mute);font-size:14px;max-width:180px;margin-top:10px}
 
 /* Duluwa Contact */
-.duluwa-contact{color:#f4f4f4;padding:12vh var(--pad)}
+.duluwa-contact{padding:12vh var(--pad)}
 .duluwa-contact .contact-container{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,8vw,120px);align-items:start}
-.duluwa-contact .contact-form h2{font-size:clamp(48px,8vw,100px);font-weight:600;letter-spacing:-.04em;line-height:1.02;margin-bottom:clamp(32px,6vw,64px)}
-.duluwa-contact .form-group{margin-bottom:24px}
-.duluwa-contact .form-group label{display:block;font-size:14px;margin-bottom:8px;color:#777}
+.duluwa-contact .contact-form-card{background:#fff;border-radius:24px;padding:clamp(32px,5vw,48px);color:#000}
+.duluwa-contact .contact-form-card h2{font-size:clamp(32px,5vw,48px);font-weight:600;letter-spacing:-.04em;line-height:1.1;margin-bottom:clamp(24px,4vw,40px);font-family:'Behind The Nineties',serif}
+.duluwa-contact .form-group{margin-bottom:20px}
+.duluwa-contact .form-group label{display:block;font-size:14px;margin-bottom:8px;color:#666;font-weight:500}
 .duluwa-contact .form-group input,
-.duluwa-contact .form-group textarea{width:100%;padding:16px;background:#1a1a1a;border:1px solid #2a2a2a;color:#f4f4f4;font-size:16px;border-radius:8px;outline:none;transition:border-color 0.3s;font-family:'Behind The Nineties',serif}
+.duluwa-contact .form-group textarea{width:100%;padding:16px 20px;background:#f5f5f5;border:1px solid #e0e0e0;color:#000;font-size:16px;border-radius:12px;outline:none;transition:border-color 0.3s,background 0.3s;font-family:'Behind The Nineties',serif}
 .duluwa-contact .form-group input:focus,
-.duluwa-contact .form-group textarea:focus{border-color:#ee3a35}
-.duluwa-contact .submit-btn{padding:16px 32px;background:#ee3a35;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:background 0.3s;font-family:'Behind The Nineties',serif}
+.duluwa-contact .form-group textarea:focus{border-color:#000;background:#fff}
+.duluwa-contact .form-group input::placeholder,
+.duluwa-contact .form-group textarea::placeholder{color:#999}
+.duluwa-contact .submit-btn{width:100%;padding:16px 32px;background:#ee3a35;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:background 0.3s;font-family:'Behind The Nineties',serif}
 .duluwa-contact .submit-btn:hover{background:#c92b1e}
-.duluwa-contact .contact-info h3{font-size:clamp(32px,5vw,48px);font-weight:600;letter-spacing:-.04em;margin-bottom:32px}
+.duluwa-contact .contact-info h3{font-size:clamp(32px,5vw,48px);font-weight:600;letter-spacing:-.04em;margin-bottom:32px;color:#fff}
 .duluwa-contact .contact-details{display:flex;flex-direction:column;gap:16px;margin-bottom:48px}
 .duluwa-contact .contact-link{font-size:16px;color:#f4f4f4;text-decoration:none;transition:color 0.3s}
 .duluwa-contact .contact-link:hover{color:#ee3a35}
 .duluwa-contact .social-links{display:flex;flex-direction:column;gap:12px}
-.duluwa-contact .social-links a{font-size:14px;color:#777;text-decoration:none;transition:color 0.3s}
+.duluwa-contact .social-links a{font-size:14px;color:#ccc;text-decoration:none;transition:color 0.3s}
 .duluwa-contact .social-links a:hover{color:#f4f4f4}
 
 /* Duluwa Artist Story */
