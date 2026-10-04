@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Mail, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { FlowButton } from "@/components/ui/flow-button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
@@ -23,7 +24,7 @@ export function NewsletterSection() {
     } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -54,10 +55,7 @@ export function NewsletterSection() {
                   disabled={loading}
                 />
               </div>
-              <Button type="submit" size="lg" disabled={loading} className="whitespace-nowrap">
-                {loading ? "Subscribing..." : "Subscribe"}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+              <FlowButton text="Subscribe" type="submit" loading={loading} />
             </form>
 
             <p className="mt-4 text-sm text-primary-foreground/60">

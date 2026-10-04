@@ -1,8 +1,7 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
+import "./template.css";
 import { Providers } from "./providers";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Duluwa Art Gallery",
@@ -18,9 +17,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
         <Providers>
-          <Header />
-          <main className="relative">{children}</main>
-          <Footer />
+          {children}
         </Providers>
       </body>
     </html>

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Play } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { FlowButton } from "@/components/ui/flow-button";
 
 interface ScrollHeroProps {
   heroImage?: string;
@@ -27,7 +27,7 @@ const beats: Beat[] = [
     eyebrow: "Original Watercolors",
     title: "Where Art Meets Nature",
     description: "Discover the breathtaking watercolor masterpieces of Kobit Gurung — capturing the raw beauty of Nepal's landscapes.",
-    align: "center",
+    align: "left",
   },
   {
     a: 0.2,
@@ -43,7 +43,7 @@ const beats: Beat[] = [
     eyebrow: "02 — The Process",
     title: "17 Years of Mastery",
     description: "Each piece tells a story of observation, patience, and the delicate balance of water and pigment.",
-    align: "right",
+    align: "left",
   },
   {
     a: 0.74,
@@ -270,7 +270,7 @@ export function ScrollHero({ heroImage }: ScrollHeroProps) {
       </div>
 
       {/* Scroll track */}
-      <div ref={trackRef} className="relative h-[300vh]">
+      <div ref={trackRef} className="relative h-[900vh]">
         {/* Sticky stage */}
         <div className="sticky top-0 h-screen overflow-hidden" style={{ height: '100svh' }}>
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
@@ -291,44 +291,25 @@ export function ScrollHero({ heroImage }: ScrollHeroProps) {
               data-a={beat.a}
               data-b={beat.b}
               data-hold={beat.hold}
-              className={`absolute inset-0 flex flex-col justify-center px-6 md:px-8 lg:px-24 opacity-0 pointer-events-none ${
+              className={`absolute bottom-0 left-0 flex flex-col px-8 md:px-12 lg:px-16 pb-24 md:pb-32 opacity-0 pointer-events-none max-w-2xl ${
                 beat.align === "right" ? "items-end text-right" : beat.align === "center" ? "items-center text-center" : "items-start text-left"
               }`}
             >
-              <div className="text-xs uppercase tracking-widest text-muted-foreground mb-4 md:mb-6">
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3">
                 {beat.eyebrow}
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif text-foreground leading-[0.98] tracking-tight max-w-4xl">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-foreground leading-tight tracking-tight">
                 {beat.title}
               </h2>
-              <p className="mt-6 text-sm md:text-base lg:text-lg text-muted-foreground leading-relaxed max-w-2xl">
+              <p className="mt-4 text-sm md:text-base text-muted-foreground leading-relaxed max-w-lg">
                 {beat.description}
               </p>
               
               {/* CTA buttons on first beat */}
               {index === 0 && (
-                <div className="flex flex-col sm:flex-row gap-4 mt-8 pointer-events-auto">
-                  <Button asChild size="lg" className="bg-foreground text-background hover:bg-foreground/90 h-12 px-8">
-                    <Link href="/gallery">
-                      Explore Gallery
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                  
-                  <Button asChild variant="outline" size="lg" className="h-12 px-8 border-foreground/20 hover:bg-muted">
-                    <Link href="/commission">
-                      <Play className="mr-2 h-4 w-4" />
-                      Commission
-                    </Link>
-                  </Button>
-                </div>
-              )}
-
-              {/* Scroll cue on first beat */}
-              {index === 0 && (
-                <div className="absolute left-1/2 bottom-8 -translate-x-1/2 flex flex-col items-center gap-3 text-xs tracking-widest text-muted-foreground">
-                  <span>Scroll</span>
-                  <div className="w-px h-12 bg-gradient-to-b from-foreground to-transparent origin-top animate-pulse" />
+                <div className="flex flex-col sm:flex-row gap-3 mt-6 pointer-events-auto">
+                  <FlowButton text="Explore Gallery" onClick={() => window.location.href = '/gallery'} />
+                  <FlowButton text="Commission" variant="outline" onClick={() => window.location.href = '/commission'} />
                 </div>
               )}
             </div>

@@ -6,6 +6,7 @@ import { Menu, X, ShoppingCart, User, LogOut, LayoutDashboard } from "lucide-rea
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { FlowButton } from "@/components/ui/flow-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -25,8 +26,8 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Hero section is 300vh tall, convert to pixels
-      const heroHeight = window.innerHeight * 3;
+      // Hero section is 900vh tall, convert to pixels
+      const heroHeight = window.innerHeight * 9;
       setScrolledPastHero(window.scrollY > heroHeight);
     };
 
@@ -136,14 +137,8 @@ export function Header() {
             </DropdownMenu>
           ) : (
             <div className="hidden md:flex md:items-center md:gap-2">
-              <Button asChild variant="ghost" size="sm">
-                <Link href="/login">
-                  Log in
-                </Link>
-              </Button>
-              <Button asChild size="sm">
-                <Link href="/register">Sign up</Link>
-              </Button>
+              <FlowButton text="Log in" onClick={() => window.location.href = '/login'} />
+              <FlowButton text="Sign up" onClick={() => window.location.href = '/register'} />
             </div>
           )}
 
@@ -184,12 +179,8 @@ export function Header() {
             ))}
             {!user && (
               <div className="flex flex-col gap-2 pt-4 border-t">
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <Button variant="outline" className="w-full">Log in</Button>
-                </Link>
-                <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full">Sign up</Button>
-                </Link>
+                <FlowButton text="Log in" onClick={() => { setMobileMenuOpen(false); window.location.href = '/login'; }} />
+                <FlowButton text="Sign up" onClick={() => { setMobileMenuOpen(false); window.location.href = '/register'; }} />
               </div>
             )}
           </div>
