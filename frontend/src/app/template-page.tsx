@@ -5,8 +5,11 @@ import GenZGlassyFooter from '@/components/genz-footer'
 import DuluwaNavbar from '@/components/duluwa-navbar'
 import DuluwaHero from '@/components/duluwa-hero'
 import DuluwaWork from '@/components/duluwa-work'
+import DuluwaTimeline from '@/components/duluwa-timeline'
+import DuluwaArtistStory from '@/components/duluwa-artist-story'
 import DuluwaServices from '@/components/duluwa-services'
 import DuluwaStats from '@/components/duluwa-stats'
+import DuluwaContact from '@/components/duluwa-contact'
 
 export default function TemplatePage() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -33,11 +36,20 @@ export default function TemplatePage() {
       {/* Duluwa Work Section */}
       <DuluwaWork />
 
+      {/* Duluwa Timeline */}
+      <DuluwaTimeline />
+
+      {/* Duluwa Artist Story */}
+      <DuluwaArtistStory />
+
       {/* Duluwa Services */}
       <DuluwaServices />
 
       {/* Duluwa Stats */}
       <DuluwaStats />
+
+      {/* Duluwa Contact */}
+      <DuluwaContact />
 
       {/* Footer */}
       <GenZGlassyFooter />

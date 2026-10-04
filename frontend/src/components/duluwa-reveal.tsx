@@ -6,10 +6,10 @@ interface RevealProps {
   lines: string[];
 }
 
-export default function Reveal({ lines }: RevealProps) {
+export default function DuluwaReveal({ lines }: RevealProps) {
   return (
     <motion.div 
-      className="norell-reveal"
+      className="duluwa-reveal"
       initial="h"
       animate="s"
       variants={{ 

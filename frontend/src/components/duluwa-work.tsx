@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, useMotionValue, useSpring, useInView } from "framer-motion";
 import { useRef } from "react";
-import Reveal from "./norell-reveal";
+import DuluwaReveal from "./duluwa-reveal";
 
 const items = [
   { n: "Himalayan Serenity", c: "linear-gradient(160deg,#2b3236,#07090a)", s: "span 7", image: "/assets/IMG_9965.jpg" },
@@ -19,7 +19,7 @@ function Card({ n, c, s, image, index }) {
   const sy = useSpring(y, { stiffness: 300, damping: 30, mass: 0.6 });
   const move = (e) => { const r = e.currentTarget.getBoundingClientRect(); x.set(e.clientX - r.left - 28); y.set(e.clientY - r.top - 28); };
   return (
-    <motion.a href="#" className="norell-card" style={{ gridColumn: s }} onMouseMove={move}
+    <motion.a href="#" className="duluwa-card" style={{ gridColumn: s }} onMouseMove={move}
       onHoverStart={() => setHover(true)} onHoverEnd={() => setHover(false)}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -35,18 +35,18 @@ function Card({ n, c, s, image, index }) {
   );
 }
 
-export default function NorellWork() {
+export default function DuluwaWork() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <section className="norell-work" id="works" ref={ref}>
+    <section className="duluwa-work" id="works" ref={ref}>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Reveal lines={["Projects we're", "proud of"]} />
+        <DuluwaReveal lines={["Projects we're", "proud of"]} />
       </motion.div>
       <div className="work-grid">
         {items.map((i, index) => <Card key={i.n} {...i} index={index} />)}

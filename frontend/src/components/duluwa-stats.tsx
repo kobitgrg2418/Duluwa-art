@@ -24,9 +24,9 @@ const stats = [
   [98, "%", "Client satisfaction rate"]
 ];
 
-export default function NorellStats() {
+export default function DuluwaStats() {
   return (
-    <section className="norell-stats">
+    <section className="duluwa-stats">
       {stats.map(([n, s, l]) => (<div key={l}><Count to={n} suffix={s} /><p>{l}</p></div>))}
     </section>
   );

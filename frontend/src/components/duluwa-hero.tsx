@@ -2,12 +2,12 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 
-export default function NorellHero() {
+export default function DuluwaHero() {
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 800], [0, -140]);
   
   return (
-    <section className="norell-hero" id="top">
+    <section className="duluwa-hero" id="top">
       <motion.p className="hero-tag" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
         Watercolor Masterpieces
       </motion.p>

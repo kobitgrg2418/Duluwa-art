@@ -14,13 +14,13 @@ const line = (open, k) => ({
   opacity: open && k === 1 ? 0 : 1,
 });
 
-export default function NorellNavbar() {
+export default function DuluwaNavbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
   return (
     <>
-      <header className="norell-nav">
+      <header className="duluwa-nav">
         <Link href="#top" className="logo">DULUWA-ART</Link>
         <nav className="nav-links">
           {links.map((l) => (
