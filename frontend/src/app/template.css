@@ -9,6 +9,60 @@
   --muted: #777; 
 }
 
+/* Norell Navbar & Hero Styles */
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap");
+
+:root{--bg:#f4f4f4;--ink:#0c0c0c;--mute:#8a8a8a;--red:#ee3a35;--nav:76px;--pad:clamp(20px,6vw,92px)}
+
+.norell-nav{position:fixed;inset:0 0 auto;height:var(--nav);z-index:50;background:var(--bg);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad)}
+.norell-nav .logo{font-size:28px;font-weight:500;letter-spacing:-.04em;color:var(--ink);text-decoration:none}
+.norell-nav .nav-links{display:flex;gap:clamp(24px,6vw,86px);font-size:15px}
+.norell-nav .nav-links a{color:var(--ink);text-decoration:none}
+.norell-nav .nav-links a.on{color:var(--red)}
+.norell-nav .burger{justify-self:end;width:62px;height:40px;border:0;border-radius:9px;background:var(--ink);cursor:pointer;display:grid;place-content:center;gap:5px}
+.norell-nav .burger i{display:block;width:26px;height:1.5px;background:#fff}
+.norell-nav .menu{position:fixed;inset:var(--nav) 0 0;z-index:40;background:var(--bg);display:flex;flex-direction:column;justify-content:space-between;padding:6vh var(--pad) 28px}
+.norell-nav .menu ul{text-align:center;display:grid;gap:6px;font-size:clamp(32px,5vw,48px);font-weight:500;letter-spacing:-.03em;list-style:none;padding:0}
+.norell-nav .menu ul a{color:var(--ink);text-decoration:none}
+.norell-nav .menu-foot{display:flex;justify-content:space-between;font-size:14px}
+.norell-nav .menu-foot span{display:flex;gap:18px}
+.norell-nav .u{text-decoration:underline;font-size:20px}
+
+.norell-hero{position:sticky;top:0;height:100vh;padding-top:var(--nav);background:radial-gradient(120% 90% at 55% 20%,#2b3236,#07090a 70%);color:#fff;overflow:hidden;display:flex;align-items:flex-end}
+.norell-hero .hero-tag{position:absolute;top:calc(var(--nav) + 18px);left:var(--pad);font-size:14px}
+.norell-hero .word{display:flex;align-items:flex-end;justify-content:center;width:100%;font-size:clamp(80px,18vw,350px);line-height:.78;font-weight:500;letter-spacing:-.06em;padding-bottom:2vh}
+.norell-hero .mask{display:inline-block;overflow:hidden;padding:.06em 0}
+.norell-hero .mask>span{display:inline-block}
+
+@media(max-width: 760px){.norell-nav{grid-template-columns:1fr auto}.norell-nav .nav-links{display:none}.norell-work .work-grid>*{grid-column:span 12!important}.norell-svc .svc-in{grid-template-columns:1fr}.norell-stats{grid-template-columns:1fr 1fr}}
+
+/* Norell Work Section */
+.norell-work{padding:14vh var(--pad) 10vh}
+.norell-work .work-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:10vh}
+.norell-card{position:relative;aspect-ratio:1.25;overflow:hidden;border-radius:14px;cursor:none;display:block;text-decoration:none}
+.norell-card .card-img{position:absolute;inset:0}
+.norell-card .card-name{position:absolute;inset:0;display:grid;place-content:center;color:#fff;font-size:28px;font-weight:600;letter-spacing:-.03em}
+.norell-card .dot{position:absolute;left:0;top:0;width:56px;height:56px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-content:center;font-size:20px;pointer-events:none}
+
+/* Norell Reveal */
+.norell-reveal{font-size:clamp(40px,6vw,88px);font-weight:600;letter-spacing:-.04em;line-height:1.02;color:var(--ink)}
+.norell-reveal .reveal-line{display:block;color:#6f6c6c}
+
+/* Norell Services */
+.norell-svc{background:#0a0a0a;color:#f4f4f4}
+.norell-svc .svc-in{position:sticky;top:0;height:100vh;padding:calc(var(--nav) + 6vh) var(--pad) 0;display:grid;grid-template-columns:1.4fr 1fr;gap:6vw;align-content:center}
+.norell-svc li{font-size:clamp(36px,5.5vw,76px);font-weight:500;letter-spacing:-.04em;padding:.22em 0;border-bottom:1px solid #1d1d1d}
+.norell-svc sup{font-size:.28em;vertical-align:top;letter-spacing:0}
+.norell-svc aside{align-self:center;max-width:340px}
+.norell-svc .svc-img{aspect-ratio:1.4;border-radius:10px;margin-bottom:18px}
+.norell-svc small{display:block;color:#777;font-size:13px;margin-bottom:8px}
+.norell-svc p{font-size:16px;line-height:1.4}
+
+/* Norell Stats */
+.norell-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:12vh var(--pad)}
+.norell-stats .num{font-family:"JetBrains Mono",monospace;font-size:clamp(40px,5vw,72px);font-weight:500;display:block}
+.norell-stats p{color:var(--mute);font-size:14px;max-width:180px;margin-top:10px}
+
 @font-face {
   font-family: 'Behind The Nineties';
   src: url('/fonts/Behind-The-Nineties-Rg.otf') format('opentype');
@@ -426,5 +480,172 @@ a { color: inherit; text-decoration: none; }
   .event-row { display: block; }
   .event-meta { text-align: left; margin-top: 45px; }
   .footer nav { gap: 13px; font-size: 14px; }
-  .footer-word { letter-spacing: -10px; } 
+  .footer-word { letter-spacing: -10px; }
+}
+
+/* Section styles for new layout */
+.section-frame {
+  padding: clamp(6vh, 10vw, 120px) clamp(24px, 6vw, 92px);
+  position: relative;
+}
+
+.exhibitions {
+  background: var(--paper);
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: clamp(40px, 8vw, 80px);
+}
+
+.section-heading h2 {
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--ink);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 4vw, 48px);
+}
+
+.work {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.work img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.work:hover img {
+  transform: scale(1.05);
+}
+
+.work div {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  color: white;
+}
+
+.work h3 {
+  font-size: clamp(18px, 3vw, 24px);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.work p {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.about {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.about-title {
+  margin-bottom: clamp(32px, 6vw, 64px);
+}
+
+.eyebrow {
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  color: var(--muted);
+}
+
+.about-title h2 {
+  font-size: clamp(48px, 10vw, 140px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+}
+
+.about-copy {
+  font-size: clamp(18px, 3vw, 24px);
+  line-height: 1.5;
+  max-width: 800px;
+  color: var(--muted);
+}
+
+.events {
+  background: var(--paper);
+}
+
+.event-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: clamp(24px, 5vw, 64px);
+}
+
+.event-row h2 {
+  font-size: clamp(40px, 7vw, 100px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  color: var(--ink);
+}
+
+.event-row h2 em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.event-meta {
+  text-align: right;
+}
+
+.event-meta p {
+  font-size: 16px;
+  margin-bottom: 24px;
+  color: var(--muted);
+}
+
+/* Cursor */
+.cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease;
+}
+
+.site.dark .cursor {
+  border-color: var(--paper);
+}
+
+@media (max-width: 768px) {
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .event-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .event-meta {
+    text-align: left;
+  }
 }
