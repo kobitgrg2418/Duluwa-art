@@ -75,15 +75,19 @@ export function ScrollHero({ heroImage }: ScrollHeroProps) {
     const track = trackRef.current;
     if (!canvas || !track) return () => {};
 
-    const ctx = canvas.getContext("2d", { alpha: false });
+    const canvasEl = canvas;
+    const trackEl = track;
+    const ctx = canvasEl.getContext("2d", { alpha: false });
     if (!ctx) return () => {};
+
+    const ctx2d = ctx;
 
     let W = 0;
     let H = 0;
     let dpr = 1;
     let target = 0;
     let cur = 0;
-    let lastKey = -1;
+    let lastKey: string | null = null;
     let animationFrameId: number;
     const reduce = matchMedia("(prefers-reduced-motion:reduce)").matches;
 
@@ -91,22 +95,22 @@ export function ScrollHero({ heroImage }: ScrollHeroProps) {
 
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = canvas.clientWidth;
-      H = canvas.clientHeight;
-      canvas.width = Math.round(W * dpr);
-      canvas.height = Math.round(H * dpr);
-      lastKey = -1;
+      W = canvasEl.clientWidth;
+      H = canvasEl.clientHeight;
+      canvasEl.width = Math.round(W * dpr);
+      canvasEl.height = Math.round(H * dpr);
+      lastKey = null;
     }
 
     function cover(img: HTMLImageElement, alpha: number) {
       const iw = img.naturalWidth;
       const ih = img.naturalHeight;
       if (!iw) return;
-      const s = Math.max(canvas.width / iw, canvas.height / ih);
+      const s = Math.max(canvasEl.width / iw, canvasEl.height / ih);
       const w = iw * s;
       const h = ih * s;
-      ctx.globalAlpha = alpha;
-      ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+      ctx2d.globalAlpha = alpha;
+      ctx2d.drawImage(img, (canvasEl.width - w) / 2, (canvasEl.height - h) / 2, w, h);
     }
 
     function draw(p: number) {
@@ -123,7 +127,7 @@ export function ScrollHero({ heroImage }: ScrollHeroProps) {
       
       cover(a, 1);
       if (b && b.complete && t > 0.01) cover(b, t);
-      ctx.globalAlpha = 1;
+      ctx2d.globalAlpha = 1;
       
       if (countRef.current) {
         countRef.current.textContent = `${String(Math.round(f) + 1).padStart(3, "0")} / ${TOTAL}`;
@@ -162,8 +166,8 @@ export function ScrollHero({ heroImage }: ScrollHeroProps) {
     }
 
     function readTarget() {
-      const r = track.getBoundingClientRect();
-      const max = track.offsetHeight - window.innerHeight;
+      const r = trackEl.getBoundingClientRect();
+      const max = trackEl.offsetHeight - window.innerHeight;
       target = Math.min(1, Math.max(0, -r.top / max));
     }
 
@@ -199,7 +203,7 @@ export function ScrollHero({ heroImage }: ScrollHeroProps) {
       resize();
       await load(0);
       
-      const rest = [...Array(TOTAL - 1).keys()].map((i) => i + 1);
+      const rest = Array.from({ length: TOTAL - 1 }, (_, i) => i + 1);
       const pool = 8;
       await Promise.all(
         Array.from({ length: pool }, async () => {
@@ -211,7 +215,7 @@ export function ScrollHero({ heroImage }: ScrollHeroProps) {
         setLoaded(true);
         readTarget();
         cur = target;
-        lastKey = -1;
+        lastKey = null;
         loop();
       }
     }

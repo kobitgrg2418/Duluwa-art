@@ -60,7 +60,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .wordmark { 
-  font-family: 'Behind The Nineties', sans-serif;
+  font-family: 'Lora', serif;
   font-size: 52px; 
   font-weight: 700; 
   letter-spacing: -2px; 
@@ -80,16 +80,16 @@ a { color: inherit; text-decoration: none; }
 
 .details { 
   display: flex; 
-  gap: clamp(36px, 6vw, 112px); 
-  font-family: 'Behind The Nineties', sans-serif;
-  font-size: 12px; 
+  gap: clamp(24px, 4vw, 64px); 
+  font-family: 'Lora', serif;
+  font-size: 13px; 
   font-weight: 700; 
   line-height: 1.25; 
   letter-spacing: 0; 
 }
 
 .details span { display: grid; gap: 5px; white-space: nowrap; }
-.details b { font-size: 13px; }
+.details b { font-size: 15px; }
 
 .menu-button { 
   border: 0; 
@@ -110,7 +110,7 @@ a { color: inherit; text-decoration: none; }
 .menu-overlay { 
   position: fixed; 
   inset: 0; 
-  z-index: 9; 
+  z-index: 50; 
   background: #111; 
   color: white; 
   display: flex; 
@@ -401,11 +401,14 @@ a { color: inherit; text-decoration: none; }
 @keyframes reveal { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
 @keyframes float { to { transform: translateY(14px) rotate(1deg); } }
 
+@media (max-width: 900px) { 
+  .details { display: none; }
+}
+
 @media (max-width: 700px) { 
   .topbar { min-height: 76px; padding: 16px; column-gap: 20px; }
   .wordmark { font-size: 36px; }
   .topbar-mark { left: 50%; width: 9px; height: 9px; }
-  .details { display: none; }
   .menu-button { width: 44px; height: 44px; }
   .section-frame { margin: 0 16px; }
   .hero { min-height: auto; padding: 82px 16px 20px; }
