@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useInView } from "framer-motion";
+import { useRef } from "react";
 import Reveal from "./norell-reveal";
 
 const items = [
@@ -11,7 +12,7 @@ const items = [
   { n: "Sacred Mountains", c: "linear-gradient(160deg,#1a1a1a,#0a0a0a)", s: "span 7", image: "/assets/auth-brushes.png" },
 ];
 
-function Card({ n, c, s, image }) {
+function Card({ n, c, s, image, index }) {
   const [hover, setHover] = useState(false);
   const x = useMotionValue(0), y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 300, damping: 30, mass: 0.6 });
@@ -19,7 +20,11 @@ function Card({ n, c, s, image }) {
   const move = (e) => { const r = e.currentTarget.getBoundingClientRect(); x.set(e.clientX - r.left - 28); y.set(e.clientY - r.top - 28); };
   return (
     <motion.a href="#" className="norell-card" style={{ gridColumn: s }} onMouseMove={move}
-      onHoverStart={() => setHover(true)} onHoverEnd={() => setHover(false)}>
+      onHoverStart={() => setHover(true)} onHoverEnd={() => setHover(false)}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: index * 0.1 }}>
       <motion.div className="card-img" style={{ background: c, backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
         animate={{ filter: hover ? "blur(12px)" : "blur(0px)", scale: hover ? 1.06 : 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} />
@@ -31,10 +36,21 @@ function Card({ n, c, s, image }) {
 }
 
 export default function NorellWork() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
   return (
-    <section className="norell-work" id="works">
-      <Reveal lines={["Projects we're", "proud of"]} />
-      <div className="work-grid">{items.map((i) => <Card key={i.n} {...i} />)}</div>
+    <section className="norell-work" id="works" ref={ref}>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <Reveal lines={["Projects we're", "proud of"]} />
+      </motion.div>
+      <div className="work-grid">
+        {items.map((i, index) => <Card key={i.n} {...i} index={index} />)}
+      </div>
     </section>
   );
 }

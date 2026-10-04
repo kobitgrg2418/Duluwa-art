@@ -9,32 +9,32 @@
   --muted: #777; 
 }
 
-/* Norell Navbar & Hero Styles */
+/* Duluwa Navbar & Hero Styles */
 @import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap");
 
 :root{--bg:#f4f4f4;--ink:#0c0c0c;--mute:#8a8a8a;--red:#ee3a35;--nav:76px;--pad:clamp(20px,6vw,92px)}
 
-.norell-nav{position:fixed;inset:0 0 auto;height:var(--nav);z-index:50;background:var(--bg);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad)}
-.norell-nav .logo{font-size:28px;font-weight:500;letter-spacing:-.04em;color:var(--ink);text-decoration:none}
-.norell-nav .nav-links{display:flex;gap:clamp(24px,6vw,86px);font-size:15px}
-.norell-nav .nav-links a{color:var(--ink);text-decoration:none}
-.norell-nav .nav-links a.on{color:var(--red)}
-.norell-nav .burger{justify-self:end;width:62px;height:40px;border:0;border-radius:9px;background:var(--ink);cursor:pointer;display:grid;place-content:center;gap:5px}
-.norell-nav .burger i{display:block;width:26px;height:1.5px;background:#fff}
-.norell-nav .menu{position:fixed;inset:var(--nav) 0 0;z-index:40;background:var(--bg);display:flex;flex-direction:column;justify-content:space-between;padding:6vh var(--pad) 28px}
-.norell-nav .menu ul{text-align:center;display:grid;gap:6px;font-size:clamp(32px,5vw,48px);font-weight:500;letter-spacing:-.03em;list-style:none;padding:0}
-.norell-nav .menu ul a{color:var(--ink);text-decoration:none}
-.norell-nav .menu-foot{display:flex;justify-content:space-between;font-size:14px}
-.norell-nav .menu-foot span{display:flex;gap:18px}
-.norell-nav .u{text-decoration:underline;font-size:20px}
+.duluwa-nav{position:fixed;inset:0 0 auto;height:var(--nav);z-index:50;background:var(--bg);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad)}
+.duluwa-nav .logo{font-family:'Behind The Nineties',serif;font-size:32px;font-weight:700;letter-spacing:-.04em;color:var(--ink);text-decoration:none}
+.duluwa-nav .nav-links{display:flex;gap:clamp(32px,8vw,100px);font-size:16px;font-family:'Behind The Nineties',serif;font-weight:400}
+.duluwa-nav .nav-links a{color:var(--ink);text-decoration:none}
+.duluwa-nav .nav-links a.on{color:var(--red)}
+.duluwa-nav .burger{justify-self:end;width:62px;height:40px;border:0;border-radius:9px;background:var(--ink);cursor:pointer;display:grid;place-content:center;gap:5px}
+.duluwa-nav .burger i{display:block;width:26px;height:1.5px;background:#fff}
+.duluwa-nav .menu{position:fixed;inset:var(--nav) 0 0;z-index:40;background:var(--bg);display:flex;flex-direction:column;justify-content:space-between;padding:6vh var(--pad) 28px}
+.duluwa-nav .menu ul{text-align:center;display:grid;gap:6px;font-size:clamp(36px,6vw,52px);font-weight:700;letter-spacing:-.03em;list-style:none;padding:0;font-family:'Behind The Nineties',serif}
+.duluwa-nav .menu ul a{color:var(--ink);text-decoration:none}
+.duluwa-nav .menu-foot{display:flex;justify-content:space-between;font-size:15px;font-family:'Behind The Nineties',serif}
+.duluwa-nav .menu-foot span{display:flex;gap:18px}
+.duluwa-nav .u{text-decoration:underline;font-size:22px}
 
-.norell-hero{position:sticky;top:0;height:100vh;padding-top:var(--nav);background:radial-gradient(120% 90% at 55% 20%,#2b3236,#07090a 70%);color:#fff;overflow:hidden;display:flex;align-items:flex-end}
-.norell-hero .hero-tag{position:absolute;top:calc(var(--nav) + 18px);left:var(--pad);font-size:14px}
-.norell-hero .word{display:flex;align-items:flex-end;justify-content:center;width:100%;font-size:clamp(80px,18vw,350px);line-height:.78;font-weight:500;letter-spacing:-.06em;padding-bottom:2vh}
-.norell-hero .mask{display:inline-block;overflow:hidden;padding:.06em 0}
-.norell-hero .mask>span{display:inline-block}
+.duluwa-hero{position:sticky;top:0;height:100vh;padding-top:var(--nav);background:radial-gradient(120% 90% at 55% 20%,#2b3236,#07090a 70%);color:#fff;overflow:hidden;display:flex;align-items:flex-end}
+.duluwa-hero .hero-tag{position:absolute;top:calc(var(--nav) + 18px);left:var(--pad);font-size:14px}
+.duluwa-hero .word{display:flex;align-items:flex-end;justify-content:center;width:100%;font-size:clamp(80px,18vw,350px);line-height:.78;font-weight:500;letter-spacing:-.06em;padding-bottom:2vh}
+.duluwa-hero .mask{display:inline-block;overflow:hidden;padding:.06em 0}
+.duluwa-hero .mask>span{display:inline-block}
 
-@media(max-width: 760px){.norell-nav{grid-template-columns:1fr auto}.norell-nav .nav-links{display:none}.norell-work .work-grid>*{grid-column:span 12!important}.norell-svc .svc-in{grid-template-columns:1fr}.norell-stats{grid-template-columns:1fr 1fr}}
+@media(max-width: 760px){.duluwa-nav{grid-template-columns:1fr auto}.duluwa-nav .nav-links{display:none}.duluwa-work .work-grid>*{grid-column:span 12!important}.duluwa-svc .svc-in{grid-template-columns:1fr}.duluwa-stats{grid-template-columns:1fr 1fr}.duluwa-contact .contact-container{grid-template-columns:1fr}}
 
 /* Norell Work Section */
 .norell-work{padding:14vh var(--pad) 10vh}
@@ -57,11 +57,21 @@
 .norell-svc .svc-img{aspect-ratio:1.4;border-radius:10px;margin-bottom:18px}
 .norell-svc small{display:block;color:#777;font-size:13px;margin-bottom:8px}
 .norell-svc p{font-size:16px;line-height:1.4}
+.norell-svc .svc-contact-wrapper{align-self:center;width:100%}
 
 /* Norell Stats */
 .norell-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:12vh var(--pad)}
 .norell-stats .num{font-family:"JetBrains Mono",monospace;font-size:clamp(40px,5vw,72px);font-weight:500;display:block}
 .norell-stats p{color:var(--mute);font-size:14px;max-width:180px;margin-top:10px}
+
+/* Norell Contact */
+.compact-contact h3{font-size:clamp(24px,4vw,36px);font-weight:600;letter-spacing:-.04em;margin-bottom:24px}
+.compact-contact .contact-details{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.compact-contact .contact-link{font-size:14px;color:#f4f4f4;text-decoration:none;transition:color 0.3s}
+.compact-contact .contact-link:hover{color:#ee3a35}
+.compact-contact .social-links{display:flex;flex-direction:column;gap:8px}
+.compact-contact .social-links a{font-size:13px;color:#777;text-decoration:none;transition:color 0.3s}
+.compact-contact .social-links a:hover{color:#f4f4f4}
 
 @font-face {
   font-family: 'Behind The Nineties';

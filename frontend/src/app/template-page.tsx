@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import GenZGlassyFooter from '@/components/genz-footer'
-import NorellNavbar from '@/components/norell-navbar'
-import NorellHero from '@/components/norell-hero'
-import NorellWork from '@/components/norell-work'
-import NorellServices from '@/components/norell-services'
-import NorellStats from '@/components/norell-stats'
+import DuluwaNavbar from '@/components/duluwa-navbar'
+import DuluwaHero from '@/components/duluwa-hero'
+import DuluwaWork from '@/components/duluwa-work'
+import DuluwaServices from '@/components/duluwa-services'
+import DuluwaStats from '@/components/duluwa-stats'
 
 export default function TemplatePage() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -24,20 +24,20 @@ export default function TemplatePage() {
       {/* Custom cursor */}
       <div className="cursor" style={{ left: cursor.x, top: cursor.y }} />
 
-      {/* Norell Navbar */}
-      <NorellNavbar />
+      {/* Duluwa Navbar */}
+      <DuluwaNavbar />
 
-      {/* Norell Hero */}
-      <NorellHero />
+      {/* Duluwa Hero */}
+      <DuluwaHero />
 
-      {/* Norell Work Section */}
-      <NorellWork />
+      {/* Duluwa Work Section */}
+      <DuluwaWork />
 
-      {/* Norell Services */}
-      <NorellServices />
+      {/* Duluwa Services */}
+      <DuluwaServices />
 
-      {/* Norell Stats */}
-      <NorellStats />
+      {/* Duluwa Stats */}
+      <DuluwaStats />
 
       {/* Footer */}
       <GenZGlassyFooter />
