@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/use-auth'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ShoppingCart, User, LogOut, LayoutDashboard } from 'lucide-react'
+import GenZGlassyFooter from '@/components/genz-footer'
 
 export default function TemplatePage() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -128,7 +129,7 @@ export default function TemplatePage() {
 
       {/* Top bar */}
       <header className="topbar">
-        <a className="wordmark" href="#top" aria-label="Duluwa Art home">DULUWA</a>
+        <a className="wordmark" href="#top" aria-label="Duluwa Art home">DULUWA-ART</a>
         <div className="details" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
           <Link 
             href="/gallery"
@@ -330,7 +331,7 @@ export default function TemplatePage() {
         />
         <div className="absolute inset-0 bg-black/10" />
         <h1 className="text-foreground" style={{ textShadow: '0 2px 20px rgba(255,255,255,0.3)' }}>
-          DULUWA ART SHOWCASES<br />
+          DULUWA-ART<br />
           WATERCOLOR MASTERPIECES<br />
           THAT CAPTURE THE RAW<br />
           BEAUTY OF NEPAL
@@ -380,23 +381,7 @@ export default function TemplatePage() {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="footer section-frame">
-        <div className="footer-art">
-          <img src="/assets/IMG_9965.jpg" alt="Watercolor artwork in the gallery" />
-          <img src="/assets/auth-brushes.png" alt="Abstract artwork in the gallery" />
-        </div>
-        <nav>
-          <a href="#about">About</a>
-          <a href="#exhibitions">Exhibitions</a>
-          <Link href="/gallery">Gallery</Link>
-          <a href="#contact">Contact</a>
-        </nav>
-        <small>2025 © DULUWA ART GALLERY</small>
-        <button className="theme-toggle" onClick={() => setDark(!dark)}>
-          {dark ? 'LIGHT' : 'DARK'} MODE
-        </button>
-        <div className="footer-word">DULUWA</div>
-      </footer>
+      <GenZGlassyFooter />
     </main>
   )
 }
