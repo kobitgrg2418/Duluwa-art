@@ -645,3 +645,42 @@
     animation-iteration-count: 1 !important;
   }
 }
+
+.kex-footer-bar {
+  background: var(--ink);
+  color: var(--paper);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 26px var(--pad);
+  font-size: 13px;
+}
+
+.kex-footer-email {
+  color: var(--paper);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.kex-footer-email:hover {
+  color: var(--red);
+}
+
+.kex-footer-links {
+  display: flex;
+  gap: 28px;
+}
+
+.kex-footer-small-link {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.kex-footer-small-link:hover {
+  color: var(--paper);
+}
+
+.kex-footer-copyright {
+  color: var(--muted);
+}

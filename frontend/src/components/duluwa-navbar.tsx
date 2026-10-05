@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ShoppingCart, User } from "lucide-react";
 
 const links = ["Gallery", "Collections", "Commission"];
-const menu = ["Gallery", "Collections", "Commission", "Cart", "Profile", "Contact"];
+const menu = ["Gallery", "Collections", "Commission", "Cart", "Profile", "Login", "Register", "Contact"];
 const ease = [0.76, 0, 0.24, 1];
 const line = (open, k) => ({
   y: open ? (k === 0 ? 7 : k === 2 ? -7 : 0) : 0,
@@ -16,11 +17,20 @@ const line = (open, k) => ({
 
 export default function DuluwaNavbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 100);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
-      <header className="duluwa-nav">
+      <header className={`duluwa-nav ${scrolled ? 'scrolled' : ''}`}>
         <Link href="#top" className="logo">DULUWA-ART</Link>
         <nav className="nav-links">
           {links.map((l) => (
@@ -32,6 +42,12 @@ export default function DuluwaNavbar() {
               {l}
             </Link>
           ))}
+          <Link href="/cart" className="nav-icon">
+            <ShoppingCart className="w-5 h-5" />
+          </Link>
+          <Link href="/profile" className="nav-icon">
+            <User className="w-5 h-5" />
+          </Link>
         </nav>
         <button className="burger" aria-label="Menu" aria-expanded={open} onClick={() => setOpen(!open)}>
           {[0, 1, 2].map((k) => (
@@ -50,7 +66,7 @@ export default function DuluwaNavbar() {
               {menu.map((m) => (
                 <li key={m}>
                   <motion.a 
-                    href={m === "Cart" ? "/cart" : m === "Profile" ? "/profile" : m === "Contact" ? "#contact" : "/" + m.toLowerCase()} 
+                    href={m === "Cart" ? "/cart" : m === "Profile" ? "/profile" : m === "Login" ? "/login" : m === "Register" ? "/register" : m === "Contact" ? "#contact" : "/" + m.toLowerCase()} 
                     onClick={() => setOpen(false)}
                     variants={{ h: { y: 40, opacity: 0 }, s: { y: 0, opacity: 1 } }}
                     transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -60,11 +76,6 @@ export default function DuluwaNavbar() {
                 </li>
               ))}
             </motion.ul>
-            <motion.div className="menu-foot" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
-              <a href="mailto:hello@duluwa-art.com" className="u">hello@duluwa-art.com</a>
-              <span><a href="#">Privacy policy</a> <a href="#">Terms &amp; conditions</a></span>
-              <span>© 2025 DULUWA-ART</span>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -104,6 +104,15 @@ export default function GenZGlassyFooter() {
           {BRAND_NAME}
         </p>
       </div>
+
+      <div className="kex-footer-bar">
+        <a href="mailto:hello@duluwa-art.com" className="kex-footer-email">hello@duluwa-art.com</a>
+        <div className="kex-footer-links">
+          <a href="#" className="kex-footer-small-link">Privacy policy</a>
+          <a href="#" className="kex-footer-small-link">Terms & conditions</a>
+        </div>
+        <span className="kex-footer-copyright">© 2025 DULUWA-ART</span>
+      </div>
     </footer>
   );
 }

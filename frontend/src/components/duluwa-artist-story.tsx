@@ -73,7 +73,7 @@ export default function DuluwaArtistStory() {
             className="space-y-6"
             style={{ fontFamily: "'Behind The Nineties', serif" }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight" style={{ fontFamily: "'Behind The Nineties', serif" }}>
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight" style={{ fontFamily: 'Georgia, serif', letterSpacing: 'normal' }}>
               The Artist's Story
             </h2>
             <p className="text-lg text-gray-700 leading-relaxed">

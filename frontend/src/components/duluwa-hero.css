@@ -1,0 +1,172 @@
+.dh-hero {
+  --wall: #f2f2f0;
+  --ink: #141414;
+  --red: #7b1914;
+  position: relative;
+  overflow: hidden;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding: clamp(5rem, 9vw, 7rem) clamp(1rem, 4vw, 3rem) clamp(1.25rem, 3vw, 2rem);
+  background: var(--wall);
+  color: var(--ink);
+}
+
+.dh-hero *, .dh-hero *::before, .dh-hero *::after {
+  box-sizing: border-box;
+}
+
+.dh-ghost {
+  position: absolute;
+  top: clamp(0.5rem, 3vw, 2rem);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(4rem, 17vw, 16rem);
+  line-height: 1;
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.045);
+  pointer-events: none;
+  user-select: none;
+  font-family: 'Behind The Nineties', serif;
+}
+
+.dh-wall {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.5%;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dh-slot {
+  will-change: transform;
+}
+
+.dh-child {
+  width: 26%;
+}
+
+.dh-guinea {
+  width: 40%;
+}
+
+.dh-dancer {
+  width: 23%;
+}
+
+.dh-hang {
+  transform-origin: 50% 0%;
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.22));
+}
+
+.dh-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.dh-wordmark {
+  margin: 0;
+  text-align: center;
+  font-weight: 400;
+  font-size: clamp(3.25rem, 15.5vw, 14rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--red);
+  font-family: 'Behind The Nineties', serif;
+}
+
+.dh-mask {
+  display: block;
+  overflow: hidden;
+  padding-top: 0.06em;
+}
+
+.dh-word {
+  display: block;
+}
+
+.dh-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.dh-tagline {
+  margin: 0;
+  max-width: 34ch;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.45;
+  font-family: 'Lora', serif;
+}
+
+.dh-by {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.875rem;
+  opacity: 0.6;
+}
+
+.dh-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.dh-primary, .dh-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85rem 1.4rem;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid var(--ink);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  font-family: 'Behind The Nineties', serif;
+}
+
+.dh-primary {
+  background: var(--ink);
+  color: var(--wall);
+}
+
+.dh-primary:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.dh-secondary {
+  background: transparent;
+  color: var(--ink);
+}
+
+.dh-secondary:hover {
+  background: var(--ink);
+  color: var(--wall);
+}
+
+.dh-primary:focus-visible, .dh-secondary:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .dh-actions {
+    width: 100%;
+  }
+
+  .dh-primary, .dh-secondary {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 export default function DuluwaContact() {
   const [formData, setFormData] = useState({
@@ -71,16 +72,24 @@ export default function DuluwaContact() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
         >
-          <h3>Get In Touch</h3>
+          <h3>Get In<br />Touch</h3>
           <div className="contact-details">
             <a href="tel:+12085550112" className="contact-link">+1 (208) 555-0112</a>
             <a href="mailto:hello@duluwa-art.com" className="contact-link">hello@duluwa-art.com</a>
             <a href="mailto:info@duluwa-art.com" className="contact-link">info@duluwa-art.com</a>
           </div>
           <div className="social-links">
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">X.com</a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
+            {[
+              { label: "LinkedIn", href: "https://linkedin.com" },
+              { label: "X.com", href: "https://twitter.com" },
+              { label: "Facebook", href: "https://facebook.com" }
+            ].map((social) => (
+              <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="social-link-item">
+                <span className="social-line"></span>
+                <span className="social-label">{social.label}</span>
+                <ArrowRight className="social-arrow" />
+              </a>
+            ))}
           </div>
         </motion.div>
       </div>
