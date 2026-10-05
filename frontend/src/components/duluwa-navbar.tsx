@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,20 +17,11 @@ const line = (open, k) => ({
 
 export default function DuluwaNavbar() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <>
-      <header className={`duluwa-nav ${scrolled ? 'scrolled' : ''}`}>
+      <header className="duluwa-nav">
         <Link href="#top" className="logo">DULUWA-ART</Link>
         <nav className="nav-links">
           {links.map((l) => (

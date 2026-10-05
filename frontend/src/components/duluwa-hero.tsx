@@ -17,6 +17,7 @@ import {
   motion,
   useMotionValue,
   useReducedMotion,
+  useScroll,
   useSpring,
   useTransform,
   type MotionValue,
@@ -104,11 +105,19 @@ export default function DuluwaHero({ artist = "Kobit" }: { artist?: string }) {
   const reduce = useReducedMotion() ?? false;
   const ref = useRef<HTMLElement>(null);
 
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  });
+
   // -0.5 .. 0.5 across the hero, smoothed with a spring
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const px = useSpring(mx, { stiffness: 80, damping: 20 });
   const py = useSpring(my, { stiffness: 80, damping: 20 });
+
+  // Scroll-driven animation for DULUWA-ART
+  const wordmarkY = useTransform(scrollYProgress, [0, 0.15], ["0%", "110%"]);
 
   function onPointerMove(e: React.PointerEvent) {
     if (reduce || !ref.current) return;
@@ -144,8 +153,9 @@ export default function DuluwaHero({ artist = "Kobit" }: { artist?: string }) {
           <motion.span
             className="dh-word"
             initial={reduce ? false : { y: "110%" }}
-            animate={{ y: "0%" }}
-            transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1], delay: 0.85 }}
+            animate={reduce ? {} : { y: "0%" }}
+            transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1], delay: 0.8 }}
+            style={{ y: wordmarkY }}
           >
             DULUWA-ART
           </motion.span>
