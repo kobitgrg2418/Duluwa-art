@@ -117,7 +117,13 @@ export default function DuluwaHero({ artist = "Kobit" }: { artist?: string }) {
   const py = useSpring(my, { stiffness: 80, damping: 20 });
 
   // Scroll-driven animation for DULUWA-ART
-  const wordmarkY = useTransform(scrollYProgress, [0, 0.15], ["0%", "110%"]);
+  const wordmarkY = useTransform(scrollYProgress, [0, 0.22], ["0%", "115%"]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.72], [1, 0.88]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.68], [1, 0.18]);
+  const wallY = useTransform(scrollYProgress, [0, 0.7], [0, -120]);
+  const ghostScale = useTransform(scrollYProgress, [0, 0.7], [1, 1.18]);
+  const blur = useTransform(scrollYProgress, [0, 0.7], [0, 8]);
+  const imageFilter = useTransform(blur, (value) => `blur(${value}px)`);
 
   function onPointerMove(e: React.PointerEvent) {
     if (reduce || !ref.current) return;
@@ -132,21 +138,22 @@ export default function DuluwaHero({ artist = "Kobit" }: { artist?: string }) {
   }
 
   return (
-    <section
+    <motion.section
       ref={ref}
       className="dh-hero"
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
+      style={{ scale: heroScale, opacity: heroOpacity }}
     >
-      <span className="dh-ghost" aria-hidden="true">
+      <motion.span className="dh-ghost" aria-hidden="true" style={{ scale: ghostScale }}>
         ART-GALLERY
-      </span>
+      </motion.span>
 
-      <div className="dh-wall">
+      <motion.div className="dh-wall" style={{ y: wallY, filter: imageFilter }}>
         {works.map((w, i) => (
           <Frame key={w.src} work={w} index={i} px={px} py={py} reduce={reduce} />
         ))}
-      </div>
+      </motion.div>
 
       <h1 className="dh-wordmark">
         <span className="dh-mask">
@@ -181,6 +188,6 @@ export default function DuluwaHero({ artist = "Kobit" }: { artist?: string }) {
           </Link>
         </div>
       </motion.div>
-    </section>
+    </motion.section>
   );
 }

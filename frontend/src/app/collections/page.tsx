@@ -1,7 +1,7 @@
 ﻿"use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import Link from "next/link";
 import { Filter, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -92,44 +92,62 @@ function CollectionCard({
   title,
   count,
   imageSrc,
-  imageAlt = 'Collection artwork',
-  imageAspect = 'landscape',
+  imageAlt = "Collection artwork",
+  imageAspect = "landscape",
   id,
 }: CollectionCardProps) {
-  const aspectClass =
-    imageAspect === 'portrait'
-      ? 'aspect-[3/4] max-w-[400px]'
-      : 'aspect-[4/3] max-w-[550px]';
+  const ref = useRef<HTMLAnchorElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const rotate = useTransform(scrollYProgress, [0, 0.5, 1], [3, 0, -3]);
+  const imageY = useTransform(scrollYProgress, [0, 1], [24, -24]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.08, 1, 1.08]);
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const smoothX = useSpring(pointerX, { stiffness: 180, damping: 20 });
+  const smoothY = useSpring(pointerY, { stiffness: 180, damping: 20 });
+  const cardRotateX = useTransform(smoothY, [-0.5, 0.5], [4, -4]);
+  const cardRotateY = useTransform(smoothX, [-0.5, 0.5], [-4, 4]);
+
+  const aspectClass = imageAspect === "portrait" ? "aspect-[3/4]" : "aspect-[4/3]";
 
   return (
-    <Link href={`/collections/${id}`} className="group block">
-      <div className="group flex flex-col justify-between bg-[#f3f3f3] rounded-xl p-10 sm:p-16 transition-all duration-300 hover:shadow-lg w-full min-h-[560px]">
-        {/* Artwork Container - Centered */}
-        <div className="flex-1 flex items-center justify-center py-8">
-          <div
-            className={`relative w-full ${aspectClass} overflow-hidden shadow-md border border-black/10 transition-transform duration-500 ease-out group-hover:scale-[1.02]`}
-          >
-            {imageSrc ? (
-              <img
-                src={imageSrc}
-                alt={imageAlt}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-400">
-                No Image
-              </div>
-            )}
+    <motion.div style={{ rotate, perspective: 1200 }}>
+      <Link
+        ref={ref}
+        href={`/collections/${id}`}
+        className="group relative block"
+        onPointerMove={(event) => {
+          const bounds = event.currentTarget.getBoundingClientRect();
+          pointerX.set((event.clientX - bounds.left) / bounds.width - 0.5);
+          pointerY.set((event.clientY - bounds.top) / bounds.height - 0.5);
+        }}
+        onPointerLeave={() => {
+          pointerX.set(0);
+          pointerY.set(0);
+        }}
+      >
+        <motion.article
+          style={{ rotateX: cardRotateX, rotateY: cardRotateY, transformStyle: "preserve-3d" }}
+          className="relative min-h-[520px] overflow-hidden rounded-[2rem] border border-black/10 bg-[#f3f3f3] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.08)] transition-shadow duration-500 group-hover:shadow-[0_28px_90px_rgba(0,0,0,0.16)] sm:p-8"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.8),transparent_35%)]" />
+          <div className="relative flex h-full min-h-[470px] flex-col justify-between">
+            <div className="flex items-center justify-between text-[10px] font-medium uppercase tracking-[0.24em] text-neutral-500">
+              <span>{title}</span>
+              <span>{count} works</span>
+            </div>
+            <motion.div style={{ y: imageY, scale: imageScale }} className={`relative mx-auto w-full max-w-[560px] ${aspectClass} overflow-hidden rounded-sm shadow-2xl`}>
+              {imageSrc ? <img src={imageSrc} alt={imageAlt} className="h-full w-full object-cover transition-[filter] duration-700 group-hover:brightness-110" /> : <div className="flex h-full items-center justify-center text-neutral-400">No Image</div>}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-white/10 opacity-70 transition-opacity duration-500 group-hover:opacity-40" />
+            </motion.div>
+            <div className="flex items-end justify-between gap-6 border-t border-black/10 pt-5">
+              <h2 className="max-w-[14ch] text-2xl leading-none tracking-tight text-neutral-900 sm:text-3xl">{title}</h2>
+              <span className="text-xs uppercase tracking-[0.18em] text-neutral-500 transition-transform duration-300 group-hover:translate-x-1">View →</span>
+            </div>
           </div>
-        </div>
-
-        {/* Card Footer Meta */}
-        <div className="flex items-center justify-between text-[12px] tracking-widest text-neutral-800 font-medium uppercase pt-6 border-t border-transparent">
-          <span>{title}</span>
-          <span className="text-neutral-500">{count} ARTWORKS</span>
-        </div>
-      </div>
-    </Link>
+        </motion.article>
+      </Link>
+    </motion.div>
   );
 }
 
