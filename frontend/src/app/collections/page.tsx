@@ -1,13 +1,13 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Filter, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Collection } from "@/types";
 import DuluwaNavbar from "@/components/duluwa-navbar";
 import GenZGlassyFooter from "@/components/genz-footer";
+import "@/app/template.css";
+import "@/components/genz-footer.css";
 
 // Mock data
 const mockCollections: Collection[] = [
@@ -15,10 +15,10 @@ const mockCollections: Collection[] = [
     id: "1",
     no: "01",
     title: "HIMALAYAN COLLECTION",
-    count: 15,
+    count: 9,
     hue: 200,
     blurb: "Majestic peaks and serene valleys of the Himalayas captured in delicate watercolor washes",
-    cover: "/assets/IMG_3956_1780590402771.jpeg",
+    cover: "/assets/IMG_2873.jpeg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   },
@@ -26,7 +26,7 @@ const mockCollections: Collection[] = [
     id: "2",
     no: "02",
     title: "CULTURAL HERITAGE",
-    count: 12,
+    count: 6,
     hue: 150,
     blurb: "Traditional Nepalese culture and customs brought to life through intimate portraits",
     cover: "/assets/IMG_3838.jpeg",
@@ -36,22 +36,22 @@ const mockCollections: Collection[] = [
   {
     id: "3",
     no: "03",
-    title: "WILDLIFE SERIES",
-    count: 8,
-    hue: 100,
-    blurb: "Nepal's incredible biodiversity captured in moments of natural beauty",
-    cover: "/assets/auth-brushes.png",
+    title: "PORTRAIT STUDIES",
+    count: 5,
+    hue: 30,
+    blurb: "Intimate character studies of Nepal's people, capturing dignity and spirit",
+    cover: "/assets/IMG_9195.jpeg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   },
   {
     id: "4",
     no: "04",
-    title: "PORTRAIT STUDIES",
-    count: 18,
-    hue: 50,
-    blurb: "Intimate character studies of Nepal's people, capturing dignity and spirit",
-    cover: "/assets/IMG_3838.jpeg",
+    title: "WILDLIFE SERIES",
+    count: 4,
+    hue: 100,
+    blurb: "Nepal's incredible biodiversity captured in moments of natural beauty",
+    cover: "/assets/IMG_6277.jpeg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   },
@@ -59,10 +59,10 @@ const mockCollections: Collection[] = [
     id: "5",
     no: "05",
     title: "LIFESTYLE MOMENTS",
-    count: 10,
-    hue: 300,
+    count: 6,
+    hue: 55,
     blurb: "Daily life in Nepal, from bustling markets to quiet moments of reflection",
-    cover: "/assets/auth-brushes.png",
+    cover: "/assets/IMG_0798.jpeg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   },
@@ -70,64 +70,78 @@ const mockCollections: Collection[] = [
     id: "6",
     no: "06",
     title: "QUICK SKETCHES",
-    count: 25,
+    count: 8,
     hue: 250,
     blurb: "Quick studies and observational drawings capturing fleeting moments",
-    cover: "/assets/IMG_3956_1780590402771.jpeg",
+    cover: "/assets/IMG_20230521_0003.jpeg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   }
 ];
 
-interface CollectionCardProps {
-  title: string;
-  count: number;
-  imageSrc: string;
-  imageAlt?: string;
-  imageAspect?: 'landscape' | 'portrait' | 'square';
-  id: string;
-}
+// Aspect ratios cycle per card for masonry height variation
+const ASPECTS = [
+  "aspect-[3/4]",   // tall
+  "aspect-[4/3]",   // wide
+  "aspect-[2/3]",   // extra tall
+  "aspect-square",  // square
+  "aspect-[5/7]",   // tall portrait
+  "aspect-[4/5]",   // portrait
+];
 
 function CollectionCard({
+  id,
+  no,
   title,
   count,
+  blurb,
   imageSrc,
-  imageAlt = 'Collection artwork',
-  imageAspect = 'landscape',
-  id,
-}: CollectionCardProps) {
-  const aspectClass =
-    imageAspect === 'portrait'
-      ? 'aspect-[3/4] max-w-[400px]'
-      : 'aspect-[4/3] max-w-[550px]';
+  index,
+}: {
+  id: string;
+  no: string;
+  title: string;
+  count: number;
+  blurb: string;
+  imageSrc: string;
+  index: number;
+}) {
+  const aspect = ASPECTS[index % ASPECTS.length];
 
   return (
-    <Link href={`/collections/${id}`} className="group block">
-      <div className="group flex flex-col justify-between bg-[#f3f3f3] rounded-xl p-10 sm:p-16 transition-all duration-300 hover:shadow-lg w-full min-h-[560px]">
-        {/* Artwork Container - Centered */}
-        <div className="flex-1 flex items-center justify-center py-8">
-          <div
-            className={`relative w-full ${aspectClass} overflow-hidden shadow-md border border-black/10 transition-transform duration-500 ease-out group-hover:scale-[1.02]`}
-          >
-            {imageSrc ? (
-              <img
-                src={imageSrc}
-                alt={imageAlt}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-400">
-                No Image
-              </div>
-            )}
-          </div>
+    <Link href={`/collections/${id}`} className="group block break-inside-avoid mb-5">
+      {/* Image container */}
+      <div className={`relative w-full ${aspect} overflow-hidden rounded-xl bg-zinc-100`}>
+        <img
+          src={imageSrc}
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-500 flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100">
+          <p className="text-white/80 text-sm leading-relaxed translate-y-3 group-hover:translate-y-0 transition-transform duration-500">
+            {blurb}
+          </p>
+          <span className="mt-3 inline-flex items-center gap-1 text-white text-xs uppercase tracking-widest font-semibold translate-y-3 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+            View Collection →
+          </span>
         </div>
 
-        {/* Card Footer Meta */}
-        <div className="flex items-center justify-between text-[12px] tracking-widest text-neutral-800 font-medium uppercase pt-6 border-t border-transparent">
-          <span>{title}</span>
-          <span className="text-neutral-500">{count} ARTWORKS</span>
+        {/* Collection number badge */}
+        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-zinc-900 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">
+          {no}
         </div>
+      </div>
+
+      {/* Card meta */}
+      <div className="flex items-start justify-between mt-3 px-1">
+        <h3 className="text-sm font-semibold uppercase tracking-widest text-zinc-900 leading-snug">
+          {title}
+        </h3>
+        <span className="text-xs text-zinc-400 whitespace-nowrap ml-4 mt-0.5">
+          {count} works
+        </span>
       </div>
     </Link>
   );
@@ -157,111 +171,84 @@ export default function CollectionsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
+      <>
+        <DuluwaNavbar />
+        <div className="min-h-screen flex items-center justify-center">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto" />
-          <p className="mt-4 text-muted-foreground">Loading collections...</p>
         </div>
-      </div>
+        <GenZGlassyFooter />
+      </>
     );
   }
 
   return (
     <main className="site">
       <DuluwaNavbar />
-      
-      {/* Hero Section */}
-      <section className="py-24 px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-6xl md:text-8xl font-bold tracking-tight"
-          >
-            COLLECTIONS
-          </motion.h1>
-          
-          {/* Filter Tabs */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex gap-8 mt-8 text-sm font-medium"
-          >
-            <button 
-              onClick={() => setActiveFilter("ALL")}
-              className={activeFilter === "ALL" ? "text-red-500" : "text-gray-500 hover:text-black"}
-            >
-              ALL
-            </button>
-            <button 
-              onClick={() => setActiveFilter("NEW")}
-              className={activeFilter === "NEW" ? "text-red-500" : "text-gray-500 hover:text-black"}
-            >
-              NEW COLLECTION
-            </button>
-            <button 
-              onClick={() => setActiveFilter("LANDSCAPE")}
-              className={activeFilter === "LANDSCAPE" ? "text-red-500" : "text-gray-500 hover:text-black"}
-            >
-              LANDSCAPES
-            </button>
-            <button 
-              onClick={() => setActiveFilter("PORTRAIT")}
-              className={activeFilter === "PORTRAIT" ? "text-red-500" : "text-gray-500 hover:text-black"}
-            >
-              PORTRAITS
-            </button>
-          </motion.div>
-        </div>
-      </section>
 
-      {/* Filter & Sort Bar */}
-      <section className="px-8 py-4 border-y border-gray-200">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <button className="text-sm font-medium flex items-center gap-2">
-            <Filter className="w-4 h-4" />
-            FILTERS
-          </button>
-          <button className="text-sm font-medium">SORT BY</button>
-        </div>
-      </section>
-
-      {/* Collections Grid */}
-      <section className="px-8 py-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {collections.map((collection, index) => (
-              <motion.div
-                key={collection.id}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <CollectionCard
-                  title={collection.title}
-                  count={collection.count}
-                  imageSrc={collection.cover}
-                  imageAlt={collection.title}
-                  id={collection.id}
-                />
-              </motion.div>
-            ))}
+      {/* Hero */}
+      <section className="pt-28 pb-12 px-6 md:px-12 max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6"
+        >
+          <div>
+            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-4">// All Collections</p>
+            <h1 className="text-5xl md:text-7xl font-light tracking-tight text-zinc-900">
+              Only the Essential,<br />
+              <span className="italic">Always the Exceptional</span>
+            </h1>
           </div>
-        </div>
+          <div className="text-7xl font-light text-zinc-200 hidden md:block select-none">
+            {collections.length.toString().padStart(2, "0")}
+          </div>
+        </motion.div>
+
+        {/* Filter pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-wrap gap-3 mt-10 text-sm font-medium"
+        >
+          {["ALL", "NEW COLLECTION", "LANDSCAPES", "PORTRAITS"].map((f) => (
+            <button
+              key={f}
+              onClick={() => setActiveFilter(f)}
+              className={`px-5 py-2 rounded-full border transition-colors whitespace-nowrap ${
+                activeFilter === f
+                  ? "bg-zinc-900 text-white border-zinc-900"
+                  : "text-zinc-500 border-zinc-200 hover:border-zinc-900 hover:text-zinc-900"
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </motion.div>
       </section>
 
-      {/* View More Button */}
-      <section className="px-8 py-12">
-        <div className="max-w-7xl mx-auto text-center">
-          <Button 
-            size="lg"
-            className="bg-black text-white hover:bg-red-500 hover:text-white transition-colors"
-          >
-            VIEW MORE
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+      {/* Masonry Grid */}
+      <section className="px-6 md:px-12 pb-24 max-w-7xl mx-auto">
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-5">
+          {collections.map((collection, index) => (
+            <motion.div
+              key={collection.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+            >
+              <CollectionCard
+                id={collection.id}
+                no={collection.no}
+                title={collection.title}
+                count={collection.count}
+                blurb={collection.blurb}
+                imageSrc={collection.cover}
+                index={index}
+              />
+            </motion.div>
+          ))}
         </div>
       </section>
 

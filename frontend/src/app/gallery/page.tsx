@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import "@/app/template.css";
+import "@/components/genz-footer.css";
 import DuluwaNavbar from "@/components/duluwa-navbar";
 import GenZGlassyFooter from "@/components/genz-footer";
 import { formatPrice } from "@/lib/utils";
@@ -14,24 +16,35 @@ const mockCollections: Collection[] = [
     id: "1",
     no: "01",
     title: "Himalaya",
-    count: 15,
+    count: 9,
     hue: 200,
     blurb: "Majestic peaks and serene valleys of the Himalayas",
-    cover: "/assets/auth-brushes.png",
+    cover: "/assets/IMG_2873.jpeg",
     created_at: "2023-01-01",
-    updated_at: "2023-01-01"
+    updated_at: "2023-01-01",
   },
   {
     id: "2",
-    no: "02", 
+    no: "02",
     title: "Culture",
-    count: 12,
+    count: 6,
     hue: 150,
     blurb: "Traditional Nepalese culture and customs",
     cover: "/assets/IMG_3838.jpeg",
     created_at: "2023-01-01",
-    updated_at: "2023-01-01"
-  }
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "3",
+    no: "03",
+    title: "Portraits",
+    count: 5,
+    hue: 30,
+    blurb: "Intimate character studies",
+    cover: "/assets/IMG_9195.jpeg",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
 ];
 
 const mockArtworks: Artwork[] = [
@@ -47,18 +60,18 @@ const mockArtworks: Artwork[] = [
     ratio: 1.25,
     featured: true,
     note: "A serene mountain landscape",
-    image: "/assets/IMG_3956_1780590402771.jpeg",
+    image: "/assets/IMG_2873.jpeg",
     video: "",
     price: 500,
     status: "IN_SALE",
     created_at: "2023-01-01",
-    updated_at: "2023-01-01"
+    updated_at: "2023-01-01",
   },
   {
     id: "2",
     title: "Cultural Heritage",
     year: "2024",
-    medium: "Watercolor on paper", 
+    medium: "Watercolor on paper",
     size: "12x16 inches",
     collection: mockCollections[1],
     collection_id: "2",
@@ -71,27 +84,274 @@ const mockArtworks: Artwork[] = [
     price: 750,
     status: "IN_SALE",
     created_at: "2023-01-01",
-    updated_at: "2023-01-01"
+    updated_at: "2023-01-01",
   },
   {
     id: "3",
     title: "Himalayan Vista",
     year: "2024",
     medium: "Watercolor on paper",
-    size: "18x24 inches", 
+    size: "18x24 inches",
     collection: mockCollections[0],
     collection_id: "1",
     hue: 180,
     ratio: 1.33,
     featured: false,
     note: "Expansive mountain view",
-    image: "/assets/auth-brushes.png",
+    image: "/assets/IMG_2875.jpeg",
     video: "",
     price: 950,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "4",
+    title: "Morning Mist",
+    year: "2023",
+    medium: "Watercolor on paper",
+    size: "14x18 inches",
+    collection: mockCollections[0],
+    collection_id: "1",
+    hue: 210,
+    ratio: 1.2,
+    featured: false,
+    note: "Early morning fog over peaks",
+    image: "/assets/IMG_2877.jpeg",
+    video: "",
+    price: 600,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "5",
+    title: "Portrait Study I",
+    year: "2023",
+    medium: "Watercolor on paper",
+    size: "10x14 inches",
+    collection: mockCollections[2],
+    collection_id: "3",
+    hue: 30,
+    ratio: 0.75,
+    featured: true,
+    note: "Character study",
+    image: "/assets/IMG_9195.jpeg",
+    video: "",
+    price: 420,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "6",
+    title: "Valley Light",
+    year: "2024",
+    medium: "Watercolor on paper",
+    size: "20x24 inches",
+    collection: mockCollections[0],
+    collection_id: "1",
+    hue: 195,
+    ratio: 1.25,
+    featured: false,
+    note: "Golden light over the valley",
+    image: "/assets/IMG_3246.jpeg",
+    video: "",
+    price: 1100,
     status: "SOLD_OUT",
     created_at: "2023-01-01",
-    updated_at: "2023-01-01"
-  }
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "7",
+    title: "Sketch Study II",
+    year: "2023",
+    medium: "Pen & Watercolor",
+    size: "8x10 inches",
+    collection: mockCollections[1],
+    collection_id: "2",
+    hue: 40,
+    ratio: 1.0,
+    featured: false,
+    note: "Quick observational sketch",
+    image: "/assets/IMG_20230519_0002.jpeg",
+    video: "",
+    price: 280,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "8",
+    title: "Traditional Motif",
+    year: "2024",
+    medium: "Watercolor on paper",
+    size: "12x12 inches",
+    collection: mockCollections[1],
+    collection_id: "2",
+    hue: 160,
+    ratio: 1.0,
+    featured: false,
+    note: "Cultural pattern study",
+    image: "/assets/IMG_20230521_0003.jpeg",
+    video: "",
+    price: 380,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "9",
+    title: "Duluwa Study",
+    year: "2024",
+    medium: "Watercolor on paper",
+    size: "16x20 inches",
+    collection: mockCollections[2],
+    collection_id: "3",
+    hue: 25,
+    ratio: 0.8,
+    featured: true,
+    note: "Expressive figure study",
+    image: "/assets/IMG_6277.jpeg",
+    video: "",
+    price: 860,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "10",
+    title: "Landscape Sketch",
+    year: "2023",
+    medium: "Watercolor on paper",
+    size: "12x16 inches",
+    collection: mockCollections[0],
+    collection_id: "1",
+    hue: 185,
+    ratio: 1.33,
+    featured: false,
+    note: "Plein air study",
+    image: "/assets/IMG_0286.jpg",
+    video: "",
+    price: 490,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "11",
+    title: "Still Life",
+    year: "2023",
+    medium: "Watercolor on paper",
+    size: "10x12 inches",
+    collection: mockCollections[1],
+    collection_id: "2",
+    hue: 55,
+    ratio: 1.1,
+    featured: false,
+    note: "Everyday objects study",
+    image: "/assets/IMG_0536.jpeg",
+    video: "",
+    price: 320,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "12",
+    title: "Field Notes",
+    year: "2024",
+    medium: "Watercolor on paper",
+    size: "8x10 inches",
+    collection: mockCollections[2],
+    collection_id: "3",
+    hue: 70,
+    ratio: 0.8,
+    featured: false,
+    note: "Sketchbook page",
+    image: "/assets/IMG_0645.jpg",
+    video: "",
+    price: 240,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "13",
+    title: "Golden Hour",
+    year: "2024",
+    medium: "Watercolor on paper",
+    size: "18x24 inches",
+    collection: mockCollections[0],
+    collection_id: "1",
+    hue: 40,
+    ratio: 1.33,
+    featured: true,
+    note: "Sunset over the hills",
+    image: "/assets/IMG_0798.jpeg",
+    video: "",
+    price: 1250,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "14",
+    title: "Figure Study",
+    year: "2023",
+    medium: "Watercolor on paper",
+    size: "14x18 inches",
+    collection: mockCollections[2],
+    collection_id: "3",
+    hue: 20,
+    ratio: 0.78,
+    featured: false,
+    note: "Life drawing session",
+    image: "/assets/IMG_8651.jpg",
+    video: "",
+    price: 580,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "15",
+    title: "Art Study",
+    year: "2024",
+    medium: "Mixed media",
+    size: "12x16 inches",
+    collection: mockCollections[1],
+    collection_id: "2",
+    hue: 100,
+    ratio: 1.2,
+    featured: false,
+    note: "Brush study",
+    image: "/assets/auth-brushes.png",
+    video: "",
+    price: 430,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
+  {
+    id: "16",
+    title: "Reflections",
+    year: "2024",
+    medium: "Watercolor on paper",
+    size: "16x20 inches",
+    collection: mockCollections[0],
+    collection_id: "1",
+    hue: 190,
+    ratio: 1.25,
+    featured: false,
+    note: "Water reflections study",
+    image: "/assets/IMG_9965.jpg",
+    video: "",
+    price: 720,
+    status: "IN_SALE",
+    created_at: "2023-01-01",
+    updated_at: "2023-01-01",
+  },
 ];
 
 export default function GalleryPage() {
@@ -108,14 +368,18 @@ export default function GalleryPage() {
     setLoading(true);
     try {
       const { api } = await import("@/lib/api");
-      
       const [artworksResponse, collectionsResponse] = await Promise.all([
         api.get("/artworks/").catch(() => ({ data: mockArtworks })),
-        api.get("/collections/").catch(() => ({ data: mockCollections }))
+        api.get("/collections/").catch(() => ({ data: mockCollections })),
       ]);
-
-      setArtworks(artworksResponse.data.results || artworksResponse.data || mockArtworks);
-      setCollections(collectionsResponse.data.results || collectionsResponse.data || mockCollections);
+      setArtworks(
+        artworksResponse.data.results || artworksResponse.data || mockArtworks
+      );
+      setCollections(
+        collectionsResponse.data.results ||
+          collectionsResponse.data ||
+          mockCollections
+      );
     } catch (error) {
       console.error("Failed to fetch data, using mock data:", error);
       setArtworks(mockArtworks);
@@ -125,145 +389,181 @@ export default function GalleryPage() {
     }
   };
 
-  const filteredArtworks = artworks.filter(artwork => {
-    if (activeCollection && artwork.collection_id !== activeCollection) return false;
+  const filteredArtworks = artworks.filter((artwork) => {
+    if (activeCollection && artwork.collection_id !== activeCollection)
+      return false;
     return true;
   });
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto" />
-      </div>
+      <>
+        <DuluwaNavbar />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto" />
+        </div>
+        <GenZGlassyFooter />
+      </>
     );
   }
 
   return (
     <>
       <DuluwaNavbar />
-      <div className="min-h-screen bg-white text-zinc-900 pb-20">
-      {/* Hero Section */}
-      <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-zinc-100">
-        <div className="absolute inset-0">
-          <img 
-            src="/assets/IMG_3956_1780590402771.jpeg" 
-            alt="Hero Background" 
-            className="w-full h-full object-cover opacity-80"
-          />
-          <div className="absolute inset-0 bg-black/20 mix-blend-multiply" />
-        </div>
-        
-        {/* Decorative Circle outline */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full border-[1px] border-white/40 flex items-center justify-center">
-            <h1 className="text-white text-4xl md:text-6xl font-light tracking-wide">
-              Art
-            </h1>
+
+      <div className="min-h-screen bg-white text-zinc-900 pb-20 pt-[76px]">
+        {/* Hero Section */}
+        <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-zinc-100">
+          <div className="absolute inset-0">
+            <img
+              src="/assets/IMG_3956_1780590402771.jpeg"
+              alt="Hero Background"
+              className="w-full h-full object-cover opacity-80"
+            />
+            <div className="absolute inset-0 bg-black/20 mix-blend-multiply" />
+          </div>
+
+          {/* Decorative Circle outline */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-[300px] h-[300px] md:w-[500px] md:h-[500px] rounded-full border border-white/40 flex items-center justify-center">
+              <h1 className="text-white text-4xl md:text-6xl font-light tracking-wide">
+                Art
+              </h1>
+            </div>
+          </div>
+
+          <div className="absolute bottom-8 left-8 text-white">
+            <p className="text-sm uppercase tracking-widest opacity-80">
+              // Art Collection
+            </p>
           </div>
         </div>
 
-        <div className="absolute bottom-8 left-8 text-white">
-          <p className="text-sm uppercase tracking-widest opacity-80">
-            // Art Collection
-          </p>
-        </div>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-16 md:pt-24">
-        
-        {/* Header Text */}
-        <div className="flex flex-col md:flex-row justify-between items-start mb-16 md:mb-24">
-          <h2 className="text-4xl md:text-5xl font-light leading-tight max-w-xl">
-            Only the Essential,<br />
-            Always the Exceptional
-          </h2>
-          <div className="hidden md:block text-7xl font-light text-zinc-300">
-            0
+        {/* Main Content Area */}
+        <div className="max-w-7xl mx-auto px-6 md:px-12 pt-16 md:pt-24">
+          {/* Header Text */}
+          <div className="flex flex-col md:flex-row justify-between items-start mb-16 md:mb-24">
+            <h2 className="text-4xl md:text-5xl font-light leading-tight max-w-xl">
+              Only the Essential,
+              <br />
+              Always the Exceptional
+            </h2>
+            <div className="hidden md:block text-7xl font-light text-zinc-300">
+              0
+            </div>
           </div>
-        </div>
 
-        {/* Categories / Filters */}
-        <div className="flex flex-wrap items-center gap-6 md:gap-10 mb-16 overflow-x-auto pb-4 scrollbar-hide text-sm font-medium">
-          <button 
-            onClick={() => setActiveCollection("")}
-            className={`px-6 py-2 rounded-full transition-colors whitespace-nowrap ${
-              activeCollection === "" 
-                ? "bg-zinc-900 text-white" 
-                : "text-zinc-500 hover:text-zinc-900"
-            }`}
-          >
-            All
-          </button>
-          {collections.map(c => (
-            <button 
-              key={c.id}
-              onClick={() => setActiveCollection(c.id)}
+          {/* Categories / Filters */}
+          <div className="flex flex-wrap items-center gap-6 md:gap-10 mb-16 overflow-x-auto pb-4 text-sm font-medium">
+            <button
+              onClick={() => setActiveCollection("")}
               className={`px-6 py-2 rounded-full transition-colors whitespace-nowrap ${
-                activeCollection === c.id
-                  ? "bg-zinc-900 text-white" 
+                activeCollection === ""
+                  ? "bg-zinc-900 text-white"
                   : "text-zinc-500 hover:text-zinc-900"
               }`}
             >
-              {c.title}
+              All
             </button>
-          ))}
-        </div>
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-x-10 gap-y-20">
-          {filteredArtworks.map((artwork, index) => (
-            <motion.div
-              key={artwork.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <ArtworkCard artwork={artwork} />
-            </motion.div>
-          ))}
-        </div>
-
-        {filteredArtworks.length === 0 && (
-          <div className="text-center py-24 text-zinc-500">
-            No artworks available in this collection.
+            {collections.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => setActiveCollection(c.id)}
+                className={`px-6 py-2 rounded-full transition-colors whitespace-nowrap ${
+                  activeCollection === c.id
+                    ? "bg-zinc-900 text-white"
+                    : "text-zinc-500 hover:text-zinc-900"
+                }`}
+              >
+                {c.title}
+              </button>
+            ))}
           </div>
-        )}
 
+          {/* Masonry Grid */}
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-6">
+            {filteredArtworks.map((artwork, index) => (
+              <motion.div
+                key={artwork.id}
+                className="break-inside-avoid mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <ArtworkCard artwork={artwork} index={index} />
+              </motion.div>
+            ))}
+          </div>
+
+          {filteredArtworks.length === 0 && (
+            <div className="text-center py-24 text-zinc-500">
+              No artworks available in this collection.
+            </div>
+          )}
+        </div>
       </div>
+
       <GenZGlassyFooter />
     </>
   );
 }
 
-function ArtworkCard({ artwork }: { artwork: Artwork }) {
+function ArtworkCard({ artwork, index }: { artwork: Artwork; index: number }) {
+  // Cycle through different aspect ratios to create natural masonry variation
+  const ratios = [
+    "aspect-[3/4]",   // tall portrait
+    "aspect-[4/3]",   // wide landscape
+    "aspect-[2/3]",   // extra tall
+    "aspect-square",  // square
+    "aspect-[5/4]",   // slightly wide
+    "aspect-[3/5]",   // tall
+  ];
+  const ratio = ratios[index % ratios.length];
+
   return (
-    <Link href={`/gallery/${artwork.id}`} className="group flex flex-col items-center text-center">
-      <div className="w-full aspect-[4/3] bg-[#f7f7f7] rounded-sm flex items-center justify-center p-8 mb-6 overflow-hidden relative transition-all duration-500 group-hover:bg-[#f0f0f0]">
+    <Link
+      href={`/gallery/${artwork.id}`}
+      className="group block"
+    >
+      <div
+        className={`w-full ${ratio} bg-[#f5f5f3] rounded-lg overflow-hidden relative transition-all duration-500 group-hover:bg-[#eeede9] mb-3`}
+      >
         {artwork.image ? (
           <img
             src={artwork.image}
             alt={artwork.title}
-            className="w-full h-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         ) : (
-          <div className="text-zinc-400 text-sm">Preview</div>
+          <div className="w-full h-full flex items-center justify-center text-zinc-400 text-sm">
+            Preview
+          </div>
         )}
-        
+
         {artwork.status === "SOLD_OUT" && (
-          <div className="absolute top-4 right-4 bg-zinc-900 text-white text-[10px] uppercase tracking-wider px-3 py-1 rounded-full">
+          <div className="absolute top-3 right-3 bg-zinc-900/80 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider px-3 py-1 rounded-full">
             Sold
           </div>
         )}
+
+        {/* Hover overlay with quick info */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 flex items-end p-4 opacity-0 group-hover:opacity-100">
+          <div className="translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+            <span className="text-white text-xs uppercase tracking-widest font-medium">
+              {artwork.collection?.title}
+            </span>
+          </div>
+        </div>
       </div>
-      
-      <h3 className="font-medium text-lg text-zinc-900 tracking-wide mb-1">
-        {artwork.title}
-      </h3>
-      
-      <p className="text-sm text-zinc-500 mb-4">
-        {formatPrice(artwork.price)}
-      </p>
+
+      <div className="px-1">
+        <h3 className="font-medium text-zinc-900 tracking-wide mb-0.5">
+          {artwork.title}
+        </h3>
+        <p className="text-sm text-zinc-500">
+          {formatPrice(artwork.price)}
+        </p>
+      </div>
     </Link>
   );
 }
