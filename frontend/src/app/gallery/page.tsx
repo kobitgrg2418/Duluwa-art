@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import DuluwaNavbar from "@/components/duluwa-navbar";
+import GenZGlassyFooter from "@/components/genz-footer";
 import { formatPrice } from "@/lib/utils";
 import { Artwork, Collection } from "@/types";
 
@@ -137,7 +139,9 @@ export default function GalleryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 pb-20">
+    <>
+      <DuluwaNavbar />
+      <div className="min-h-screen bg-white text-zinc-900 pb-20">
       {/* Hero Section */}
       <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden bg-zinc-100">
         <div className="absolute inset-0">
@@ -227,7 +231,8 @@ export default function GalleryPage() {
         )}
 
       </div>
-    </div>
+      <GenZGlassyFooter />
+    </>
   );
 }
 
