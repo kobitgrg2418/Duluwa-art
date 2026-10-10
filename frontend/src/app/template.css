@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Duluwa Navbar & Hero Styles */
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap");
 
 :root { 
   --ink: #080808; 
@@ -9,17 +8,14 @@
   --muted: #777; 
 }
 
-/* Duluwa Navbar & Hero Styles */
-@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap");
-
 :root{--bg:#f4f4f4;--ink:#0c0c0c;--mute:#8a8a8a;--red:#ee3a35;--nav:76px;--pad:clamp(20px,6vw,92px)}
 
-.duluwa-nav{position:fixed;inset:0 0 auto;height:var(--nav);z-index:50;background:var(--bg);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--pad)}
-.duluwa-nav .logo{font-family:'Behind The Nineties',serif;font-size:32px;font-weight:700;letter-spacing:0em;color:var(--ink);text-decoration:none}
-.duluwa-nav .nav-links{display:flex;gap:clamp(32px,8vw,100px);font-size:16px;font-family:'Behind The Nineties',serif;font-weight:400;align-items:center}
+.duluwa-nav{position:fixed;inset:0 0 auto;height:var(--nav);z-index:50;background:var(--bg);display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;padding:0 var(--pad)}
+.duluwa-nav .logo{font-family:'Behind The Nineties',serif;font-size:32px;font-weight:700;letter-spacing:0em;color:var(--ink);text-decoration:none;white-space:nowrap}
+.duluwa-nav .nav-links{display:flex;justify-self:center;gap:clamp(16px,3vw,40px);font-size:16px;font-family:'Behind The Nineties',serif;font-weight:400;align-items:center}
 .duluwa-nav .nav-links a{color:var(--ink);text-decoration:none}
 .duluwa-nav .nav-links a.on{color:var(--red)}
-.duluwa-nav .nav-icon{color:var(--ink);text-decoration:none;transition:color 0.3s;margin-left:16px}
+.duluwa-nav .nav-icon{color:var(--ink);text-decoration:none;transition:color 0.3s}
 .duluwa-nav .nav-icon:hover{color:var(--red)}
 .duluwa-nav .burger{justify-self:end;width:62px;height:40px;border:0;border-radius:9px;background:#ee3a35;cursor:pointer;display:grid;place-content:center;gap:5px}
 .duluwa-nav .burger i{display:block;width:26px;height:1.5px;background:#fff}
@@ -36,7 +32,7 @@
 .duluwa-hero .mask{display:inline-block;overflow:hidden;padding:.06em 0}
 .duluwa-hero .mask>span{display:inline-block}
 
-@media(max-width: 760px){.duluwa-nav{grid-template-columns:1fr auto}.duluwa-nav .nav-links{display:none}.duluwa-work .work-grid>*{grid-column:span 12!important}.duluwa-svc .svc-in{grid-template-columns:1fr}.duluwa-stats{grid-template-columns:1fr 1fr}.duluwa-contact .contact-container{grid-template-columns:1fr}.artist-story-section .grid{grid-template-columns:1fr}}
+@media(max-width: 760px){.duluwa-nav{grid-template-columns:minmax(0,1fr) auto;column-gap:12px}.duluwa-nav .logo{font-size:clamp(20px,7vw,28px)}.duluwa-nav .nav-links{display:none}.duluwa-work .work-grid>*{grid-column:span 12!important}.duluwa-svc .svc-in{grid-template-columns:1fr}.duluwa-stats{grid-template-columns:1fr 1fr}.duluwa-contact .contact-container{grid-template-columns:1fr}.artist-story-section .grid{grid-template-columns:1fr}}
 
 /* Norell Work Section */
 .duluwa-work{padding:14vh var(--pad) 10vh}

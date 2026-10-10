@@ -18,7 +18,7 @@ const mockCollections: Collection[] = [
     count: 9,
     hue: 200,
     blurb: "Majestic peaks and serene valleys of the Himalayas captured in delicate watercolor washes",
-    cover: "/assets/IMG_2873.jpeg",
+    cover: "/assets/IMG_20261010_0001.jpg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   },
@@ -29,7 +29,7 @@ const mockCollections: Collection[] = [
     count: 6,
     hue: 150,
     blurb: "Traditional Nepalese culture and customs brought to life through intimate portraits",
-    cover: "/assets/IMG_3838.jpeg",
+    cover: "/assets/IMG_20261010_0002.jpg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   },
@@ -40,7 +40,7 @@ const mockCollections: Collection[] = [
     count: 5,
     hue: 30,
     blurb: "Intimate character studies of Nepal's people, capturing dignity and spirit",
-    cover: "/assets/IMG_9195.jpeg",
+    cover: "/assets/IMG_20261010_0003.jpg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   },
@@ -51,7 +51,7 @@ const mockCollections: Collection[] = [
     count: 4,
     hue: 100,
     blurb: "Nepal's incredible biodiversity captured in moments of natural beauty",
-    cover: "/assets/IMG_6277.jpeg",
+    cover: "/assets/IMG_20261010_0004.jpg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   },
@@ -62,7 +62,7 @@ const mockCollections: Collection[] = [
     count: 6,
     hue: 55,
     blurb: "Daily life in Nepal, from bustling markets to quiet moments of reflection",
-    cover: "/assets/IMG_0798.jpeg",
+    cover: "/assets/IMG_20261010_0005.jpg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   },
@@ -73,7 +73,7 @@ const mockCollections: Collection[] = [
     count: 8,
     hue: 250,
     blurb: "Quick studies and observational drawings capturing fleeting moments",
-    cover: "/assets/IMG_20230521_0003.jpeg",
+    cover: "/assets/IMG_20261010_0006.jpg",
     created_at: "2023-01-01",
     updated_at: "2023-01-01"
   }

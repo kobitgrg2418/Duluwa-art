@@ -9,7 +9,7 @@ import { ShoppingCart, User } from "lucide-react";
 const links = ["Gallery", "Collections", "Commission"];
 const menu = ["Gallery", "Collections", "Commission", "Cart", "Profile", "Login", "Register", "Contact"];
 const ease = [0.76, 0, 0.24, 1];
-const line = (open, k) => ({
+const line = (open: boolean, k: number) => ({
   y: open ? (k === 0 ? 7 : k === 2 ? -7 : 0) : 0,
   rotate: open ? (k === 0 ? 45 : k === 2 ? -45 : 0) : 0,
   opacity: open && k === 1 ? 0 : 1,
@@ -22,7 +22,7 @@ export default function DuluwaNavbar() {
   return (
     <>
       <header className="duluwa-nav">
-        <Link href="#top" className="logo">DULUWA-ART</Link>
+        <Link href="/" className="logo">DULUWA-ART</Link>
         <nav className="nav-links">
           {links.map((l) => (
             <Link 

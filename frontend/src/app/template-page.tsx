@@ -23,12 +23,13 @@ export default function TemplatePage() {
   }, [])
 
   return (
-    <main className={dark ? 'site dark' : 'site'}>
-      {/* Custom cursor */}
-      <div className="cursor" style={{ left: cursor.x, top: cursor.y }} />
-
+    <>
       {/* Duluwa Navbar */}
       <DuluwaNavbar />
+
+      <main className={dark ? 'site dark' : 'site'}>
+        {/* Custom cursor */}
+        <div className="cursor" style={{ left: cursor.x, top: cursor.y }} />
 
       {/* Duluwa Hero */}
       <DuluwaHero />
@@ -51,8 +52,10 @@ export default function TemplatePage() {
       {/* Duluwa Contact */}
       <DuluwaContact />
 
+      </main>
+
       {/* Footer */}
       <GenZGlassyFooter />
-    </main>
+    </>
   )
 }

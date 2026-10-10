@@ -17,7 +17,7 @@ function Count({ to, suffix }: { to: number; suffix: string }) {
   return <motion.span ref={ref} className="num" style={{ opacity: o }}>{text}</motion.span>;
 }
 
-const stats = [
+const stats: [number, string, string][] = [
   [150, "+", "Artworks curated in our collection"],
   [50, "+", "Artists represented globally"],
   [12, "+", "Years in the art industry"],
