@@ -6,78 +6,9 @@ import Link from "next/link";
 import { Collection } from "@/types";
 import DuluwaNavbar from "@/components/duluwa-navbar";
 import GenZGlassyFooter from "@/components/genz-footer";
+import { collectionData as mockCollections } from "@/lib/collection-data";
 import "@/app/template.css";
 import "@/components/genz-footer.css";
-
-// Mock data
-const mockCollections: Collection[] = [
-  {
-    id: "1",
-    no: "01",
-    title: "HIMALAYAN COLLECTION",
-    count: 9,
-    hue: 200,
-    blurb: "Majestic peaks and serene valleys of the Himalayas captured in delicate watercolor washes",
-    cover: "/assets/IMG_20261010_0001.jpg",
-    created_at: "2023-01-01",
-    updated_at: "2023-01-01"
-  },
-  {
-    id: "2",
-    no: "02",
-    title: "CULTURAL HERITAGE",
-    count: 6,
-    hue: 150,
-    blurb: "Traditional Nepalese culture and customs brought to life through intimate portraits",
-    cover: "/assets/IMG_20261010_0002.jpg",
-    created_at: "2023-01-01",
-    updated_at: "2023-01-01"
-  },
-  {
-    id: "3",
-    no: "03",
-    title: "PORTRAIT STUDIES",
-    count: 5,
-    hue: 30,
-    blurb: "Intimate character studies of Nepal's people, capturing dignity and spirit",
-    cover: "/assets/IMG_20261010_0003.jpg",
-    created_at: "2023-01-01",
-    updated_at: "2023-01-01"
-  },
-  {
-    id: "4",
-    no: "04",
-    title: "WILDLIFE SERIES",
-    count: 4,
-    hue: 100,
-    blurb: "Nepal's incredible biodiversity captured in moments of natural beauty",
-    cover: "/assets/IMG_20261010_0004.jpg",
-    created_at: "2023-01-01",
-    updated_at: "2023-01-01"
-  },
-  {
-    id: "5",
-    no: "05",
-    title: "LIFESTYLE MOMENTS",
-    count: 6,
-    hue: 55,
-    blurb: "Daily life in Nepal, from bustling markets to quiet moments of reflection",
-    cover: "/assets/IMG_20261010_0005.jpg",
-    created_at: "2023-01-01",
-    updated_at: "2023-01-01"
-  },
-  {
-    id: "6",
-    no: "06",
-    title: "QUICK SKETCHES",
-    count: 8,
-    hue: 250,
-    blurb: "Quick studies and observational drawings capturing fleeting moments",
-    cover: "/assets/IMG_20261010_0006.jpg",
-    created_at: "2023-01-01",
-    updated_at: "2023-01-01"
-  }
-];
 
 // Aspect ratios cycle per card for masonry height variation
 const ASPECTS = [

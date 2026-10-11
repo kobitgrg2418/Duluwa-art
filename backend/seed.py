@@ -21,65 +21,47 @@ CommissionPricing.objects.all().delete()
 
 # Collections
 cols = [
-    ("culture", "01", "Nepalese Culture", 18, 28, "Festivals, prayer flags and the quiet rituals of the courtyards of Kathmandu.", "/assets/IMG_3838.jpeg"),
-    ("portrait", "02", "Portraits", 24, 44, "Faces weathered by altitude and devotion — studies in patience and pigment.", "/assets/IMG_2873.jpeg"),
-    ("himalaya", "03", "Himalayan Landscapes", 21, 220, "First light on snow, monsoon valleys, the long blue distance of the high passes.", "/assets/IMG_6277.jpeg"),
-    ("wildlife", "04", "Wildlife", 16, 96, "The tiger, the danphe, the river otter — caught in a single held breath of water.", "/assets/IMG_0536.jpeg"),
-    ("lifestyle", "05", "Traditional Lifestyle", 19, 64, "Tea fields, terraced farms and the slow choreography of mountain daily life.", "/assets/IMG_0645.jpg"),
-    ("sketches", "06", "Watercolour Sketches", 32, 36, "Loose, fast, unguarded — the notebook where every finished work begins.", "/assets/IMG_3956.jpeg"),
-    ("still-life", "07", "Still Life", 14, 160, "Fruit, flowers and familiar objects — stillness observed until it speaks in colour and shadow.", "/assets/IMG_3957.jpeg"),
+    ("himalaya", "01", "Himalayan Landscapes", 3, 200, "First light on snow, monsoon valleys and the long blue distance of the high passes.", "/art/drawing-09.jpg"),
+    ("culture", "02", "Cultural Heritage", 3, 150, "Festivals, prayer flags and the quiet rituals of the courtyards of Kathmandu.", "/art/drawing-03.jpg"),
+    ("portrait", "03", "Portrait Studies", 3, 30, "Faces weathered by altitude and devotion — studies in patience and pigment.", "/art/drawing-02.jpg"),
+    ("wildlife", "04", "Wildlife Series", 3, 100, "The tiger, the danphe, the river otter — each caught in a single held breath of water.", "/art/drawing-12.jpg"),
+    ("lifestyle", "05", "Lifestyle Moments", 3, 55, "Tea fields, terraced farms and the slow choreography of mountain daily life.", "/art/drawing-13.jpg"),
+    ("sketches", "06", "Quick Sketches", 3, 250, "Loose, fast, unguarded — the notebook where every finished work begins.", "/art/drawing-16.jpg"),
 ]
 for c in cols:
     Collection.objects.create(id=c[0], no=c[1], title=c[2], count=c[3], hue=c[4], blurb=c[5], cover=c[6])
 
-# Artworks - using actual asset files
+# Artworks - from the drawing collection in frontend/public/art
 arts = [
-    # Featured Artworks (featured=True)
-    ("a1", "Indra Jatra, Dusk", "2024", "Watercolour on cotton rag", "76 × 56 cm", "culture", 26, 0.78, True, 1200, "IN_SALE", "Masked dancers under the last copper light of the festival square.", "/assets/IMG_3838.jpeg", ""),
-    ("a2", "The Lama's Hands", "2023", "Watercolour & graphite", "40 × 50 cm", "portrait", 42, 1.28, True, 650, "IN_SALE", "A study of stillness — beads, knuckles, ninety winters.", "/assets/IMG_20230519_0002.jpeg", ""),
-    ("a3", "Machhapuchhre, First Light", "2024", "Watercolour on cotton rag", "90 × 60 cm", "himalaya", 218, 0.7, True, 1800, "IN_SALE", "The fishtail summit emerging from the cold blue of dawn.", "/assets/IMG_6277.jpeg", ""),
-    ("a4", "Bengal Tiger, Bardiya", "2023", "Watercolour on rag", "70 × 50 cm", "wildlife", 92, 0.82, True, 1400, "IN_SALE", "Wet-in-wet stripes dissolving into the tall grass.", "/assets/IMG_0536.jpeg", ""),
-    ("a5", "Tea Pickers, Ilam", "2022", "Watercolour on cotton rag", "64 × 48 cm", "lifestyle", 62, 1.18, True, 950, "IN_SALE", "Bent backs and baskets across the green terraces.", "/assets/IMG_0645.jpg", ""),
-    ("a6", "Boudhanath in Rain", "2024", "Watercolour sketch", "30 × 30 cm", "sketches", 34, 1.0, True, 380, "IN_SALE", "Fifteen minutes, one brush, the great stupa under monsoon.", "/assets/IMG_0798.jpeg", ""),
-    ("a7", "Woman of Mustang", "2023", "Watercolour & graphite", "42 × 56 cm", "portrait", 38, 0.75, True, 850, "IN_SALE", "Coral, turquoise and a gaze that has crossed the high desert.", "/assets/IMG_2873.jpeg", ""),
-    ("a8", "Danphe in Snow", "2024", "Watercolour on rag", "38 × 46 cm", "wildlife", 200, 0.84, True, 720, "IN_SALE", "The Himalayan monal — iridescence built in transparent layers.", "/assets/IMG_2875.jpeg", ""),
-    
-    # Culture Collection
-    ("a9", "Prayer Flags, Langtang", "2022", "Watercolour on cotton rag", "80 × 54 cm", "culture", 30, 0.74, False, 1100, "IN_SALE", "Lungta scattering colour across a thin mountain wind.", "/assets/IMG_2877.jpeg", ""),
-    ("a19", "Festival Procession", "2024", "Watercolour on cotton rag", "70 × 50 cm", "culture", 25, 0.71, False, 1300, "IN_SALE", "Colors of Indra Jatra in the streets.", "/assets/IMG_0286.jpg", ""),
-    ("a21", "Kumari at Dashain", "2023", "Watercolour on rag", "55 × 40 cm", "culture", 28, 1.2, False, 980, "IN_SALE", "The living goddess in ceremonial red.", "/assets/IMG_20230521_0003.jpeg", ""),
-    
-    # Himalaya Collection
-    ("a10", "Annapurna Sanctuary", "2023", "Watercolour on rag", "100 × 56 cm", "himalaya", 224, 0.56, False, 2200, "IN_SALE", "A panorama held in one continuous wet wash.", "/assets/IMG_3246.jpeg", ""),
-    ("a15", "Monsoon Landscape", "2023", "Watercolour on rag", "60 × 45 cm", "himalaya", 210, 0.85, False, 1100, "IN_SALE", "Clouds rolling over the valley.", "/assets/IMG_9195.jpeg", ""),
-    ("a22", "Everest Base Camp", "2024", "Watercolour on cotton rag", "75 × 50 cm", "himalaya", 215, 0.67, False, 1650, "IN_SALE", "Dawn at 5,364 meters — the world held in ice.", "/assets/IMG_3246.jpeg", ""),
-    
-    # Wildlife Collection
-    ("a16", "Tiger Study", "2022", "Watercolour & graphite", "35 × 45 cm", "wildlife", 88, 0.78, False, 750, "IN_SALE", "Graphite study for the Bardiya tiger.", "/assets/A16277BC-5E32-4E2D-B061-6F25C3935CED.PNG", ""),
-    ("a17", "Wild Elephant", "2024", "Watercolour on cotton rag", "55 × 40 cm", "wildlife", 95, 1.1, False, 900, "IN_SALE", "Gentle giant in the river.", "/assets/CF57082C-0CAD-4BBE-AA1B-090556A12968.JPG", ""),
-    ("a23", "Red Panda in Fog", "2023", "Watercolour on rag", "40 × 40 cm", "wildlife", 10, 1.0, False, 820, "IN_SALE", "The firefox of the eastern hills.", "/assets/667D8324-F724-4A89-84B6-F923E92CD51D.JPEG", ""),
-    ("a24", "Snow Leopard", "2024", "Watercolour on cotton rag", "60 × 45 cm", "wildlife", 190, 0.75, False, 1550, "SOLD_OUT", "The ghost cat of the high peaks.", "/assets/A16277BC-5E32-4E2D-B061-6F25C3935CED_1780587105686.PNG", ""),
-    
-    # Lifestyle Collection
-    ("a11", "Potter of Bhaktapur", "2024", "Watercolour sketch", "32 × 40 cm", "lifestyle", 48, 0.8, False, 420, "IN_SALE", "Clay, wheel, and hands that have never hurried.", "/assets/IMG_3956.jpeg", ""),
-    ("a13", "Mountain Village", "2023", "Watercolour on cotton rag", "50 × 40 cm", "lifestyle", 58, 1.1, False, 800, "IN_SALE", "Traditional stone houses nestled in the hills.", "/assets/IMG_8651.jpg", ""),
-    ("a25", "Farmer at Harvest", "2022", "Watercolour on rag", "45 × 35 cm", "lifestyle", 55, 1.15, False, 680, "IN_SALE", "Rice terraces at the golden hour.", "/assets/IMG_9965.jpg", ""),
-    
-    # Sketches Collection
-    ("a12", "River Otter, Karnali", "2022", "Watercolour sketch", "28 × 28 cm", "sketches", 70, 1.0, False, 350, "IN_SALE", "A quick gesture — wet fur, wet paper, wet light.", "/assets/IMG_3957.jpeg", ""),
-    ("a14", "Sacred Stupa", "2024", "Watercolour sketch", "25 × 25 cm", "sketches", 32, 1.0, False, 320, "IN_SALE", "Morning light on the ancient stupa.", "/assets/IMG_3956_1780590402771.jpeg", ""),
-    ("a26", "Street Vendor", "2023", "Watercolour sketch", "20 × 25 cm", "sketches", 40, 0.8, False, 280, "IN_SALE", "Quick study at Asan Tole market.", "/assets/IMG_3956_1780591903077.jpeg", ""),
-    ("a27", "Mountain Path", "2024", "Watercolour sketch", "22 × 30 cm", "sketches", 220, 0.73, False, 300, "IN_SALE", "Trail to Tengboche in fifteen minutes.", "/assets/IMG_3956_1780592186018.jpeg", ""),
-    
-    # Portrait Collection
-    ("a18", "Portrait of a Monk", "2023", "Watercolour & graphite", "30 × 40 cm", "portrait", 40, 0.75, False, 600, "IN_SALE", "Eyes that have seen generations.", "/assets/667D8324-F724-4A89-84B6-F923E92CD51D_1780553377572.JPEG", ""),
-    ("a28", "Sherpa Elder", "2024", "Watercolour on cotton rag", "48 × 38 cm", "portrait", 45, 1.18, False, 920, "IN_SALE", "Weathered by wind and time.", "/assets/IMG_2873.jpeg", ""),
-    ("a29", "Child of Khumbu", "2023", "Watercolour & graphite", "35 × 40 cm", "portrait", 36, 0.88, False, 580, "IN_SALE", "Laughter above the tree line.", "/assets/CF57082C-0CAD-4BBE-AA1B-090556A12968_1780587249024.JPG", ""),
-    
-    # Still Life Collection
-    ("a20", "Still Life with Tea", "2023", "Watercolour on rag", "30 × 30 cm", "still-life", 155, 1.0, False, 450, "IN_SALE", "Traditional tea set in morning light.", "/assets/IMG_3957.jpeg", ""),
-    ("a30", "Himalayan Flowers", "2024", "Watercolour on cotton rag", "35 × 25 cm", "still-life", 165, 1.4, False, 520, "IN_SALE", "Rhododendrons in a brass vessel.", "/assets/IMG_0286.jpg", ""),
-    ("a31", "Prayer Beads", "2023", "Watercolour on rag", "25 × 25 cm", "still-life", 150, 1.0, False, 380, "IN_SALE", "Sandalwood mala on aged cotton.", "/assets/IMG_0798.jpeg", ""),
+    # Himalayan Landscapes
+    ("a1", "Machhapuchhre, First Light", "2024", "Watercolour on cotton rag", "90 × 60 cm", "himalaya", 218, 0.7, True, 1800, "IN_SALE", "The fishtail summit emerging from the cold blue of dawn.", "/art/drawing-09.jpg", ""),
+    ("a2", "Monsoon Valley", "2023", "Watercolour on rag", "60 × 45 cm", "himalaya", 210, 1.33, False, 1100, "IN_SALE", "Clouds rolling over the terraces after the rain.", "/art/drawing-07.jpg", ""),
+    ("a3", "Annapurna Sanctuary", "2023", "Watercolour on cotton rag", "100 × 56 cm", "himalaya", 224, 0.56, True, 2200, "IN_SALE", "A panorama held in one continuous wet wash.", "/art/drawing-08.jpg", ""),
+
+    # Cultural Heritage
+    ("a4", "The Lama's Hands", "2023", "Watercolour & graphite", "40 × 50 cm", "culture", 42, 1.28, True, 650, "IN_SALE", "A study of stillness — beads, knuckles, ninety winters.", "/art/drawing-03.jpg", ""),
+    ("a5", "Kumari at Dashain", "2023", "Watercolour on rag", "55 × 40 cm", "culture", 28, 1.2, False, 980, "IN_SALE", "The living goddess in ceremonial red.", "/art/drawing-04.jpg", ""),
+    ("a6", "Indra Jatra, Dusk", "2024", "Watercolour on cotton rag", "76 × 56 cm", "culture", 26, 0.78, True, 1200, "IN_SALE", "Masked dancers under the last copper light of the festival square.", "/art/drawing-05.jpg", ""),
+
+    # Portrait Studies
+    ("a7", "Woman of Mustang", "2023", "Watercolour & graphite", "42 × 56 cm", "portrait", 38, 0.75, True, 850, "IN_SALE", "Coral, turquoise and a gaze that has crossed the high desert.", "/art/drawing-02.jpg", ""),
+    ("a8", "Sherpa Elder", "2024", "Watercolour on cotton rag", "48 × 38 cm", "portrait", 45, 1.18, False, 920, "IN_SALE", "Weathered by wind and time.", "/art/drawing-18.jpg", ""),
+    ("a9", "Child of Khumbu", "2023", "Watercolour & graphite", "35 × 40 cm", "portrait", 36, 0.88, False, 580, "IN_SALE", "Laughter above the tree line.", "/art/drawing-06.jpg", ""),
+
+    # Wildlife Series
+    ("a10", "Bengal Tiger, Bardiya", "2023", "Watercolour on rag", "70 × 50 cm", "wildlife", 92, 0.82, True, 1400, "IN_SALE", "Wet-in-wet stripes dissolving into the tall grass.", "/art/drawing-10.jpg", ""),
+    ("a11", "Danphe in Snow", "2024", "Watercolour on rag", "38 × 46 cm", "wildlife", 200, 0.84, True, 720, "IN_SALE", "The Himalayan monal — iridescence built in transparent layers.", "/art/drawing-11.jpg", ""),
+    ("a12", "River Otter, Karnali", "2022", "Watercolour sketch", "28 × 28 cm", "wildlife", 70, 1.0, False, 350, "IN_SALE", "A quick gesture — wet fur, wet paper, wet light.", "/art/drawing-12.jpg", ""),
+
+    # Lifestyle Moments
+    ("a13", "Tea Pickers, Ilam", "2022", "Watercolour on cotton rag", "64 × 48 cm", "lifestyle", 62, 1.18, True, 950, "IN_SALE", "Bent backs and baskets across the green terraces.", "/art/drawing-13.jpg", ""),
+    ("a14", "Mountain Village", "2023", "Watercolour on cotton rag", "50 × 40 cm", "lifestyle", 58, 1.1, False, 800, "IN_SALE", "Traditional stone houses nestled in the hills.", "/art/drawing-14.jpg", ""),
+    ("a15", "Farmer at Harvest", "2022", "Watercolour on rag", "45 × 35 cm", "lifestyle", 55, 1.15, False, 680, "IN_SALE", "Rice terraces at the golden hour.", "/art/drawing-15.jpg", ""),
+
+    # Quick Sketches
+    ("a16", "Boudhanath in Rain", "2024", "Watercolour sketch", "30 × 30 cm", "sketches", 34, 1.0, True, 380, "IN_SALE", "Fifteen minutes, one brush, the great stupa under monsoon.", "/art/drawing-16.jpg", ""),
+    ("a17", "Sacred Stupa", "2024", "Watercolour sketch", "25 × 25 cm", "sketches", 32, 1.0, False, 320, "IN_SALE", "Morning light on the ancient stupa.", "/art/drawing-17.jpg", ""),
+    ("a18", "Street Vendor", "2023", "Watercolour sketch", "20 × 25 cm", "sketches", 40, 0.8, False, 280, "IN_SALE", "Quick study at Asan Tole market.", "/art/drawing-01.jpg", ""),
 ]
 for a in arts:
     Artwork.objects.create(id=a[0], title=a[1], year=a[2], medium=a[3], size=a[4], collection_id=a[5], hue=a[6], ratio=a[7], featured=a[8], price=a[9], status=a[10], note=a[11], image=a[12], video=a[13])
