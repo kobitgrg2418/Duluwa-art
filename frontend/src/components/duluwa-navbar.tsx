@@ -6,8 +6,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingCart, User } from "lucide-react";
 
-const links = ["Gallery", "Collections", "Commission"];
-const menu = ["Gallery", "Collections", "Commission", "Cart", "Profile", "Login", "Register", "Contact"];
+const links = ["Home", "Shop Art", "Collections", "About the Artist", "Contact"];
+const menu = ["Home", "Shop Art", "Collections", "About the Artist", "Contact", "Cart", "Profile", "Login", "Register"];
 const ease = [0.76, 0, 0.24, 1];
 const line = (open: boolean, k: number) => ({
   y: open ? (k === 0 ? 7 : k === 2 ? -7 : 0) : 0,
@@ -24,15 +24,21 @@ export default function DuluwaNavbar() {
       <header className="duluwa-nav">
         <Link href="/" className="logo">DULUWA-ART</Link>
         <nav className="nav-links">
-          {links.map((l) => (
-            <Link 
-              key={l} 
-              href={"/" + l.toLowerCase()} 
-              className={pathname === "/" + l.toLowerCase() ? "on" : ""}
-            >
-              {l}
-            </Link>
-          ))}
+          {links.map((l) => {
+            const href = l === "Home" ? "/" :
+                        l === "Shop Art" ? "/shop" :
+                        l === "About the Artist" ? "/about" :
+                        "/" + l.toLowerCase();
+            return (
+              <Link
+                key={l}
+                href={href}
+                className={pathname === href ? "on" : ""}
+              >
+                {l}
+              </Link>
+            );
+          })}
           <Link href="/cart" className="nav-icon">
             <ShoppingCart className="w-5 h-5" />
           </Link>
@@ -54,18 +60,29 @@ export default function DuluwaNavbar() {
             exit={{ clipPath: "inset(0 0 100% 0)", transition: { duration: 0.45, ease } }}
             transition={{ duration: 0.65, ease }}>
             <motion.ul initial="h" animate="s" variants={{ s: { transition: { staggerChildren: 0.06, delayChildren: 0.25 } } }}>
-              {menu.map((m) => (
-                <li key={m}>
-                  <motion.a 
-                    href={m === "Cart" ? "/cart" : m === "Profile" ? "/profile" : m === "Login" ? "/login" : m === "Register" ? "/register" : m === "Contact" ? "#contact" : "/" + m.toLowerCase()} 
-                    onClick={() => setOpen(false)}
-                    variants={{ h: { y: 40, opacity: 0 }, s: { y: 0, opacity: 1 } }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {m}
-                  </motion.a>
-                </li>
-              ))}
+              {menu.map((m) => {
+                const href = m === "Home" ? "/" :
+                              m === "Shop Art" ? "/shop" :
+                              m === "About the Artist" ? "/about" :
+                              m === "Cart" ? "/cart" :
+                              m === "Profile" ? "/profile" :
+                              m === "Login" ? "/login" :
+                              m === "Register" ? "/register" :
+                              m === "Contact" ? "#contact" :
+                              "/" + m.toLowerCase();
+                return (
+                  <li key={m}>
+                    <motion.a
+                      href={href}
+                      onClick={() => setOpen(false)}
+                      variants={{ h: { y: 40, opacity: 0 }, s: { y: 0, opacity: 1 } }}
+                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {m}
+                    </motion.a>
+                  </li>
+                );
+              })}
             </motion.ul>
           </motion.div>
         )}
