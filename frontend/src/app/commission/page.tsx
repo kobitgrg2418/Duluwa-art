@@ -26,7 +26,7 @@ const commissionSchema = z.object({
   medium: z.string().optional(),
   budget: z.string().optional(),
   message: z.string().min(20, "Please provide more details about your vision"),
-  refImage: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
+  refImage: z.any().optional(),
 });
 
 type CommissionFormData = z.infer<typeof commissionSchema>;
@@ -55,15 +55,16 @@ const mediumOptions = [
 
 const budgetOptions = [
   { value: "", label: "Select budget range" },
-  { value: "500-1000", label: "$500 - $1,000" },
-  { value: "1000-2500", label: "$1,000 - $2,500" },
-  { value: "2500-5000", label: "$2,500 - $5,000" },
-  { value: "5000-10000", label: "$5,000 - $10,000" },
-  { value: "10000+", label: "$10,000+" },
+  { value: "3000-10000", label: "Rs 3,000 - Rs 10,000" },
+  { value: "10000-20000", label: "Rs 10,000 - Rs 20,000" },
+  { value: "20000-30000", label: "Rs 20,000 - Rs 30,000" },
+  { value: "30000-40000", label: "Rs 30,000 - Rs 40,000" },
+  { value: "40000+", label: "Rs 40,000+" },
 ];
 
 export default function CommissionPage() {
   const [submitting, setSubmitting] = useState(false);
+  const [refImageFile, setRefImageFile] = useState<File | null>(null);
 
   const {
     register,
@@ -77,9 +78,22 @@ export default function CommissionPage() {
   const onSubmit = async (data: CommissionFormData) => {
     setSubmitting(true);
     try {
-      await api.post("/commission/", data);
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("type", data.type);
+      if (data.size) formData.append("size", data.size);
+      if (data.medium) formData.append("medium", data.medium);
+      if (data.budget) formData.append("budget", data.budget);
+      formData.append("message", data.message);
+      if (refImageFile) {
+        formData.append("ref_image", refImageFile);
+      }
+
+      await api.postForm("/commission/", formData);
       toast.success("Commission request submitted! We'll contact you within 24 hours.");
       reset();
+      setRefImageFile(null);
     } catch (error) {
       toast.error("Failed to submit request. Please try again.");
     } finally {
@@ -294,15 +308,22 @@ export default function CommissionPage() {
                       </div>
 
                       <div>
-                        <Label htmlFor="refImage" className="text-sm font-medium">Reference Image URL (Optional)</Label>
+                        <Label htmlFor="refImage" className="text-sm font-medium">Reference Image (Optional)</Label>
                         <Input
                           id="refImage"
-                          type="url"
-                          placeholder="https://example.com/inspiration.jpg"
-                          {...register("refImage")}
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0] || null;
+                            setRefImageFile(file);
+                          }}
                           className="mt-1"
                         />
-                        {errors.refImage && <p className="mt-1 text-sm text-red-500">{errors.refImage.message}</p>}
+                        {refImageFile && (
+                          <p className="mt-1 text-sm text-gray-600">
+                            Selected: {refImageFile.name}
+                          </p>
+                        )}
                       </div>
 
                       <Button 
