@@ -28,6 +28,7 @@ export default function DuluwaNavbar() {
             const href = l === "Home" ? "/" :
                         l === "Shop Art" ? "/shop" :
                         l === "About the Artist" ? "/about" :
+                        l === "Contact" ? "/contact" :
                         "/" + l.toLowerCase();
             return (
               <Link
@@ -64,11 +65,11 @@ export default function DuluwaNavbar() {
                 const href = m === "Home" ? "/" :
                               m === "Shop Art" ? "/shop" :
                               m === "About the Artist" ? "/about" :
+                              m === "Contact" ? "/contact" :
                               m === "Cart" ? "/cart" :
                               m === "Profile" ? "/profile" :
                               m === "Login" ? "/login" :
                               m === "Register" ? "/register" :
-                              m === "Contact" ? "#contact" :
                               "/" + m.toLowerCase();
                 return (
                   <li key={m}>

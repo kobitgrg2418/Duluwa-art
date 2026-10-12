@@ -1,0 +1,432 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Palette, Brush, Image, Mail, Phone, MapPin, ArrowRight, CheckCircle, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "sonner";
+import { api } from "@/lib/api";
+import DuluwaNavbar from "@/components/duluwa-navbar";
+import GenZGlassyFooter from "@/components/genz-footer";
+
+const commissionSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  type: z.string().min(1, "Please select an artwork type"),
+  size: z.string().optional(),
+  medium: z.string().optional(),
+  budget: z.string().optional(),
+  message: z.string().min(20, "Please provide more details about your vision"),
+  refImage: z.any().optional(),
+});
+
+type CommissionFormData = z.infer<typeof commissionSchema>;
+
+const artworkTypes = [
+  { value: "portrait", label: "Portrait" },
+  { value: "landscape", label: "Landscape" },
+  { value: "abstract", label: "Abstract" },
+  { value: "still-life", label: "Still Life" },
+  { value: "custom", label: "Custom / Other" },
+];
+
+const sizeOptions = [
+  { value: "", label: "Select size" },
+  { value: "small", label: "Small (up to 12\")" },
+  { value: "medium", label: "Medium (12\" - 24\")" },
+  { value: "large", label: "Large (24\" - 36\")" },
+  { value: "extra-large", label: "Extra Large (36\"+)" },
+];
+
+const mediumOptions = [
+  { value: "", label: "Select medium" },
+  { value: "graphite", label: "Graphite" },
+  { value: "watercolor", label: "Watercolor" },
+];
+
+const budgetOptions = [
+  { value: "", label: "Select budget range" },
+  { value: "3000-10000", label: "Rs 3,000 - Rs 10,000" },
+  { value: "10000-20000", label: "Rs 10,000 - Rs 20,000" },
+  { value: "20000-30000", label: "Rs 20,000 - Rs 30,000" },
+  { value: "30000-40000", label: "Rs 30,000 - Rs 40,000" },
+  { value: "40000+", label: "Rs 40,000+" },
+];
+
+export default function ContactPage() {
+  const [submitting, setSubmitting] = useState(false);
+  const [refImageFile, setRefImageFile] = useState<File | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<CommissionFormData>({
+    resolver: zodResolver(commissionSchema),
+  });
+
+  const onSubmit = async (data: CommissionFormData) => {
+    setSubmitting(true);
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("email", data.email);
+      formData.append("type", data.type);
+      if (data.size) formData.append("size", data.size);
+      if (data.medium) formData.append("medium", data.medium);
+      if (data.budget) formData.append("budget", data.budget);
+      formData.append("message", data.message);
+      if (refImageFile) {
+        formData.append("ref_image", refImageFile);
+      }
+
+      await api.postForm("/commission/", formData);
+      toast.success("Commission request submitted! We'll contact you within 24 hours.");
+      reset();
+      setRefImageFile(null);
+    } catch (error) {
+      toast.error("Failed to submit request. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <main className="site">
+      <DuluwaNavbar />
+
+      {/* Hero Section */}
+      <section className="py-24 px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-4 flex items-center justify-center gap-2"
+          >
+            <Badge className="bg-red-500 text-white hover:bg-red-600 border-0">
+              Get in Touch
+            </Badge>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-6xl md:text-8xl font-bold tracking-tight text-center"
+          >
+            Contact{" "}
+            <span className="text-red-500">Duluwa Art</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-6 text-lg text-gray-600 text-center max-w-3xl mx-auto"
+          >
+            Have questions about our artwork or want to commission a custom piece? We'd love to hear from you.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Contact Information */}
+      <section className="px-8 py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-center p-8 bg-white rounded-xl shadow-sm"
+            >
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
+                <Mail className="h-8 w-8" />
+              </div>
+              <h3 className="font-semibold text-xl mb-2">Email Us</h3>
+              <p className="text-gray-600">info@duluwaart.com</p>
+              <p className="text-gray-600 text-sm mt-1">We respond within 24 hours</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-center p-8 bg-white rounded-xl shadow-sm"
+            >
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
+                <Phone className="h-8 w-8" />
+              </div>
+              <h3 className="font-semibold text-xl mb-2">Call Us</h3>
+              <p className="text-gray-600">+977 9800000000</p>
+              <p className="text-gray-600 text-sm mt-1">Mon-Sat, 9am-6pm</p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-center p-8 bg-white rounded-xl shadow-sm"
+            >
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
+                <MapPin className="h-8 w-8" />
+              </div>
+              <h3 className="font-semibold text-xl mb-2">Visit Us</h3>
+              <p className="text-gray-600">Kathmandu, Nepal</p>
+              <p className="text-gray-600 text-sm mt-1">By appointment only</p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Commission Section */}
+      <section className="px-8 py-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-12">
+            {/* How It Works */}
+            <div className="lg:col-span-1">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <h2 className="text-3xl font-bold mb-8">How It Works</h2>
+                <div className="space-y-8">
+                  {[
+                    { icon: Palette, title: "Share Your Vision", desc: "Tell us about your idea, style preferences, and requirements." },
+                    { icon: Brush, title: "Artist Matching", desc: "We connect you with the perfect artist for your project." },
+                    { icon: Image, title: "Review & Approve", desc: "See sketches and progress, request revisions until it's perfect." },
+                    { icon: CheckCircle, title: "Delivery", desc: "Receive your completed artwork with certificate of authenticity." },
+                  ].map((step, index) => (
+                    <motion.div
+                      key={step.title}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex gap-4"
+                    >
+                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-500/10 text-red-500 shrink-0">
+                        <step.icon className="h-6 w-6" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-lg">{step.title}</p>
+                        <p className="text-sm text-gray-600 mt-1">{step.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Commission Form */}
+            <div className="lg:col-span-2">
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <Card className="bg-white border-0 shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="text-2xl">Commission Request Form</CardTitle>
+                    <CardDescription>Fill out the details below to start your custom artwork journey</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                      <div className="grid sm:grid-cols-2 gap-6">
+                        <div>
+                          <Label htmlFor="name" className="text-sm font-medium">Full Name *</Label>
+                          <Input
+                            id="name"
+                            placeholder="John Doe"
+                            {...register("name")}
+                            className="mt-1"
+                          />
+                          {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
+                        </div>
+                        <div>
+                          <Label htmlFor="email" className="text-sm font-medium">Email Address *</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="john@example.com"
+                            {...register("email")}
+                            className="mt-1"
+                          />
+                          {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="type" className="text-sm font-medium">Artwork Type *</Label>
+                        <Select
+                          onValueChange={(v) => register("type").onChange({ target: { value: v } })}
+                          defaultValue={""}
+                        >
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select artwork type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {artworkTypes.map((type) => (
+                              <SelectItem key={type.value} value={type.value}>
+                                {type.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type.message}</p>}
+                      </div>
+
+                      <div className="grid sm:grid-cols-3 gap-6">
+                        <div>
+                          <Label htmlFor="size" className="text-sm font-medium">Preferred Size</Label>
+                          <Select
+                            onValueChange={(v) => register("size").onChange({ target: { value: v } })}
+                            defaultValue={""}
+                          >
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="Select size" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {sizeOptions.map((size) => (
+                                <SelectItem key={size.value} value={size.value}>
+                                  {size.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label htmlFor="medium" className="text-sm font-medium">Preferred Medium</Label>
+                          <Select
+                            onValueChange={(v) => register("medium").onChange({ target: { value: v } })}
+                            defaultValue={""}
+                          >
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="Select medium" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {mediumOptions.map((medium) => (
+                                <SelectItem key={medium.value} value={medium.value}>
+                                  {medium.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label htmlFor="budget" className="text-sm font-medium">Budget Range</Label>
+                          <Select
+                            onValueChange={(v) => register("budget").onChange({ target: { value: v } })}
+                            defaultValue={""}
+                          >
+                            <SelectTrigger className="mt-1">
+                              <SelectValue placeholder="Select budget" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {budgetOptions.map((budget) => (
+                                <SelectItem key={budget.value} value={budget.value}>
+                                  {budget.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="message" className="text-sm font-medium">Your Vision & Details *</Label>
+                        <Textarea
+                          id="message"
+                          placeholder="Describe your vision, color preferences, mood, inspiration images, intended space, and any other details that will help the artist understand your project..."
+                          rows={6}
+                          {...register("message")}
+                          className="mt-1"
+                        />
+                        {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message.message}</p>}
+                        <p className="mt-1 text-sm text-gray-500">
+                          The more details you provide, the better we can match you with the right artist and create exactly what you envision.
+                        </p>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="refImage" className="text-sm font-medium">Reference Image (Optional)</Label>
+                        <Input
+                          id="refImage"
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0] || null;
+                            setRefImageFile(file);
+                          }}
+                          className="mt-1"
+                        />
+                        {refImageFile && (
+                          <p className="mt-1 text-sm text-gray-600">
+                            Selected: {refImageFile.name}
+                          </p>
+                        )}
+                      </div>
+
+                      <Button
+                        type="submit"
+                        className="w-full sm:w-auto bg-black text-white hover:bg-red-500 hover:text-white transition-colors"
+                        size="lg"
+                        disabled={submitting}
+                      >
+                        {submitting ? "Submitting..." : "Submit Commission Request"}
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </form>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="px-8 py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl font-bold text-center mb-12"
+          >
+            Why Commission with Duluwa?
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: Palette, title: "Curated Artists", desc: "Hand-selected artists with proven expertise and unique styles." },
+              { icon: Brush, title: "Collaborative Process", desc: "You're involved at every stage, from concept to final touches." },
+              { icon: Star, title: "Quality Guaranteed", desc: "Professional materials, archival quality, and authenticity certificates." },
+            ].map((feature) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="text-center p-8 bg-white rounded-xl shadow-sm"
+              >
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
+                  <feature.icon className="h-8 w-8" />
+                </div>
+                <h3 className="font-semibold text-xl mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <GenZGlassyFooter />
+    </main>
+  );
+}
