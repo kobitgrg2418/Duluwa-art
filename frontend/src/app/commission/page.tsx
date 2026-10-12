@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Palette, Brush, Image, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import { Palette, Brush, Image, Mail, Phone, MapPin, ArrowRight, CheckCircle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -48,12 +49,8 @@ const sizeOptions = [
 
 const mediumOptions = [
   { value: "", label: "Select medium" },
-  { value: "oil", label: "Oil Paint" },
-  { value: "acrylic", label: "Acrylic" },
+  { value: "graphite", label: "Graphite" },
   { value: "watercolor", label: "Watercolor" },
-  { value: "mixed", label: "Mixed Media" },
-  { value: "charcoal", label: "Charcoal / Graphite" },
-  { value: "digital", label: "Digital" },
 ];
 
 const budgetOptions = [
@@ -100,10 +97,11 @@ export default function CommissionPage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-4 flex items-center justify-center gap-2 text-red-500"
+            className="mb-4 flex items-center justify-center gap-2"
           >
-            <Sparkles className="h-5 w-5" />
-            <span className="text-sm font-medium uppercase tracking-wider">Custom Artwork</span>
+            <Badge className="bg-red-500 text-white hover:bg-red-600 border-0">
+              Custom Artwork
+            </Badge>
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -143,7 +141,7 @@ export default function CommissionPage() {
                     { icon: Palette, title: "Share Your Vision", desc: "Tell us about your idea, style preferences, and requirements." },
                     { icon: Brush, title: "Artist Matching", desc: "We connect you with the perfect artist for your project." },
                     { icon: Image, title: "Review & Approve", desc: "See sketches and progress, request revisions until it's perfect." },
-                    { icon: Sparkles, title: "Delivery", desc: "Receive your completed artwork with certificate of authenticity." },
+                    { icon: CheckCircle, title: "Delivery", desc: "Receive your completed artwork with certificate of authenticity." },
                   ].map((step, index) => (
                     <motion.div
                       key={step.title}
@@ -340,7 +338,7 @@ export default function CommissionPage() {
             {[
               { icon: Palette, title: "Curated Artists", desc: "Hand-selected artists with proven expertise and unique styles." },
               { icon: Brush, title: "Collaborative Process", desc: "You're involved at every stage, from concept to final touches." },
-              { icon: Sparkles, title: "Quality Guaranteed", desc: "Professional materials, archival quality, and authenticity certificates." },
+              { icon: Star, title: "Quality Guaranteed", desc: "Professional materials, archival quality, and authenticity certificates." },
             ].map((feature) => (
               <motion.div
                 key={feature.title}
