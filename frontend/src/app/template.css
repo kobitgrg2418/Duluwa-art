@@ -432,8 +432,8 @@ a { color: inherit; text-decoration: none; }
   object-fit: cover; 
 }
 
-.footer-art img:first-child { transform: rotate(-10deg); }
-.footer-art img:last-child { transform: rotate(10deg); }
+.footer-art img:first-child { }
+.footer-art img:last-child { }
 
 .footer nav { 
   display: flex; 
@@ -483,7 +483,7 @@ a { color: inherit; text-decoration: none; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes rise { from { opacity: 0; transform: translateY(35px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes reveal { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
-@keyframes float { to { transform: translateY(14px) rotate(1deg); } }
+@keyframes float { to { transform: translateY(14px); } }
 
 @media (max-width: 900px) { 
   .details { display: none; }

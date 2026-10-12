@@ -113,7 +113,7 @@ export function Hero({ heroImage, videoSrc, videoPoster }: HeroProps) {
             </div>
             
             {/* Minimalist background decoration */}
-            <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[120%] h-[110%] bg-muted/30 -z-10 -rotate-3" />
+            <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[120%] h-[110%] bg-muted/30 -z-10" />
           </motion.div>
         </div>
       </div>

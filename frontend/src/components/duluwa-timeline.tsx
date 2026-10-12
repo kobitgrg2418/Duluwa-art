@@ -107,9 +107,8 @@ export default function DuluwaTimeline() {
                   className="relative h-64 w-full md:w-80 bg-[#141414] rounded-sm overflow-hidden flex items-center justify-center border border-white/5 flex-shrink-0"
                 >
                   <motion.span
-                    className="absolute text-8xl font-serif text-white/5 select-none pointer-events-none transform -rotate-12 scale-150"
+                    className="absolute text-8xl font-serif text-white/5 select-none pointer-events-none transform scale-150"
                     animate={{
-                      rotate: [-12, -10, -12],
                       scale: [1.5, 1.6, 1.5],
                     }}
                     transition={{
