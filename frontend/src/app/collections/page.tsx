@@ -159,6 +159,30 @@ export default function CollectionsPage() {
         </motion.div>
       </section>
 
+      {/* Stats Section */}
+      <section className="px-6 md:px-12 py-20 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {[
+            { label: "Artworks", value: "500+" },
+            { label: "Artists", value: "45+" },
+            { label: "Collections", value: "12" },
+            { label: "Years", value: "15+" },
+          ].map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="text-center"
+            >
+              <div className="text-4xl md:text-5xl font-light text-zinc-900 mb-2">{stat.value}</div>
+              <div className="text-xs uppercase tracking-widest text-zinc-400">{stat.label}</div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* Masonry Grid */}
       <section className="px-6 md:px-12 pb-24 max-w-7xl mx-auto">
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-5">
@@ -180,6 +204,33 @@ export default function CollectionsPage() {
               />
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* Featured CTA Section */}
+      <section className="px-6 md:px-12 py-20 bg-zinc-900 text-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-xs uppercase tracking-widest text-red-500 mb-4">// Commission Work</p>
+            <h2 className="text-3xl md:text-5xl font-light tracking-tight mb-6">
+              Can't Find What You're Looking For?
+            </h2>
+            <p className="text-lg text-zinc-400 max-w-2xl mx-auto mb-8">
+              Work directly with our artists to create a bespoke piece that captures your unique vision.
+              From concept to completion, we're here to bring your dream artwork to life.
+            </p>
+            <Link
+              href="/commission"
+              className="inline-flex items-center gap-2 bg-white text-zinc-900 px-8 py-4 rounded-full font-medium hover:bg-red-500 hover:text-white transition-colors"
+            >
+              Start Your Commission
+              <span>→</span>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
