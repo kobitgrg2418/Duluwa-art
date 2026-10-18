@@ -669,13 +669,238 @@ a { color: inherit; text-decoration: none; }
   .work-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .event-row {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .event-meta {
     text-align: left;
+  }
+}
+
+/* About Page Styles */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--nav) + 80px) 28px 80px;
+  background: radial-gradient(120% 90% at 55% 20%, #2b3236, #07090a 70%);
+  color: #fff;
+  position: relative;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 900px;
+}
+
+.hero-tag {
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-size: clamp(60px, 12vw, 180px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+  margin-bottom: 32px;
+}
+
+.hero-subtitle {
+  font-size: clamp(18px, 3vw, 24px);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.artist-story-section {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.story-image {
+  position: relative;
+}
+
+.story-content {
+  font-size: clamp(18px, 2.5vw, 22px);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.section-title {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  margin-bottom: 32px;
+  color: var(--ink);
+}
+
+.story-text {
+  margin-bottom: 24px;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 16px 32px;
+  background: #ee3a35;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: #c92b1e;
+}
+
+.btn-outline {
+  display: inline-block;
+  padding: 16px 32px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-outline:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.mission-section {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.section-heading-title {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  text-align: center;
+  color: var(--paper);
+}
+
+.value-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.value-number {
+  font-size: 80px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.1);
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  line-height: 1;
+}
+
+.value-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--paper);
+}
+
+.value-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.stats-section {
+  background: var(--paper);
+  color: var(--ink);
+  padding: 120px 28px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-family: "JetBrains Mono", monospace;
+  font-size: clamp(48px, 8vw, 80px);
+  font-weight: 500;
+  color: #ee3a35;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.cta-section {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.cta-title {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  margin-bottom: 24px;
+  color: var(--paper);
+}
+
+.cta-text {
+  font-size: clamp(18px, 3vw, 24px);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 48px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: calc(var(--nav) + 60px) 16px 60px;
+  }
+
+  .artist-story-section .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-section .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-section .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .value-card {
+    padding: 32px;
+  }
+
+  .cta-section .flex {
+    flex-direction: column;
+    gap: 16px;
   }
 }
