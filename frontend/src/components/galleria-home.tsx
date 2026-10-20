@@ -202,10 +202,7 @@ export default function GalleriaHome() {
         <nav className={`g-nav ${mobileMenuOpen ? 'is-open' : ''}`}>
           <Link href="/" onClick={() => setMobileMenuOpen(false)}>Home</Link>
           <Link href="/collections" onClick={() => setMobileMenuOpen(false)}>Collections</Link>
-          <Link href="/shop" onClick={() => setMobileMenuOpen(false)}>Shop Art</Link>
           <Link href="/commission" onClick={() => setMobileMenuOpen(false)}>Commission</Link>
-          <Link href="/about" onClick={() => setMobileMenuOpen(false)}>About</Link>
-          <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
           <Link
             href="/commission"
             className="g-nav-mobile-cta"
@@ -539,10 +536,7 @@ export default function GalleriaHome() {
           <div>
             <Link href="/">Home</Link>
             <Link href="/collections">Collections</Link>
-            <Link href="/shop">Shop Art</Link>
             <Link href="/commission">Commission</Link>
-            <Link href="/about">About</Link>
-            <Link href="/contact">Contact</Link>
           </div>
           <span>&copy; {new Date().getFullYear()} DULUWA ART GALLERY. ALL RIGHTS RESERVED.</span>
         </div>

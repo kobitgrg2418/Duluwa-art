@@ -1,22 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Palette, Brush, Image, Mail, Phone, MapPin, ArrowRight, CheckCircle, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { api } from "@/lib/api";
-import DuluwaNavbar from "@/components/duluwa-navbar";
-import GenZGlassyFooter from "@/components/genz-footer";
+import "@/app/template.css";
 
 const commissionSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -102,285 +93,310 @@ export default function CommissionPage() {
   };
 
   return (
-    <main className="site">
-      <DuluwaNavbar />
-      
-      {/* Hero Section */}
-      <section className="py-24 px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-4 flex items-center justify-center gap-2"
-          >
-            <Badge className="bg-red-500 text-white hover:bg-red-600 border-0">
-              Custom Artwork
-            </Badge>
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-6xl md:text-8xl font-bold tracking-tight text-center"
-          >
-            Commission Your{" "}
-            <span className="text-red-500">Masterpiece</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-6 text-lg text-gray-600 text-center max-w-3xl mx-auto"
-          >
-            Work directly with our talented artists to create a one-of-a-kind piece tailored to your vision,
-            space, and story.
-          </motion.p>
+    <div className="galleria">
+      {/* HEADER */}
+      <header className="g-header">
+        <Link href="/" className="g-logo">
+          DULUWA-ART
+        </Link>
+
+        <nav className="g-nav">
+          <Link href="/">Home</Link>
+          <Link href="/collections">Collections</Link>
+          <Link href="/shop">Shop Art</Link>
+          <Link href="/commission" className="active">Commission</Link>
+          <Link href="/about">About</Link>
+          <Link href="/contact">Contact</Link>
+        </nav>
+
+        <Link href="/commission" className="g-header-cta">
+          <span>Commission Art</span>
+          <span>&rarr;</span>
+        </Link>
+      </header>
+
+      {/* HERO */}
+      <section className="g-hero">
+        <div className="g-hero-copy">
+          <div className="g-eyebrow">
+            <span>BESPOKE COMMISSIONS</span>
+            <span>&bull;</span>
+            <span>NEPAL</span>
+          </div>
+          <h1 className="g-hero-title">
+            Commission a<br />Custom Piece.
+          </h1>
+          <div className="g-hero-bottom">
+            <p className="g-hero-description">
+              Work directly with our artists to create a bespoke piece that captures your unique vision and personal story.
+            </p>
+            <a href="#form" className="g-round-link">
+              <span>Start</span>
+              <span>Now &rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="g-hero-image-wrap">
+          <img
+            src="/art/dancer.jpeg"
+            alt="Commission Artwork"
+          />
+          <div className="g-image-stamp">
+            <i>&#9670;</i>
+            <span>DULUWA</span>
+          </div>
+        </div>
+
+        <div className="g-hero-side-note">
+          BESPOKE WORK
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="px-8 py-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-12">
-            {/* How It Works */}
-            <div className="lg:col-span-1">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <h2 className="text-3xl font-bold mb-8">How It Works</h2>
-                <div className="space-y-8">
-                  {[
-                    { icon: Palette, title: "Share Your Vision", desc: "Tell us about your idea, style preferences, and requirements." },
-                    { icon: Brush, title: "Artist Matching", desc: "We connect you with the perfect artist for your project." },
-                    { icon: Image, title: "Review & Approve", desc: "See sketches and progress, request revisions until it's perfect." },
-                    { icon: CheckCircle, title: "Delivery", desc: "Receive your completed artwork with certificate of authenticity." },
-                  ].map((step, index) => (
-                    <motion.div
-                      key={step.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex gap-4"
-                    >
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-500/10 text-red-500 shrink-0">
-                        <step.icon className="h-6 w-6" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-lg">{step.title}</p>
-                        <p className="text-sm text-gray-600 mt-1">{step.desc}</p>
-                      </div>
-                    </motion.div>
+      {/* MARQUEE */}
+      <div className="g-marquee">
+        <div className="g-marquee-track">
+          <span>CUSTOM PORTRAITS</span>
+          <span>LANDSCAPE COMMISSIONS</span>
+          <span>HERITAGE PIECES</span>
+          <span>GIFT ARTWORK</span>
+          <span>COLLECTOR EDITIONS</span>
+          <span>CUSTOM PORTRAITS</span>
+          <span>LANDSCAPE COMMISSIONS</span>
+          <span>HERITAGE PIECES</span>
+        </div>
+      </div>
+
+      {/* HOW IT WORKS */}
+      <section className="g-section">
+        <div className="g-section-label">
+          <span>THE PROCESS</span>
+          <span>[ 4 STEPS ]</span>
+        </div>
+
+        <div className="g-about-grid">
+          <h2 className="g-display">
+            How It Works
+          </h2>
+
+          <div className="g-about-copy">
+            <div className="space-y-8">
+              <div className="flex gap-6">
+                <div className="g-stats">
+                  <strong>01</strong>
+                </div>
+                <div>
+                  <h3 className="text-xl font-medium mb-2">Share Your Vision</h3>
+                  <p className="text-sm text-muted-foreground">Tell us about your idea, style preferences, and requirements.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-6">
+                <div className="g-stats">
+                  <strong>02</strong>
+                </div>
+                <div>
+                  <h3 className="text-xl font-medium mb-2">Artist Matching</h3>
+                  <p className="text-sm text-muted-foreground">We connect you with the perfect artist for your project.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-6">
+                <div className="g-stats">
+                  <strong>03</strong>
+                </div>
+                <div>
+                  <h3 className="text-xl font-medium mb-2">Review & Approve</h3>
+                  <p className="text-sm text-muted-foreground">See sketches and progress, request revisions until it's perfect.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-6">
+                <div className="g-stats">
+                  <strong>04</strong>
+                </div>
+                <div>
+                  <h3 className="text-xl font-medium mb-2">Delivery</h3>
+                  <p className="text-sm text-muted-foreground">Receive your completed artwork with certificate of authenticity.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* COMMISSION FORM */}
+      <section id="form" className="g-section">
+        <div className="g-section-label">
+          <span>START YOUR COMMISSION</span>
+          <span>[ FILL THE FORM ]</span>
+        </div>
+
+        <div className="g-about-grid">
+          <h2 className="g-display">
+            Tell Us Your<br />Vision.
+          </h2>
+
+          <div className="g-about-copy">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs uppercase tracking-widest mb-2">Full Name *</label>
+                  <input
+                    type="text"
+                    placeholder="John Doe"
+                    {...register("name")}
+                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                  />
+                  {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest mb-2">Email Address *</label>
+                  <input
+                    type="email"
+                    placeholder="john@example.com"
+                    {...register("email")}
+                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                  />
+                  {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest mb-2">Artwork Type *</label>
+                <select
+                  {...register("type")}
+                  className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                >
+                  <option value="">Select artwork type</option>
+                  {artworkTypes.map((type) => (
+                    <option key={type.value} value={type.value}>
+                      {type.label}
+                    </option>
                   ))}
+                </select>
+                {errors.type && <p className="mt-1 text-xs text-red-500">{errors.type.message}</p>}
+              </div>
+
+              <div className="grid grid-cols-3 gap-6">
+                <div>
+                  <label className="block text-xs uppercase tracking-widest mb-2">Preferred Size</label>
+                  <select
+                    {...register("size")}
+                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                  >
+                    {sizeOptions.map((size) => (
+                      <option key={size.value} value={size.value}>
+                        {size.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              </motion.div>
-            </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest mb-2">Preferred Medium</label>
+                  <select
+                    {...register("medium")}
+                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                  >
+                    {mediumOptions.map((medium) => (
+                      <option key={medium.value} value={medium.value}>
+                        {medium.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest mb-2">Budget Range</label>
+                  <select
+                    {...register("budget")}
+                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                  >
+                    {budgetOptions.map((budget) => (
+                      <option key={budget.value} value={budget.value}>
+                        {budget.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
 
-            {/* Commission Form */}
-            <div className="lg:col-span-2">
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
+              <div>
+                <label className="block text-xs uppercase tracking-widest mb-2">Your Vision & Details *</label>
+                <textarea
+                  placeholder="Describe your vision, color preferences, mood, inspiration images, intended space, and any other details..."
+                  rows={6}
+                  {...register("message")}
+                  className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors resize-none"
+                />
+                {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>}
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest mb-2">Reference Image (Optional)</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] || null;
+                    setRefImageFile(file);
+                  }}
+                  className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                />
+                {refImageFile && (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Selected: {refImageFile.name}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="g-button g-button-dark"
               >
-                <Card className="bg-white border-0 shadow-xl">
-                  <CardHeader>
-                    <CardTitle className="text-2xl">Commission Request Form</CardTitle>
-                    <CardDescription>Fill out the details below to start your custom artwork journey</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                      <div className="grid sm:grid-cols-2 gap-6">
-                        <div>
-                          <Label htmlFor="name" className="text-sm font-medium">Full Name *</Label>
-                          <Input
-                            id="name"
-                            placeholder="John Doe"
-                            {...register("name")}
-                            className="mt-1"
-                          />
-                          {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
-                        </div>
-                        <div>
-                          <Label htmlFor="email" className="text-sm font-medium">Email Address *</Label>
-                          <Input
-                            id="email"
-                            type="email"
-                            placeholder="john@example.com"
-                            {...register("email")}
-                            className="mt-1"
-                          />
-                          {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
-                        </div>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="type" className="text-sm font-medium">Artwork Type *</Label>
-                        <Select
-                          onValueChange={(v) => register("type").onChange({ target: { value: v } })}
-                          defaultValue={""}
-                        >
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select artwork type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {artworkTypes.map((type) => (
-                              <SelectItem key={type.value} value={type.value}>
-                                {type.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type.message}</p>}
-                      </div>
-
-                      <div className="grid sm:grid-cols-3 gap-6">
-                        <div>
-                          <Label htmlFor="size" className="text-sm font-medium">Preferred Size</Label>
-                          <Select
-                            onValueChange={(v) => register("size").onChange({ target: { value: v } })}
-                            defaultValue={""}
-                          >
-                            <SelectTrigger className="mt-1">
-                              <SelectValue placeholder="Select size" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {sizeOptions.map((size) => (
-                                <SelectItem key={size.value} value={size.value}>
-                                  {size.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label htmlFor="medium" className="text-sm font-medium">Preferred Medium</Label>
-                          <Select
-                            onValueChange={(v) => register("medium").onChange({ target: { value: v } })}
-                            defaultValue={""}
-                          >
-                            <SelectTrigger className="mt-1">
-                              <SelectValue placeholder="Select medium" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {mediumOptions.map((medium) => (
-                                <SelectItem key={medium.value} value={medium.value}>
-                                  {medium.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label htmlFor="budget" className="text-sm font-medium">Budget Range</Label>
-                          <Select
-                            onValueChange={(v) => register("budget").onChange({ target: { value: v } })}
-                            defaultValue={""}
-                          >
-                            <SelectTrigger className="mt-1">
-                              <SelectValue placeholder="Select budget" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {budgetOptions.map((budget) => (
-                                <SelectItem key={budget.value} value={budget.value}>
-                                  {budget.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="message" className="text-sm font-medium">Your Vision & Details *</Label>
-                        <Textarea
-                          id="message"
-                          placeholder="Describe your vision, color preferences, mood, inspiration images, intended space, and any other details that will help the artist understand your project..."
-                          rows={6}
-                          {...register("message")}
-                          className="mt-1"
-                        />
-                        {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message.message}</p>}
-                        <p className="mt-1 text-sm text-gray-500">
-                          The more details you provide, the better we can match you with the right artist and create exactly what you envision.
-                        </p>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="refImage" className="text-sm font-medium">Reference Image (Optional)</Label>
-                        <Input
-                          id="refImage"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0] || null;
-                            setRefImageFile(file);
-                          }}
-                          className="mt-1"
-                        />
-                        {refImageFile && (
-                          <p className="mt-1 text-sm text-gray-600">
-                            Selected: {refImageFile.name}
-                          </p>
-                        )}
-                      </div>
-
-                      <Button 
-                        type="submit" 
-                        className="w-full sm:w-auto bg-black text-white hover:bg-red-500 hover:text-white transition-colors" 
-                        size="lg" 
-                        disabled={submitting}
-                      >
-                        {submitting ? "Submitting..." : "Submit Commission Request"}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </div>
+                <span>{submitting ? "Submitting..." : "Submit Commission Request"}</span>
+                <span>&rarr;</span>
+              </button>
+            </form>
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="px-8 py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl font-bold text-center mb-12"
+      {/* FOOTER */}
+      <footer className="g-footer">
+        <div className="g-footer-top">
+          <div>
+            <div className="g-footer-logo">
+              DULUWA-ART
+            </div>
+            <p>
+              Preserving mountain souls through water & pigment.
+            </p>
+          </div>
+          <a
+            href="#"
+            className="g-back-top"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
           >
-            Why Commission with Duluwa?
-          </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: Palette, title: "Curated Artists", desc: "Hand-selected artists with proven expertise and unique styles." },
-              { icon: Brush, title: "Collaborative Process", desc: "You're involved at every stage, from concept to final touches." },
-              { icon: Star, title: "Quality Guaranteed", desc: "Professional materials, archival quality, and authenticity certificates." },
-            ].map((feature) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="text-center p-8 bg-white rounded-xl shadow-sm"
-              >
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
-                  <feature.icon className="h-8 w-8" />
-                </div>
-                <h3 className="font-semibold text-xl mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.desc}</p>
-              </motion.div>
-            ))}
-          </div>
+            BACK TO TOP &uarr;
+          </a>
         </div>
-      </section>
 
-      <GenZGlassyFooter />
-    </main>
+        <div className="g-footer-bottom">
+          <div>
+            <Link href="/">Home</Link>
+            <Link href="/collections">Collections</Link>
+            <Link href="/shop">Shop Art</Link>
+            <Link href="/commission">Commission</Link>
+            <Link href="/about">About</Link>
+            <Link href="/contact">Contact</Link>
+          </div>
+          <span>&copy; {new Date().getFullYear()} DULUWA ART GALLERY. ALL RIGHTS RESERVED.</span>
+        </div>
+      </footer>
+    </div>
   );
 }
