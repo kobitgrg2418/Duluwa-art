@@ -103,10 +103,7 @@ export default function CommissionPage() {
         <nav className="g-nav">
           <Link href="/">Home</Link>
           <Link href="/collections">Collections</Link>
-          <Link href="/shop">Shop Art</Link>
           <Link href="/commission" className="active">Commission</Link>
-          <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
         </nav>
 
         <Link href="/commission" className="g-header-cta">
@@ -389,10 +386,7 @@ export default function CommissionPage() {
           <div>
             <Link href="/">Home</Link>
             <Link href="/collections">Collections</Link>
-            <Link href="/shop">Shop Art</Link>
             <Link href="/commission">Commission</Link>
-            <Link href="/about">About</Link>
-            <Link href="/contact">Contact</Link>
           </div>
           <span>&copy; {new Date().getFullYear()} DULUWA ART GALLERY. ALL RIGHTS RESERVED.</span>
         </div>

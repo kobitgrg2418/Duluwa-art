@@ -55,10 +55,7 @@ export default function CollectionsPage() {
         <nav className="g-nav">
           <Link href="/">Home</Link>
           <Link href="/collections" className="active">Collections</Link>
-          <Link href="/shop">Shop Art</Link>
           <Link href="/commission">Commission</Link>
-          <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
         </nav>
 
         <Link href="/commission" className="g-header-cta">
@@ -200,10 +197,7 @@ export default function CollectionsPage() {
           <div>
             <Link href="/">Home</Link>
             <Link href="/collections">Collections</Link>
-            <Link href="/shop">Shop Art</Link>
             <Link href="/commission">Commission</Link>
-            <Link href="/about">About</Link>
-            <Link href="/contact">Contact</Link>
           </div>
           <span>&copy; {new Date().getFullYear()} DULUWA ART GALLERY. ALL RIGHTS RESERVED.</span>
         </div>
