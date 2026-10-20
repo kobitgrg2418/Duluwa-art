@@ -245,7 +245,7 @@ export function ProcessSection({ steps }: ProcessSectionProps) {
           className="mt-32 text-center"
         >
           <div className="max-w-xl mx-auto p-8 border border-muted rounded-3xl bg-background/80 backdrop-blur-sm">
-            <p className="text-lg italic text-muted-foreground leading-relaxed">
+            <p className="text-lg text-muted-foreground leading-relaxed">
               &ldquo;Patience, precision, and knowing when to stop&rdquo;
             </p>
           </div>

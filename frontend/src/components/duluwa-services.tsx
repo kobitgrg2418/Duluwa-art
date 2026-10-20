@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-
 import { useRouter } from "next/navigation";
 
 const S = [
-  { t: "Commissions", c: "#2b3236", d: "Custom watercolor artwork tailored to your vision, capturing the essence of Himalayan landscapes and cultural heritage.", href: "/commissions" },
+  { t: "Commissions", c: "#2b3236", d: "Custom watercolor artwork tailored to your vision, capturing the essence of Himalayan landscapes and cultural heritage.", href: "/commission" },
   { t: "Restoration", c: "#5a5a5a", d: "Expert restoration services for vintage and damaged watercolor paintings, preserving artistic legacy for generations.", href: "/restoration" },
   { t: "Exhibitions", c: "#3a3a3a", d: "Curated gallery exhibitions showcasing emerging and established artists, bringing fine art to diverse audiences.", href: "/exhibitions" },
   { t: "Art Consulting", c: "#1a1a1a", d: "Professional guidance for collectors and institutions on acquisitions, collections management, and art investment.", href: "#contact" },

@@ -1,61 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from 'react'
-import GenZGlassyFooter from '@/components/genz-footer'
-import DuluwaNavbar from '@/components/duluwa-navbar'
-import DuluwaHero from '@/components/duluwa-hero'
-import DuluwaWork from '@/components/duluwa-work'
-import DuluwaTimeline from '@/components/duluwa-timeline'
-import DuluwaArtistStory from '@/components/duluwa-artist-story'
-import DuluwaServices from '@/components/duluwa-services'
-import DuluwaStats from '@/components/duluwa-stats'
-import DuluwaContact from '@/components/duluwa-contact'
+import GalleriaHome from "@/components/galleria-home";
 
 export default function TemplatePage() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [dark, setDark] = useState(false)
-  const [cursor, setCursor] = useState({ x: -100, y: -100 })
-
-  useEffect(() => {
-    const move = (event: MouseEvent) => setCursor({ x: event.clientX, y: event.clientY })
-    window.addEventListener('mousemove', move)
-    return () => window.removeEventListener('mousemove', move)
-  }, [])
-
-  return (
-    <>
-      {/* Duluwa Navbar */}
-      <DuluwaNavbar />
-
-      <main className={dark ? 'site dark' : 'site'}>
-        {/* Custom cursor */}
-        <div className="cursor" style={{ left: cursor.x, top: cursor.y }} />
-
-      {/* Duluwa Hero */}
-      <DuluwaHero />
-
-      {/* Duluwa Work Section */}
-      <DuluwaWork />
-
-      {/* Duluwa Timeline */}
-      <DuluwaTimeline />
-
-      {/* Duluwa Artist Story */}
-      <DuluwaArtistStory />
-
-      {/* Duluwa Services */}
-      <DuluwaServices />
-
-      {/* Duluwa Stats */}
-      <DuluwaStats />
-
-      {/* Duluwa Contact */}
-      <DuluwaContact />
-
-      </main>
-
-      {/* Footer */}
-      <GenZGlassyFooter />
-    </>
-  )
+  return <GalleriaHome />;
 }

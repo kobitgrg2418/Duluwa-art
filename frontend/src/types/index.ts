@@ -14,6 +14,7 @@ export interface Collection {
   title: string;
   count: number;
   hue: number;
+  category?: string;
   blurb: string;
   cover: string;
   artworks?: Artwork[];

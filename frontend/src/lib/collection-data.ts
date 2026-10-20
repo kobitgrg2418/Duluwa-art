@@ -9,6 +9,7 @@ const collections: Collection[] = [
     title: "HIMALAYAN LANDSCAPES",
     count: 3,
     hue: 200,
+    category: "himalaya",
     blurb:
       "First light on snow, monsoon valleys and the long blue distance of the high passes, held in transparent washes.",
     cover: "/art/IMG_20261010_0001.jpg",
@@ -21,6 +22,7 @@ const collections: Collection[] = [
     title: "CULTURAL HERITAGE",
     count: 3,
     hue: 150,
+    category: "culture",
     blurb:
       "Festivals, prayer flags and the quiet rituals of the courtyards of Kathmandu.",
     cover: "/art/IMG_20261010_0002.jpg",
@@ -33,6 +35,7 @@ const collections: Collection[] = [
     title: "PORTRAIT STUDIES",
     count: 3,
     hue: 30,
+    category: "portrait",
     blurb:
       "Faces weathered by altitude and devotion — studies in patience and pigment.",
     cover: "/art/IMG_20261010_0003.jpg",
@@ -45,6 +48,7 @@ const collections: Collection[] = [
     title: "WILDLIFE SERIES",
     count: 3,
     hue: 100,
+    category: "wildlife",
     blurb:
       "The tiger, the danphe, the river otter — each caught in a single held breath of water.",
     cover: "/art/IMG_20261010_0004.jpg",
@@ -57,6 +61,7 @@ const collections: Collection[] = [
     title: "LIFESTYLE MOMENTS",
     count: 3,
     hue: 55,
+    category: "himalaya",
     blurb:
       "Tea fields, terraced farms and the slow choreography of mountain daily life.",
     cover: "/art/IMG_20261010_0005.jpg",
@@ -69,6 +74,7 @@ const collections: Collection[] = [
     title: "QUICK SKETCHES",
     count: 3,
     hue: 250,
+    category: "sketches",
     blurb:
       "Loose, fast, unguarded — the notebook where every finished work begins.",
     cover: "/art/IMG_20261010_0006.jpg",
@@ -81,6 +87,7 @@ const collections: Collection[] = [
     title: "MOUNTAIN VISTAS",
     count: 2,
     hue: 180,
+    category: "himalaya",
     blurb:
       "Panoramic views of Nepal's stunning mountain ranges captured in delicate watercolor washes.",
     cover: "/art/IMG_20261010_0007.jpg",
@@ -93,6 +100,7 @@ const collections: Collection[] = [
     title: "TEMPLE ART",
     count: 2,
     hue: 45,
+    category: "culture",
     blurb:
       "Sacred spaces and spiritual moments from ancient temples and monasteries.",
     cover: "/art/IMG_20261010_0008.jpg",
@@ -105,6 +113,7 @@ const collections: Collection[] = [
     title: "RURAL LIFE",
     count: 2,
     hue: 85,
+    category: "himalaya",
     blurb:
       "Authentic glimpses into village life and traditional farming communities.",
     cover: "/art/IMG_20261010_0009.jpg",
@@ -117,6 +126,7 @@ const collections: Collection[] = [
     title: "NATURE STUDIES",
     count: 2,
     hue: 120,
+    category: "wildlife",
     blurb:
       "Intimate observations of the natural world through detailed graphite and watercolor.",
     cover: "/art/IMG_20230519_0002.jpeg",
@@ -129,6 +139,7 @@ const collections: Collection[] = [
     title: "BIRDS OF NEPAL",
     count: 2,
     hue: 280,
+    category: "wildlife",
     blurb:
       "Colorful avian species native to the Himalayan region, rendered with precision.",
     cover: "/art/IMG_20230521_0003.jpeg",
@@ -141,6 +152,7 @@ const collections: Collection[] = [
     title: "RIVER SCENES",
     count: 2,
     hue: 190,
+    category: "wildlife",
     blurb:
       "Flowing waters and riverbank life captured in fluid watercolor techniques.",
     cover: "/art/IMG_20230610_0005.jpeg",
@@ -153,6 +165,7 @@ const collections: Collection[] = [
     title: "TEA GARDENS",
     count: 2,
     hue: 95,
+    category: "himalaya",
     blurb:
       "Lush green tea estates of Ilam and the artistry of tea cultivation.",
     cover: "/art/IMG_20261005_0001.jpeg",
@@ -165,6 +178,7 @@ const collections: Collection[] = [
     title: "VILLAGE SCENES",
     count: 2,
     hue: 65,
+    category: "himalaya",
     blurb:
       "Traditional architecture and village life in remote mountain communities.",
     cover: "/art/IMG_20261005_0002.jpeg",
@@ -177,6 +191,7 @@ const collections: Collection[] = [
     title: "HARVEST TIME",
     count: 2,
     hue: 50,
+    category: "himalaya",
     blurb:
       "Golden moments of agricultural work and seasonal celebrations.",
     cover: "/art/IMG_20261006_0001.jpg",
@@ -189,6 +204,7 @@ const collections: Collection[] = [
     title: "MONSOON MOODS",
     count: 1,
     hue: 220,
+    category: "himalaya",
     blurb:
       "Atmospheric studies of rain, clouds and the transformation of landscapes.",
     cover: "/art/10881B7E-C6A1-44E2-8932-59B8F6C3C18A.JPEG",
@@ -201,6 +217,7 @@ const collections: Collection[] = [
     title: "SPIRITUAL JOURNEYS",
     count: 1,
     hue: 35,
+    category: "culture",
     blurb:
       "Personal reflections on faith, devotion and sacred traditions.",
     cover: "/art/A16277BC-5E32-4E2D-B061-6F25C3935CED.jpg",
@@ -213,6 +230,7 @@ const collections: Collection[] = [
     title: "MARKET LIFE",
     count: 1,
     hue: 75,
+    category: "sketches",
     blurb:
       "Vibrant scenes from local markets and the bustle of everyday commerce.",
     cover: "/art/IMG_4559.jpg",

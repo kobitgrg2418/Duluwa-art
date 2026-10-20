@@ -12,12 +12,20 @@ const items = [
   { n: "Sacred Mountains", c: "linear-gradient(160deg,#1a1a1a,#0a0a0a)", s: "span 7", image: "/assets/auth-brushes.png" },
 ];
 
-function Card({ n, c, s, image, index }) {
+interface CardProps {
+  n: string;
+  c: string;
+  s: string;
+  image: string;
+  index: number;
+}
+
+function Card({ n, c, s, image, index }: CardProps) {
   const [hover, setHover] = useState(false);
   const x = useMotionValue(0), y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 300, damping: 30, mass: 0.6 });
   const sy = useSpring(y, { stiffness: 300, damping: 30, mass: 0.6 });
-  const move = (e) => { const r = e.currentTarget.getBoundingClientRect(); x.set(e.clientX - r.left - 28); y.set(e.clientY - r.top - 28); };
+  const move = (e: React.MouseEvent<HTMLAnchorElement>) => { const r = e.currentTarget.getBoundingClientRect(); x.set(e.clientX - r.left - 28); y.set(e.clientY - r.top - 28); };
   return (
     <motion.a href="#" className="duluwa-card" style={{ gridColumn: s }} onMouseMove={move}
       onHoverStart={() => setHover(true)} onHoverEnd={() => setHover(false)}

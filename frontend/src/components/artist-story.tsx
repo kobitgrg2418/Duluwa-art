@@ -100,7 +100,7 @@ export function ArtistStory({ artworks }: ArtistStoryProps) {
               </p>
 
               <blockquote className="border-l-2 border-muted-foreground/30 pl-6 py-2">
-                <p className="text-foreground font-medium italic">
+                <p className="text-foreground font-medium">
                   &ldquo;Sketching, drawing, painting — I never chose this path. It simply never let me choose another.&rdquo;
                 </p>
               </blockquote>

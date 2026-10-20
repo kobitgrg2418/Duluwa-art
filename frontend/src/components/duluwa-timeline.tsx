@@ -121,7 +121,7 @@ export default function DuluwaTimeline() {
                   </motion.span>
 
                   <motion.span
-                    className="relative text-7xl font-serif italic text-white/90 tracking-tighter transition-transform duration-500 group-hover:scale-105"
+                    className="relative text-7xl font-serif text-white/90 tracking-tighter transition-transform duration-500 group-hover:scale-105"
                     whileHover={{ scale: 1.1, rotate: 2 }}
                     transition={{ duration: 0.3 }}
                   >
