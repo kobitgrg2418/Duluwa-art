@@ -2,16 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
+import RevixNavbar from "@/components/revix-navbar";
+import RevixFooter from "@/components/revix-footer";
 import { Collection } from "@/types";
 import { collectionData as mockCollections } from "@/lib/collection-data";
-import "@/app/template.css";
-
-
 
 export default function CollectionsPage() {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
     fetchCollections();
@@ -30,178 +31,135 @@ export default function CollectionsPage() {
     }
   };
 
-  const filteredCollections = selectedCategory === 'all'
-    ? collections
-    : collections.filter(c => c.category === selectedCategory);
+  const categories = [
+    { key: "all", label: "All Collections" },
+    { key: "himalaya", label: "Himalayan Peaks" },
+    { key: "culture", label: "Culture & Living Traditions" },
+    { key: "portrait", label: "Mountain Portraits" },
+    { key: "sketch", label: "Ink & Field Studies" },
+  ];
 
-  if (loading) {
-    return (
-      <div className="galleria">
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="g-eyebrow">Loading collections...</div>
-        </div>
-      </div>
-    );
-  }
+  const filteredCollections = selectedCategory === "all"
+    ? collections
+    : collections.filter((c) => c.category === selectedCategory || c.id === selectedCategory);
 
   return (
-    <div className="galleria">
-      {/* HEADER */}
-      <header className="g-header">
-        <Link href="/" className="g-logo">
-          DULUWA-ART
-        </Link>
+    <div className="bg-[#fcfcfc] text-black min-h-screen">
+      <RevixNavbar />
 
-        <nav className="g-nav">
-          <Link href="/">Home</Link>
-          <Link href="/collections" className="active">Collections</Link>
-          <Link href="/commission">Commission</Link>
-        </nav>
-
-        <Link href="/commission" className="g-header-cta">
-          <span>Commission Art</span>
-          <span>&rarr;</span>
-        </Link>
-      </header>
-
-      {/* HERO */}
-      <section className="g-hero">
-        <div className="g-hero-copy">
-          <div className="g-eyebrow">
-            <span>FINE ART COLLECTIONS</span>
-            <span>&bull;</span>
-            <span>NEPAL</span>
+      {/* Hero Header */}
+      <section className="rx-hero">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 pb-12 border-b border-black/10">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-black/50 mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#ff2a2a]"></span>
+              Curated Series
+            </div>
+            <h1 className="rx-hero-title">
+              Exhibitions &amp;<br />
+              Collections
+            </h1>
           </div>
-          <h1 className="g-hero-title">
-            Curated Works<br />of Mountain Soul.
-          </h1>
-          <div className="g-hero-bottom">
-            <p className="g-hero-description">
-              Explore our signature watercolor collections capturing Himalayan landscapes, cultural heritage, and wildlife studies.
+          <div className="max-w-md">
+            <p className="rx-hero-sub mb-6">
+              Explore thematic bodies of work exploring Himalayan geography, cultural ceremonies,
+              and atmospheric mountain studies.
             </p>
-            <Link href="/shop" className="g-round-link">
-              <span>Shop</span>
-              <span>Art &rarr;</span>
-            </Link>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/shop" className="rx-btn rx-btn-black">
+                Browse All Artworks <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link href="/commission" className="rx-btn rx-btn-outline">
+                Request Commission
+              </Link>
+            </div>
           </div>
         </div>
 
-        <div className="g-hero-image-wrap">
-          <img
-            src="/art/drawing-08.jpg"
-            alt="Himalayan Watercolor Collection"
-          />
-          <div className="g-image-stamp">
-            <i>&#9670;</i>
-            <span>DULUWA</span>
-          </div>
-        </div>
-
-        <div className="g-hero-side-note">
-          {collections.length} COLLECTIONS
-        </div>
-      </section>
-
-      {/* MARQUEE */}
-      <div className="g-marquee">
-        <div className="g-marquee-track">
-          <span>HIMALAYAN COLLECTIONS</span>
-          <span>CULTURAL HERITAGE</span>
-          <span>WILDLIFE STUDIES</span>
-          <span>PORTRAIT SERIES</span>
-          <span>PLEIN AIR SKETCHES</span>
-          <span>HIMALAYAN COLLECTIONS</span>
-          <span>CULTURAL HERITAGE</span>
-          <span>WILDLIFE STUDIES</span>
-        </div>
-      </div>
-
-      {/* SECTION HEADING */}
-      <section className="g-section">
-        <div className="g-section-label">
-          <span>BROWSE COLLECTIONS</span>
-          <span>[ {collections.length} TOTAL ]</span>
-        </div>
-
-        <div className="g-works-heading">
-          <h2 className="g-display">The Collections</h2>
-          <p>Explore our curated watercolor series across themes and subjects.</p>
-        </div>
-
-        {/* FILTERS */}
-        <div className="g-filters">
-          {['all', 'himalaya', 'culture', 'portrait', 'wildlife', 'sketches'].map((cat) => (
+        {/* Filter Pills */}
+        <div className="flex flex-wrap gap-3 pt-8 pb-4">
+          {categories.map((cat) => (
             <button
-              key={cat}
-              className={selectedCategory === cat ? 'active' : ''}
-              onClick={() => setSelectedCategory(cat)}
+              key={cat.key}
+              onClick={() => setSelectedCategory(cat.key)}
+              className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all ${
+                selectedCategory === cat.key
+                  ? "bg-black text-white"
+                  : "bg-black/5 text-black hover:bg-black/10"
+              }`}
             >
-              {cat.toUpperCase()}
+              {cat.label}
             </button>
           ))}
         </div>
       </section>
 
-      {/* COLLECTIONS GRID */}
-      <section className="g-section g-works">
-        <div className="g-art-grid">
-          {filteredCollections.map((collection, index) => (
-            <Link
-              key={collection.id}
-              href={`/collections/${collection.id}`}
-              className="g-art-card"
-            >
-              <div className="g-art-image">
-                <img src={collection.cover} alt={collection.title} />
-                <div className="g-art-view">
-                  <span>VIEW COLLECTION</span>
-                  <b>&rarr;</b>
+      {/* Collections Grid */}
+      <section className="px-8 pb-24 max-w-[1720px] mx-auto">
+        {loading ? (
+          <div className="py-24 text-center text-black/40 text-sm uppercase tracking-widest">
+            Loading curated collections...
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {filteredCollections.map((col) => (
+              <Link
+                key={col.id}
+                href={`/collections/${col.id}`}
+                className="rx-card group"
+              >
+                <div className="rx-card-media relative aspect-[4/3] rounded overflow-hidden">
+                  <Image
+                    src={col.cover || (col as any).cover_image || "/art/drawing-09.jpg"}
+                    alt={col.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute top-4 left-4 z-10">
+                    <span className="rx-tag bg-white/90 backdrop-blur-sm text-black">
+                      {col.artwork_count || "Series"} Artworks
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="g-art-meta">
-                <div>
-                  <h3>{collection.title}</h3>
-                  <p>{collection.blurb}</p>
+                <div className="rx-card-info">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="rx-card-title text-2xl group-hover:underline">
+                      {col.title}
+                    </h3>
+                  </div>
+                  <p className="text-black/60 text-sm line-clamp-2 mb-4 leading-relaxed">
+                    {col.blurb || (col as any).description || "A curated series of Himalayan artworks and watercolours."}
+                  </p>
+                  <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-black">
+                    Explore Exhibition Series <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
                 </div>
-                <span>{collection.count} works</span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Dark Details Banner */}
+      <section className="rx-dark-section">
+        <div className="rx-dark-inner flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+          <div>
+            <span className="text-xs uppercase tracking-widest text-white/50 font-semibold block mb-2">
+              Bespoke Art Services
+            </span>
+            <h3 className="text-3xl font-bold tracking-tight">Looking for a specific theme or size?</h3>
+            <p className="text-white/60 text-sm mt-2 max-w-lg">
+              We frequently produce custom multi-piece collections for galleries, hotels, and private residences.
+            </p>
+          </div>
+          <Link href="/commission" className="rx-btn rx-btn-white">
+            Discuss a Commission <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="g-footer">
-        <div className="g-footer-top">
-          <div>
-            <div className="g-footer-logo">
-              DULUWA-ART
-            </div>
-            <p>
-              Preserving mountain souls through water & pigment.
-            </p>
-          </div>
-          <a
-            href="#"
-            className="g-back-top"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          >
-            BACK TO TOP &uarr;
-          </a>
-        </div>
-
-        <div className="g-footer-bottom">
-          <div>
-            <Link href="/">Home</Link>
-            <Link href="/collections">Collections</Link>
-            <Link href="/commission">Commission</Link>
-          </div>
-          <span>&copy; {new Date().getFullYear()} DULUWA ART GALLERY. ALL RIGHTS RESERVED.</span>
-        </div>
-      </footer>
+      <RevixFooter />
     </div>
   );
 }

@@ -1,220 +1,200 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import DuluwaNavbar from "@/components/duluwa-navbar";
-import GenZGlassyFooter from "@/components/genz-footer";
+import { ArrowUpRight } from "lucide-react";
+import RevixNavbar from "@/components/revix-navbar";
+import RevixFooter from "@/components/revix-footer";
 
 export default function AboutPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const storyRef = useRef<HTMLElement>(null);
-  const valuesRef = useRef<HTMLElement>(null);
-  const statsRef = useRef<HTMLElement>(null);
+  const stats = [
+    { value: "500+", label: "Artworks Displayed" },
+    { value: "50K+", label: "Annual Visitors" },
+    { value: "15+", label: "Curated Exhibitions" },
+    { value: "7+", label: "Years of Excellence" },
+  ];
 
-  const heroInView = useInView(heroRef, { once: true, amount: 0.3 });
-  const storyInView = useInView(storyRef, { once: true, amount: 0.3 });
-  const valuesInView = useInView(valuesRef, { once: true, amount: 0.3 });
-  const statsInView = useInView(statsRef, { once: true, amount: 0.3 });
+  const milestones = [
+    {
+      year: "2025",
+      title: "Outstanding Contribution to Himalayan Contemporary Art",
+      category: "Honors & Recognition",
+      award: "Gold Distinction",
+    },
+    {
+      year: "2024",
+      title: "Excellence in Curatorial Innovation & Cultural Storytelling",
+      category: "Curator Award",
+      award: "Platinum Distinction",
+    },
+    {
+      year: "2023",
+      title: "Traditional Wash & Cotton Rag Innovation",
+      category: "Material Craft",
+      award: "Heritage Preservation Award",
+    },
+  ];
 
   const values = [
     {
       title: "Artistic Excellence",
       desc: "Every piece is crafted with meticulous attention to detail, combining traditional techniques with contemporary vision.",
-      image: "/galleria-assets/framerusercontent.com/images/3OOnGypjPo3PMlLd84axGtA.webp",
+      img: "/art/drawing-08.jpg",
     },
     {
-      title: "Custom Creations",
-      desc: "Transform your unique vision into tangible masterpieces through our bespoke commission services.",
-      image: "/galleria-assets/framerusercontent.com/images/8N48THfGrbBTzCG29qcOgTIzDA.webp",
+      title: "Authentic Materials",
+      desc: "Authentic handmade cotton rag papers, pure archival mineral pigments, and natural botanical washes.",
+      img: "/art/drawing-09.jpg",
     },
     {
       title: "Cultural Heritage",
-      desc: "Celebrating the rich artistic traditions of Nepal while embracing modern artistic expression.",
-      image: "/galleria-assets/framerusercontent.com/images/0LJBCt4VxzfS6eTZoFopAt2HY.webp",
+      desc: "Celebrating the rich artistic traditions of Nepal while embracing a clean, modern aesthetic dialogue.",
+      img: "/art/drawing-03.jpg",
     },
   ];
 
-  const stats = [
-    { value: "5+", label: "Years of Excellence" },
-    { value: "200+", label: "Artworks Created" },
-    { value: "50+", label: "Happy Collectors" },
-    { value: "15+", label: "Exhibitions" },
-  ];
-
   return (
-    <>
-      <DuluwaNavbar />
+    <div className="bg-[#fcfcfc] text-black min-h-screen">
+      <RevixNavbar />
 
-      <main className="galleria-about">
-        {/* Hero Section */}
-        <section ref={heroRef} className="about-hero">
-          <div className="hero-content">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="hero-badge"
-            >
-              <span>Our Story</span>
-            </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-              className="hero-title"
-            >
-              About Duluwa Art Gallery
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-              className="hero-subtitle"
-            >
-              Where creativity meets passion. Discover the story behind our art gallery and the artist who brings visions to life through the medium of watercolor.
-            </motion.p>
+      {/* Hero Header */}
+      <section className="rx-hero">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 pb-12 border-b border-black/10">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-black/50 mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#ff2a2a]"></span>
+              About The Artist &amp; Gallery
+            </div>
+            <h1 className="rx-hero-title">
+              The Story of<br />
+              Duluwa Gallery
+            </h1>
           </div>
-        </section>
-
-        {/* Artist Story Section */}
-        <section ref={storyRef} className="artist-story">
-          <div className="container">
-            <div className="story-grid">
-              <motion.div
-                initial={{ opacity: 0, x: -40 }}
-                animate={storyInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="story-image-wrapper"
-              >
-                <div className="story-image">
-                  <Image
-                    src="/galleria-assets/framerusercontent.com/images/uePLHiLRHEJENQLkDKYjnDwzYlc.png"
-                    alt="Artist at work"
-                    width={600}
-                    height={800}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="experience-badge">
-                  <span className="years">5+</span>
-                  <span className="label">Years of Experience</span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                animate={storyInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                className="story-content"
-              >
-                <h2 className="section-title">The Artist Behind Duluwa</h2>
-                <div className="story-text">
-                  <p>
-                    Duluwa Art Gallery was born from a deep passion for artistic expression and a desire to bring unique, meaningful artwork into people's lives. Founded in the heart of Kathmandu, Nepal, our gallery represents a bridge between traditional artistic techniques and contemporary creative vision.
-                  </p>
-                  <p>
-                    Every piece in our collection tells a story — a moment captured, an emotion expressed, a vision realized. We believe that art should not just be seen, but felt, experienced, and lived. Our work spans across various mediums including graphite, watercolor, and custom commissioned pieces that transform personal visions into tangible masterpieces.
-                  </p>
-                  <p>
-                    Whether you're looking for a stunning portrait, a serene landscape, or an abstract piece that speaks to your soul, Duluwa Art Gallery offers curated collections and bespoke services tailored to your unique taste and space.
-                  </p>
-                </div>
-                <div className="story-actions">
-                  <Link href="/contact" className="btn-primary">
-                    Commission Artwork
-                  </Link>
-                  <Link href="/shop" className="btn-secondary">
-                    View Collections
-                  </Link>
-                </div>
-              </motion.div>
+          <div className="max-w-md">
+            <p className="rx-hero-sub mb-6">
+              Founded on the belief that Himalayan art can bridge ancestral reverence with bold
+              minimalist design, Duluwa Gallery is dedicated to elevating fine watercolour and drawing.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/contact" className="rx-btn rx-btn-black">
+                Contact the Studio <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link href="/commission" className="rx-btn rx-btn-outline">
+                Request Commission
+              </Link>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Values Section */}
-        <section ref={valuesRef} className="values-section">
-          <div className="container">
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              animate={valuesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="section-title-center"
-            >
-              What We Stand For
-            </motion.h2>
-            <div className="values-grid">
-              {values.map((value, index) => (
-                <motion.div
-                  key={value.title}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={valuesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: index * 0.15 }}
-                  className="value-card"
-                >
-                  <div className="value-image">
-                    <Image
-                      src={value.image}
-                      alt={value.title}
-                      width={400}
-                      height={500}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="value-content">
-                    <h3 className="value-title">{value.title}</h3>
-                    <p className="value-desc">{value.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section ref={statsRef} className="stats-section">
-          <div className="container">
-            <div className="stats-grid">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={statsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: index * 0.1 }}
-                  className="stat-card"
-                >
-                  <span className="stat-value">{stat.value}</span>
-                  <span className="stat-label">{stat.label}</span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="cta-section">
-          <div className="container">
-            <div className="cta-content">
-              <h2 className="cta-title">Let's Create Together</h2>
-              <p className="cta-text">
-                Ready to bring your artistic vision to life? Connect with us to discuss your project and discover how we can transform your ideas into beautiful artwork.
-              </p>
-              <div className="cta-actions">
-                <Link href="/contact" className="btn-primary">
-                  Get in Touch
-                </Link>
-                <Link href="/commission" className="btn-secondary">
-                  Start Commission
-                </Link>
+      {/* Experience & Stats Section */}
+      <section className="py-20 px-8 max-w-[1720px] mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pb-20 border-b border-black/10 text-center">
+          {stats.map((s) => (
+            <div key={s.label}>
+              <div className="text-5xl md:text-6xl font-extrabold tracking-tight mb-2">
+                {s.value}
+              </div>
+              <div className="text-xs uppercase tracking-widest text-black/50 font-semibold">
+                {s.label}
               </div>
             </div>
-          </div>
-        </section>
-      </main>
+          ))}
+        </div>
+      </section>
 
-      <GenZGlassyFooter />
-    </>
+      {/* Story & Philosophy */}
+      <section className="py-16 px-8 max-w-[1720px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          <div className="lg:col-span-6 relative aspect-[4/3] rounded overflow-hidden">
+            <Image
+              src="/art/drawing-02.jpg"
+              alt="Duluwa portrait technique"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="lg:col-span-6">
+            <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-3">
+              Philosophy &amp; Method
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-bold tracking-tight mb-6">
+              Capturing Light Across Himalayan Ridges
+            </h2>
+            <p className="text-base text-black/70 leading-relaxed mb-6">
+              Our studio approaches every piece with quiet patience. Whether rendering the early
+              morning glow over Machhapuchhre or the weathered gaze of a Mustang elder, our focus
+              remains on the living pulse of Nepal.
+            </p>
+            <p className="text-base text-black/70 leading-relaxed mb-8">
+              We work closely with private collectors, interior architects, and galleries worldwide,
+              offering both original exhibited pieces and bespoke commissions crafted to harmonize
+              with specific spaces.
+            </p>
+            <Link href="/shop" className="rx-btn rx-btn-black">
+              View Available Works <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Values Grid */}
+      <section className="py-24 px-8 max-w-[1720px] mx-auto border-t border-black/10">
+        <div className="mb-16">
+          <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-2">
+            Core Principles
+          </span>
+          <h2 className="text-4xl font-bold tracking-tight">The Duluwa Approach</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {values.map((v) => (
+            <div key={v.title} className="rx-card">
+              <div className="rx-card-media relative aspect-[4/3] rounded overflow-hidden mb-6">
+                <Image
+                  src={v.img}
+                  alt={v.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <h3 className="text-2xl font-bold tracking-tight mb-3">{v.title}</h3>
+              <p className="text-black/70 leading-relaxed text-sm">{v.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Honors & Milestones */}
+      <section className="rx-dark-section">
+        <div className="rx-dark-inner">
+          <div className="mb-12">
+            <span className="text-xs uppercase tracking-widest text-white/50 font-semibold block mb-2">
+              Recognitions
+            </span>
+            <h2 className="text-4xl font-bold tracking-tight">Honors &amp; Milestones</h2>
+          </div>
+
+          <div className="divide-y divide-white/10">
+            {milestones.map((m) => (
+              <div key={m.title} className="py-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                  <span className="text-xs uppercase tracking-widest text-white/40 block mb-1">
+                    {m.category}
+                  </span>
+                  <h4 className="text-xl font-bold">{m.title}</h4>
+                </div>
+                <div className="flex items-center gap-6">
+                  <span className="rx-btn rx-btn-outline-white text-xs">{m.award}</span>
+                  <span className="text-2xl font-mono text-white/60">{m.year}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <RevixFooter />
+    </div>
   );
 }

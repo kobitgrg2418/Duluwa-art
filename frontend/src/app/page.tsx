@@ -1,11 +1,11 @@
 import { Metadata } from "next";
-import TemplatePage from "./template-page";
+import RevixHome from "@/components/revix-home";
 
 export const metadata: Metadata = {
-  title: "Duluwa Art Gallery - Discover Unique Artworks",
-  description: "Explore curated collections of exceptional artworks. Commission custom pieces from talented artists.",
+  title: "Duluwa Art Gallery - Contemporary Himalayan Art & Exhibitions",
+  description: "Explore curated collections of exceptional Himalayan artworks, fine watercolour pieces, and bespoke commissions.",
 };
 
 export default function HomePage() {
-  return <TemplatePage />;
+  return <RevixHome />;
 }

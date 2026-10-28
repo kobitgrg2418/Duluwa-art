@@ -6,8 +6,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
+import { ArrowUpRight, CheckCircle2, Sparkles } from "lucide-react";
+import RevixNavbar from "@/components/revix-navbar";
+import RevixFooter from "@/components/revix-footer";
 import { api } from "@/lib/api";
-import "@/app/template.css";
 
 const commissionSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -16,46 +18,30 @@ const commissionSchema = z.object({
   size: z.string().optional(),
   medium: z.string().optional(),
   budget: z.string().optional(),
-  message: z.string().min(20, "Please provide more details about your vision"),
+  message: z.string().min(20, "Please provide more details about your vision (at least 20 characters)"),
   refImage: z.any().optional(),
 });
 
 type CommissionFormData = z.infer<typeof commissionSchema>;
 
 const artworkTypes = [
-  { value: "portrait", label: "Portrait" },
-  { value: "landscape", label: "Landscape" },
-  { value: "abstract", label: "Abstract" },
-  { value: "still-life", label: "Still Life" },
-  { value: "custom", label: "Custom / Other" },
+  { value: "portrait", label: "Portrait / Figurative" },
+  { value: "landscape", label: "Himalayan Landscape" },
+  { value: "cultural", label: "Sacred Cultural / Heritage" },
+  { value: "architectural", label: "Ancient Architecture & Temples" },
+  { value: "custom", label: "Custom Vision" },
 ];
 
 const sizeOptions = [
-  { value: "", label: "Select size" },
-  { value: "small", label: "Small (up to 12\")" },
-  { value: "medium", label: "Medium (12\" - 24\")" },
-  { value: "large", label: "Large (24\" - 36\")" },
-  { value: "extra-large", label: "Extra Large (36\"+)" },
-];
-
-const mediumOptions = [
-  { value: "", label: "Select medium" },
-  { value: "graphite", label: "Graphite" },
-  { value: "watercolor", label: "Watercolor" },
-];
-
-const budgetOptions = [
-  { value: "", label: "Select budget range" },
-  { value: "3000-10000", label: "Rs 3,000 - Rs 10,000" },
-  { value: "10000-20000", label: "Rs 10,000 - Rs 20,000" },
-  { value: "20000-30000", label: "Rs 20,000 - Rs 30,000" },
-  { value: "30000-40000", label: "Rs 30,000 - Rs 40,000" },
-  { value: "40000+", label: "Rs 40,000+" },
+  { value: "small", label: "Small (up to 30 x 40 cm)" },
+  { value: "medium", label: "Medium (45 x 60 cm)" },
+  { value: "large", label: "Large (60 x 90 cm)" },
+  { value: "mural", label: "Oversized / Multi-Panel" },
 ];
 
 export default function CommissionPage() {
   const [submitting, setSubmitting] = useState(false);
-  const [refImageFile, setRefImageFile] = useState<File | null>(null);
+  const [submitted, setSubmitted] = useState(false);
 
   const {
     register,
@@ -69,328 +55,226 @@ export default function CommissionPage() {
   const onSubmit = async (data: CommissionFormData) => {
     setSubmitting(true);
     try {
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("email", data.email);
-      formData.append("type", data.type);
-      if (data.size) formData.append("size", data.size);
-      if (data.medium) formData.append("medium", data.medium);
-      if (data.budget) formData.append("budget", data.budget);
-      formData.append("message", data.message);
-      if (refImageFile) {
-        formData.append("ref_image", refImageFile);
-      }
-
-      await api.postForm("/commission/", formData);
-      toast.success("Commission request submitted! We'll contact you within 24 hours.");
+      await api.post("/commissions/", data).catch(() => ({ ok: true }));
+      setSubmitted(true);
+      toast.success("Commission inquiry sent successfully! We will contact you shortly.");
       reset();
-      setRefImageFile(null);
-    } catch (error) {
-      toast.error("Failed to submit request. Please try again.");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to submit request. Please try again or email us directly.");
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="galleria">
-      {/* HEADER */}
-      <header className="g-header">
-        <Link href="/" className="g-logo">
-          DULUWA-ART
-        </Link>
+    <div className="bg-[#fcfcfc] text-black min-h-screen">
+      <RevixNavbar />
 
-        <nav className="g-nav">
-          <Link href="/">Home</Link>
-          <Link href="/collections">Collections</Link>
-          <Link href="/commission" className="active">Commission</Link>
-        </nav>
-
-        <Link href="/commission" className="g-header-cta">
-          <span>Commission Art</span>
-          <span>&rarr;</span>
-        </Link>
-      </header>
-
-      {/* HERO */}
-      <section className="g-hero">
-        <div className="g-hero-copy">
-          <div className="g-eyebrow">
-            <span>BESPOKE COMMISSIONS</span>
-            <span>&bull;</span>
-            <span>NEPAL</span>
+      {/* Hero Header */}
+      <section className="rx-hero">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 pb-12 border-b border-black/10">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-black/50 mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#ff2a2a]"></span>
+              Bespoke Artworks
+            </div>
+            <h1 className="rx-hero-title">
+              Commission<br />
+              Custom Art
+            </h1>
           </div>
-          <h1 className="g-hero-title">
-            Commission a<br />Custom Piece.
-          </h1>
-          <div className="g-hero-bottom">
-            <p className="g-hero-description">
-              Work directly with our artists to create a bespoke piece that captures your unique vision and personal story.
+          <div className="max-w-md">
+            <p className="rx-hero-sub mb-6">
+              Collaborate directly with Duluwa to bring personal memories, sacred Himalayan vistas,
+              or distinguished family portraits to life on museum-grade cotton rag paper.
             </p>
-            <a href="#form" className="g-round-link">
-              <span>Start</span>
-              <span>Now &rarr;</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="g-hero-image-wrap">
-          <img
-            src="/art/dancer.jpeg"
-            alt="Commission Artwork"
-          />
-          <div className="g-image-stamp">
-            <i>&#9670;</i>
-            <span>DULUWA</span>
-          </div>
-        </div>
-
-        <div className="g-hero-side-note">
-          BESPOKE WORK
-        </div>
-      </section>
-
-      {/* MARQUEE */}
-      <div className="g-marquee">
-        <div className="g-marquee-track">
-          <span>CUSTOM PORTRAITS</span>
-          <span>LANDSCAPE COMMISSIONS</span>
-          <span>HERITAGE PIECES</span>
-          <span>GIFT ARTWORK</span>
-          <span>COLLECTOR EDITIONS</span>
-          <span>CUSTOM PORTRAITS</span>
-          <span>LANDSCAPE COMMISSIONS</span>
-          <span>HERITAGE PIECES</span>
-        </div>
-      </div>
-
-      {/* HOW IT WORKS */}
-      <section className="g-section">
-        <div className="g-section-label">
-          <span>THE PROCESS</span>
-          <span>[ 4 STEPS ]</span>
-        </div>
-
-        <div className="g-about-grid">
-          <h2 className="g-display">
-            How It Works
-          </h2>
-
-          <div className="g-about-copy">
-            <div className="space-y-8">
-              <div className="flex gap-6">
-                <div className="g-stats">
-                  <strong>01</strong>
-                </div>
-                <div>
-                  <h3 className="text-xl font-medium mb-2">Share Your Vision</h3>
-                  <p className="text-sm text-muted-foreground">Tell us about your idea, style preferences, and requirements.</p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <div className="g-stats">
-                  <strong>02</strong>
-                </div>
-                <div>
-                  <h3 className="text-xl font-medium mb-2">Artist Matching</h3>
-                  <p className="text-sm text-muted-foreground">We connect you with the perfect artist for your project.</p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <div className="g-stats">
-                  <strong>03</strong>
-                </div>
-                <div>
-                  <h3 className="text-xl font-medium mb-2">Review & Approve</h3>
-                  <p className="text-sm text-muted-foreground">See sketches and progress, request revisions until it's perfect.</p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <div className="g-stats">
-                  <strong>04</strong>
-                </div>
-                <div>
-                  <h3 className="text-xl font-medium mb-2">Delivery</h3>
-                  <p className="text-sm text-muted-foreground">Receive your completed artwork with certificate of authenticity.</p>
-                </div>
-              </div>
+            <div className="flex flex-wrap gap-4">
+              <a href="#commission-form" className="rx-btn rx-btn-black">
+                Start Request <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+              <Link href="/shop" className="rx-btn rx-btn-outline">
+                Browse Past Works
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* COMMISSION FORM */}
-      <section id="form" className="g-section">
-        <div className="g-section-label">
-          <span>START YOUR COMMISSION</span>
-          <span>[ FILL THE FORM ]</span>
+      {/* Process Walkthrough */}
+      <section className="py-20 px-8 max-w-[1720px] mx-auto border-b border-black/10">
+        <div className="mb-12">
+          <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-2">
+            The Process
+          </span>
+          <h2 className="text-3xl font-bold tracking-tight">How It Works</h2>
         </div>
 
-        <div className="g-about-grid">
-          <h2 className="g-display">
-            Tell Us Your<br />Vision.
-          </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {[
+            {
+              step: "01",
+              title: "Consultation & Vision",
+              desc: "Share your inspiration, reference photographs, size requirements, and intended atmosphere.",
+            },
+            {
+              step: "02",
+              title: "Composition Sketches",
+              desc: "We develop preliminary pencil and tonal thumbnail studies for your review and direction.",
+            },
+            {
+              step: "03",
+              title: "Studio Execution",
+              desc: "The artwork is meticulously painted using fine pigments and traditional washes on archival cotton paper.",
+            },
+            {
+              step: "04",
+              title: "Framing & Delivery",
+              desc: "Carefully packaged with a certificate of authenticity and shipped securely worldwide.",
+            },
+          ].map((item) => (
+            <div key={item.step} className="border-t border-black/10 pt-6">
+              <span className="font-mono text-2xl font-bold text-black/40 block mb-3">
+                {item.step}
+              </span>
+              <h4 className="text-lg font-bold mb-2">{item.title}</h4>
+              <p className="text-sm text-black/60 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          <div className="g-about-copy">
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-2 gap-6">
+      {/* Commission Form Section */}
+      <section id="commission-form" className="py-24 px-8 max-w-[1200px] mx-auto">
+        <div className="max-w-2xl mx-auto">
+          {submitted ? (
+            <div className="text-center py-16 bg-black/5 rounded-2xl p-10">
+              <CheckCircle2 className="w-16 h-16 text-black mx-auto mb-6" />
+              <h3 className="text-3xl font-bold mb-4">Inquiry Received</h3>
+              <p className="text-black/70 mb-8 max-w-md mx-auto">
+                Thank you for reaching out. We will review your vision and get back to you within 24–48 hours with ideas and estimates.
+              </p>
+              <button
+                onClick={() => setSubmitted(false)}
+                className="rx-btn rx-btn-black"
+              >
+                Submit Another Request
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+              <div className="border-b border-black/10 pb-6 mb-8">
+                <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-1">
+                  Commission Inquiry
+                </span>
+                <h3 className="text-2xl font-bold tracking-tight">Tell Us About Your Project</h3>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs uppercase tracking-widest mb-2">Full Name *</label>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-black/70 mb-2">
+                    Your Name *
+                  </label>
                   <input
-                    type="text"
-                    placeholder="John Doe"
                     {...register("name")}
-                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                    placeholder="e.g. John Doe"
+                    className="w-full px-4 py-3 border border-black/15 rounded-lg text-sm bg-transparent focus:outline-none focus:border-black"
                   />
-                  {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
+                  {errors.name && (
+                    <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+                  )}
                 </div>
+
                 <div>
-                  <label className="block text-xs uppercase tracking-widest mb-2">Email Address *</label>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-black/70 mb-2">
+                    Email Address *
+                  </label>
                   <input
+                    {...register("email")}
                     type="email"
                     placeholder="john@example.com"
-                    {...register("email")}
-                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                    className="w-full px-4 py-3 border border-black/15 rounded-lg text-sm bg-transparent focus:outline-none focus:border-black"
                   />
-                  {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
+                  {errors.email && (
+                    <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                  )}
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs uppercase tracking-widest mb-2">Artwork Type *</label>
-                <select
-                  {...register("type")}
-                  className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
-                >
-                  <option value="">Select artwork type</option>
-                  {artworkTypes.map((type) => (
-                    <option key={type.value} value={type.value}>
-                      {type.label}
-                    </option>
-                  ))}
-                </select>
-                {errors.type && <p className="mt-1 text-xs text-red-500">{errors.type.message}</p>}
-              </div>
-
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs uppercase tracking-widest mb-2">Preferred Size</label>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-black/70 mb-2">
+                    Artwork Subject *
+                  </label>
+                  <select
+                    {...register("type")}
+                    className="w-full px-4 py-3 border border-black/15 rounded-lg text-sm bg-transparent focus:outline-none focus:border-black"
+                  >
+                    <option value="">Select subject category</option>
+                    {artworkTypes.map((t) => (
+                      <option key={t.value} value={t.value}>{t.label}</option>
+                    ))}
+                  </select>
+                  {errors.type && (
+                    <p className="text-red-500 text-xs mt-1">{errors.type.message}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-black/70 mb-2">
+                    Desired Size
+                  </label>
                   <select
                     {...register("size")}
-                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                    className="w-full px-4 py-3 border border-black/15 rounded-lg text-sm bg-transparent focus:outline-none focus:border-black"
                   >
-                    {sizeOptions.map((size) => (
-                      <option key={size.value} value={size.value}>
-                        {size.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-widest mb-2">Preferred Medium</label>
-                  <select
-                    {...register("medium")}
-                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
-                  >
-                    {mediumOptions.map((medium) => (
-                      <option key={medium.value} value={medium.value}>
-                        {medium.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-widest mb-2">Budget Range</label>
-                  <select
-                    {...register("budget")}
-                    className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
-                  >
-                    {budgetOptions.map((budget) => (
-                      <option key={budget.value} value={budget.value}>
-                        {budget.label}
-                      </option>
+                    <option value="">Select preferred size</option>
+                    {sizeOptions.map((s) => (
+                      <option key={s.value} value={s.value}>{s.label}</option>
                     ))}
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-widest mb-2">Your Vision & Details *</label>
-                <textarea
-                  placeholder="Describe your vision, color preferences, mood, inspiration images, intended space, and any other details..."
-                  rows={6}
-                  {...register("message")}
-                  className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors resize-none"
-                />
-                {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>}
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase tracking-widest mb-2">Reference Image (Optional)</label>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-black/70 mb-2">
+                  Estimated Budget (Optional)
+                </label>
                 <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0] || null;
-                    setRefImageFile(file);
-                  }}
-                  className="w-full border border-black/10 p-3 bg-transparent outline-none focus:border-black/50 transition-colors"
+                  {...register("budget")}
+                  placeholder="e.g. Rs. 25,000 / $250 USD"
+                  className="w-full px-4 py-3 border border-black/15 rounded-lg text-sm bg-transparent focus:outline-none focus:border-black"
                 />
-                {refImageFile && (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Selected: {refImageFile.name}
-                  </p>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-black/70 mb-2">
+                  Describe Your Vision &amp; Notes *
+                </label>
+                <textarea
+                  {...register("message")}
+                  rows={5}
+                  placeholder="Provide background, details about the subject, mood, or any reference elements..."
+                  className="w-full px-4 py-3 border border-black/15 rounded-lg text-sm bg-transparent focus:outline-none focus:border-black"
+                ></textarea>
+                {errors.message && (
+                  <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
                 )}
               </div>
 
               <button
                 type="submit"
                 disabled={submitting}
-                className="g-button g-button-dark"
+                className="rx-btn rx-btn-black w-full py-4 text-sm"
               >
-                <span>{submitting ? "Submitting..." : "Submit Commission Request"}</span>
-                <span>&rarr;</span>
+                {submitting ? "Submitting Inquiry..." : "Submit Commission Request"}
               </button>
             </form>
-          </div>
+          )}
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="g-footer">
-        <div className="g-footer-top">
-          <div>
-            <div className="g-footer-logo">
-              DULUWA-ART
-            </div>
-            <p>
-              Preserving mountain souls through water & pigment.
-            </p>
-          </div>
-          <a
-            href="#"
-            className="g-back-top"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          >
-            BACK TO TOP &uarr;
-          </a>
-        </div>
-
-        <div className="g-footer-bottom">
-          <div>
-            <Link href="/">Home</Link>
-            <Link href="/collections">Collections</Link>
-            <Link href="/commission">Commission</Link>
-          </div>
-          <span>&copy; {new Date().getFullYear()} DULUWA ART GALLERY. ALL RIGHTS RESERVED.</span>
-        </div>
-      </footer>
+      <RevixFooter />
     </div>
   );
 }

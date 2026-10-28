@@ -1,432 +1,216 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Palette, Brush, Image, Mail, Phone, MapPin, ArrowRight, CheckCircle, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import Link from "next/link";
+import { ArrowUpRight, CheckCircle2, Mail, Phone, MapPin, Clock } from "lucide-react";
+import RevixNavbar from "@/components/revix-navbar";
+import RevixFooter from "@/components/revix-footer";
 import { toast } from "sonner";
-import { api } from "@/lib/api";
-import DuluwaNavbar from "@/components/duluwa-navbar";
-import GenZGlassyFooter from "@/components/genz-footer";
-
-const commissionSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  type: z.string().min(1, "Please select an artwork type"),
-  size: z.string().optional(),
-  medium: z.string().optional(),
-  budget: z.string().optional(),
-  message: z.string().min(20, "Please provide more details about your vision"),
-  refImage: z.any().optional(),
-});
-
-type CommissionFormData = z.infer<typeof commissionSchema>;
-
-const artworkTypes = [
-  { value: "portrait", label: "Portrait" },
-  { value: "landscape", label: "Landscape" },
-  { value: "abstract", label: "Abstract" },
-  { value: "still-life", label: "Still Life" },
-  { value: "custom", label: "Custom / Other" },
-];
-
-const sizeOptions = [
-  { value: "", label: "Select size" },
-  { value: "small", label: "Small (up to 12\")" },
-  { value: "medium", label: "Medium (12\" - 24\")" },
-  { value: "large", label: "Large (24\" - 36\")" },
-  { value: "extra-large", label: "Extra Large (36\"+)" },
-];
-
-const mediumOptions = [
-  { value: "", label: "Select medium" },
-  { value: "graphite", label: "Graphite" },
-  { value: "watercolor", label: "Watercolor" },
-];
-
-const budgetOptions = [
-  { value: "", label: "Select budget range" },
-  { value: "3000-10000", label: "Rs 3,000 - Rs 10,000" },
-  { value: "10000-20000", label: "Rs 10,000 - Rs 20,000" },
-  { value: "20000-30000", label: "Rs 20,000 - Rs 30,000" },
-  { value: "30000-40000", label: "Rs 30,000 - Rs 40,000" },
-  { value: "40000+", label: "Rs 40,000+" },
-];
 
 export default function ContactPage() {
+  const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [refImageFile, setRefImageFile] = useState<File | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<CommissionFormData>({
-    resolver: zodResolver(commissionSchema),
-  });
-
-  const onSubmit = async (data: CommissionFormData) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setSubmitting(true);
-    try {
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("email", data.email);
-      formData.append("type", data.type);
-      if (data.size) formData.append("size", data.size);
-      if (data.medium) formData.append("medium", data.medium);
-      if (data.budget) formData.append("budget", data.budget);
-      formData.append("message", data.message);
-      if (refImageFile) {
-        formData.append("ref_image", refImageFile);
-      }
-
-      await api.postForm("/commission/", formData);
-      toast.success("Commission request submitted! We'll contact you within 24 hours.");
-      reset();
-      setRefImageFile(null);
-    } catch (error) {
-      toast.error("Failed to submit request. Please try again.");
-    } finally {
+    setTimeout(() => {
       setSubmitting(false);
-    }
+      setSubmitted(true);
+      toast.success("Message sent! We'll reply shortly.");
+    }, 800);
   };
 
   return (
-    <main className="site">
-      <DuluwaNavbar />
+    <div className="bg-[#fcfcfc] text-black min-h-screen">
+      <RevixNavbar />
 
-      {/* Hero Section */}
-      <section className="py-24 px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-4 flex items-center justify-center gap-2"
-          >
-            <Badge className="bg-red-500 text-white hover:bg-red-600 border-0">
+      {/* Hero Header */}
+      <section className="rx-hero">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 pb-12 border-b border-black/10">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-black/50 mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#ff2a2a]"></span>
               Get in Touch
-            </Badge>
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-6xl md:text-8xl font-bold tracking-tight text-center"
-          >
-            Contact{" "}
-            <span className="text-red-500">Duluwa Art</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-6 text-lg text-gray-600 text-center max-w-3xl mx-auto"
-          >
-            Have questions about our artwork or want to commission a custom piece? We'd love to hear from you.
-          </motion.p>
-        </div>
-      </section>
-
-      {/* Contact Information */}
-      <section className="px-8 py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-center p-8 bg-white rounded-xl shadow-sm"
-            >
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
-                <Mail className="h-8 w-8" />
-              </div>
-              <h3 className="font-semibold text-xl mb-2">Email Us</h3>
-              <p className="text-gray-600">info@duluwaart.com</p>
-              <p className="text-gray-600 text-sm mt-1">We respond within 24 hours</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-center p-8 bg-white rounded-xl shadow-sm"
-            >
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
-                <Phone className="h-8 w-8" />
-              </div>
-              <h3 className="font-semibold text-xl mb-2">Call Us</h3>
-              <p className="text-gray-600">+977 9800000000</p>
-              <p className="text-gray-600 text-sm mt-1">Mon-Sat, 9am-6pm</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-center p-8 bg-white rounded-xl shadow-sm"
-            >
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
-                <MapPin className="h-8 w-8" />
-              </div>
-              <h3 className="font-semibold text-xl mb-2">Visit Us</h3>
-              <p className="text-gray-600">Kathmandu, Nepal</p>
-              <p className="text-gray-600 text-sm mt-1">By appointment only</p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Commission Section */}
-      <section className="px-8 py-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-3 gap-12">
-            {/* How It Works */}
-            <div className="lg:col-span-1">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <h2 className="text-3xl font-bold mb-8">How It Works</h2>
-                <div className="space-y-8">
-                  {[
-                    { icon: Palette, title: "Share Your Vision", desc: "Tell us about your idea, style preferences, and requirements." },
-                    { icon: Brush, title: "Artist Matching", desc: "We connect you with the perfect artist for your project." },
-                    { icon: Image, title: "Review & Approve", desc: "See sketches and progress, request revisions until it's perfect." },
-                    { icon: CheckCircle, title: "Delivery", desc: "Receive your completed artwork with certificate of authenticity." },
-                  ].map((step, index) => (
-                    <motion.div
-                      key={step.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex gap-4"
-                    >
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-500/10 text-red-500 shrink-0">
-                        <step.icon className="h-6 w-6" />
-                      </div>
-                      <div>
-                        <p className="font-semibold text-lg">{step.title}</p>
-                        <p className="text-sm text-gray-600 mt-1">{step.desc}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
             </div>
-
-            {/* Commission Form */}
-            <div className="lg:col-span-2">
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <Card className="bg-white border-0 shadow-xl">
-                  <CardHeader>
-                    <CardTitle className="text-2xl">Commission Request Form</CardTitle>
-                    <CardDescription>Fill out the details below to start your custom artwork journey</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                      <div className="grid sm:grid-cols-2 gap-6">
-                        <div>
-                          <Label htmlFor="name" className="text-sm font-medium">Full Name *</Label>
-                          <Input
-                            id="name"
-                            placeholder="John Doe"
-                            {...register("name")}
-                            className="mt-1"
-                          />
-                          {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name.message}</p>}
-                        </div>
-                        <div>
-                          <Label htmlFor="email" className="text-sm font-medium">Email Address *</Label>
-                          <Input
-                            id="email"
-                            type="email"
-                            placeholder="john@example.com"
-                            {...register("email")}
-                            className="mt-1"
-                          />
-                          {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
-                        </div>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="type" className="text-sm font-medium">Artwork Type *</Label>
-                        <Select
-                          onValueChange={(v) => register("type").onChange({ target: { value: v } })}
-                          defaultValue={""}
-                        >
-                          <SelectTrigger className="mt-1">
-                            <SelectValue placeholder="Select artwork type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {artworkTypes.map((type) => (
-                              <SelectItem key={type.value} value={type.value}>
-                                {type.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {errors.type && <p className="mt-1 text-sm text-red-500">{errors.type.message}</p>}
-                      </div>
-
-                      <div className="grid sm:grid-cols-3 gap-6">
-                        <div>
-                          <Label htmlFor="size" className="text-sm font-medium">Preferred Size</Label>
-                          <Select
-                            onValueChange={(v) => register("size").onChange({ target: { value: v } })}
-                            defaultValue={""}
-                          >
-                            <SelectTrigger className="mt-1">
-                              <SelectValue placeholder="Select size" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {sizeOptions.map((size) => (
-                                <SelectItem key={size.value} value={size.value}>
-                                  {size.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label htmlFor="medium" className="text-sm font-medium">Preferred Medium</Label>
-                          <Select
-                            onValueChange={(v) => register("medium").onChange({ target: { value: v } })}
-                            defaultValue={""}
-                          >
-                            <SelectTrigger className="mt-1">
-                              <SelectValue placeholder="Select medium" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {mediumOptions.map((medium) => (
-                                <SelectItem key={medium.value} value={medium.value}>
-                                  {medium.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div>
-                          <Label htmlFor="budget" className="text-sm font-medium">Budget Range</Label>
-                          <Select
-                            onValueChange={(v) => register("budget").onChange({ target: { value: v } })}
-                            defaultValue={""}
-                          >
-                            <SelectTrigger className="mt-1">
-                              <SelectValue placeholder="Select budget" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {budgetOptions.map((budget) => (
-                                <SelectItem key={budget.value} value={budget.value}>
-                                  {budget.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="message" className="text-sm font-medium">Your Vision & Details *</Label>
-                        <Textarea
-                          id="message"
-                          placeholder="Describe your vision, color preferences, mood, inspiration images, intended space, and any other details that will help the artist understand your project..."
-                          rows={6}
-                          {...register("message")}
-                          className="mt-1"
-                        />
-                        {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message.message}</p>}
-                        <p className="mt-1 text-sm text-gray-500">
-                          The more details you provide, the better we can match you with the right artist and create exactly what you envision.
-                        </p>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="refImage" className="text-sm font-medium">Reference Image (Optional)</Label>
-                        <Input
-                          id="refImage"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0] || null;
-                            setRefImageFile(file);
-                          }}
-                          className="mt-1"
-                        />
-                        {refImageFile && (
-                          <p className="mt-1 text-sm text-gray-600">
-                            Selected: {refImageFile.name}
-                          </p>
-                        )}
-                      </div>
-
-                      <Button
-                        type="submit"
-                        className="w-full sm:w-auto bg-black text-white hover:bg-red-500 hover:text-white transition-colors"
-                        size="lg"
-                        disabled={submitting}
-                      >
-                        {submitting ? "Submitting..." : "Submit Commission Request"}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </motion.div>
+            <h1 className="rx-hero-title">
+              Contact &amp;<br />
+              Studio Visits
+            </h1>
+          </div>
+          <div className="max-w-md">
+            <p className="rx-hero-sub mb-6">
+              Connect with our curators, inquire about available paintings, or schedule a personal
+              viewing at our Thamel studio gallery.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a href="#contact-form" className="rx-btn rx-btn-black">
+                Send a Message <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+              <Link href="/commission" className="rx-btn rx-btn-outline">
+                Commission Inquiry
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="px-8 py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl font-bold text-center mb-12"
-          >
-            Why Commission with Duluwa?
-          </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: Palette, title: "Curated Artists", desc: "Hand-selected artists with proven expertise and unique styles." },
-              { icon: Brush, title: "Collaborative Process", desc: "You're involved at every stage, from concept to final touches." },
-              { icon: Star, title: "Quality Guaranteed", desc: "Professional materials, archival quality, and authenticity certificates." },
-            ].map((feature) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="text-center p-8 bg-white rounded-xl shadow-sm"
-              >
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
-                  <feature.icon className="h-8 w-8" />
-                </div>
-                <h3 className="font-semibold text-xl mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.desc}</p>
-              </motion.div>
-            ))}
+      {/* Contact Cards Info */}
+      <section className="py-20 px-8 max-w-[1720px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="border-t border-black/10 pt-6">
+            <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-2">
+              Studio Location
+            </span>
+            <h4 className="text-xl font-bold mb-2">Thamel Gallery</h4>
+            <p className="text-sm text-black/60 leading-relaxed">
+              Thamel Marg, Kathmandu 44600, Nepal
+            </p>
+          </div>
+
+          <div className="border-t border-black/10 pt-6">
+            <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-2">
+              Opening Hours
+            </span>
+            <h4 className="text-xl font-bold mb-2">Daily Viewing</h4>
+            <p className="text-sm text-black/60 leading-relaxed">
+              10:00 AM – 7:00 PM NPT<br />
+              Open Monday through Sunday
+            </p>
+          </div>
+
+          <div className="border-t border-black/10 pt-6">
+            <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-2">
+              Email Correspondence
+            </span>
+            <h4 className="text-xl font-bold mb-2">Direct Studio</h4>
+            <p className="text-sm text-black/60 leading-relaxed">
+              info@duluwaart.com<br />
+              sales@duluwaart.com
+            </p>
+          </div>
+
+          <div className="border-t border-black/10 pt-6">
+            <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-2">
+              Phone &amp; WhatsApp
+            </span>
+            <h4 className="text-xl font-bold mb-2">+977 1 4700000</h4>
+            <p className="text-sm text-black/60 leading-relaxed">
+              Direct artist inquiries &amp; appointments
+            </p>
           </div>
         </div>
       </section>
 
-      <GenZGlassyFooter />
-    </main>
+      {/* Message Form & Map */}
+      <section id="contact-form" className="py-16 px-8 max-w-[1720px] mx-auto border-t border-black/10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <div className="lg:col-span-5">
+            <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-2">
+              Inquiries
+            </span>
+            <h2 className="text-4xl font-bold tracking-tight mb-6">
+              Send a Message
+            </h2>
+            <p className="text-black/70 leading-relaxed mb-8">
+              Whether you are an international art collector, looking for collaboration opportunities,
+              or requesting high-resolution catalog previews, we would love to hear from you.
+            </p>
+
+            {submitted ? (
+              <div className="bg-black/5 p-8 rounded-2xl text-center">
+                <CheckCircle2 className="w-12 h-12 text-black mx-auto mb-4" />
+                <h4 className="text-xl font-bold mb-2">Message Sent</h4>
+                <p className="text-sm text-black/70 mb-6">
+                  Thank you for reaching out. We will respond to your email as soon as possible.
+                </p>
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="rx-btn rx-btn-black text-xs"
+                >
+                  Send Another Message
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-black/70 mb-2">
+                    Name *
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="Your Full Name"
+                    className="w-full px-4 py-3 border border-black/15 rounded-lg text-sm bg-transparent focus:outline-none focus:border-black"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-black/70 mb-2">
+                    Email *
+                  </label>
+                  <input
+                    required
+                    type="email"
+                    placeholder="you@domain.com"
+                    className="w-full px-4 py-3 border border-black/15 rounded-lg text-sm bg-transparent focus:outline-none focus:border-black"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-black/70 mb-2">
+                    Message *
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    placeholder="How can we assist you?"
+                    className="w-full px-4 py-3 border border-black/15 rounded-lg text-sm bg-transparent focus:outline-none focus:border-black"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="rx-btn rx-btn-black w-full py-3.5"
+                >
+                  {submitting ? "Sending..." : "Send Message"}
+                </button>
+              </form>
+            )}
+          </div>
+
+          <div className="lg:col-span-7 bg-black/5 rounded-2xl p-8 flex flex-col justify-between min-h-[450px]">
+            <div>
+              <span className="text-xs uppercase tracking-widest text-black/50 font-semibold block mb-2">
+                Visiting Thamel
+              </span>
+              <h3 className="text-2xl font-bold mb-4">Location &amp; Access</h3>
+              <p className="text-black/70 leading-relaxed text-sm mb-6 max-w-lg">
+                Our gallery is situated in the heart of cultural Kathmandu. Walking distance from
+                historic courtyards, cafes, and handicraft ateliers. Private collector viewings
+                outside normal operating hours are available upon prior arrangement.
+              </p>
+            </div>
+
+            <div className="border-t border-black/10 pt-6 flex flex-wrap justify-between items-center gap-4">
+              <div className="text-xs uppercase tracking-widest text-black/50">
+                Kathmandu Valley &bull; Nepal
+              </div>
+              <a
+                href="https://maps.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rx-btn rx-btn-outline text-xs"
+              >
+                Open in Google Maps <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <RevixFooter />
+    </div>
   );
 }

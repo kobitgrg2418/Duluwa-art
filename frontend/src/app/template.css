@@ -4,7 +4,7 @@
 :root {
   --ink: #24251f;
   --paper: #f5f2eb;
-  --acid: #d3ff5c;
+  --acid: #ff1744;
   --muted: #888880;
   --line: rgba(36, 37, 31, 0.12);
 }
@@ -224,7 +224,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: var(--acid);
+  background: #ff1744 !important;
   display: flex;
   flex-direction: column;
   align-items: center;

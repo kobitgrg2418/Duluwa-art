@@ -1,27 +1,25 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
-import { Search, SlidersHorizontal, Heart, X } from "lucide-react";
-import DuluwaNavbar from "@/components/duluwa-navbar";
-import GenZGlassyFooter from "@/components/genz-footer";
+import Image from "next/image";
+import { Search, ArrowUpRight } from "lucide-react";
+import RevixNavbar from "@/components/revix-navbar";
+import RevixFooter from "@/components/revix-footer";
 import { formatPrice } from "@/lib/utils";
 import { Artwork, Collection } from "@/types";
 import { artworkData, collectionData } from "@/lib/collection-data";
+import { useCart } from "@/hooks/use-cart";
+import { toast } from "sonner";
 
 export default function ShopPage() {
   const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All Artworks");
-  const [selectedMedium, setSelectedMedium] = useState("All");
-  const [selectedCollection, setSelectedCollection] = useState("All");
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
-  const [sortBy, setSortBy] = useState("Featured");
-  const [showFilters, setShowFilters] = useState(false);
-  const [wishlist, setWishlist] = useState<Set<string>>(new Set());
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortBy, setSortBy] = useState("featured");
+  const { addItem } = useCart();
 
   useEffect(() => {
     fetchData();
@@ -38,7 +36,7 @@ export default function ShopPage() {
       setArtworks(artworksResponse.data.results || artworksResponse.data || artworkData);
       setCollections(collectionsResponse.data.results || collectionsResponse.data || collectionData);
     } catch (error) {
-      console.error("Failed to fetch data, using local data:", error);
+      console.error("Failed to load shop data:", error);
       setArtworks(artworkData);
       setCollections(collectionData);
     } finally {
@@ -46,353 +44,180 @@ export default function ShopPage() {
     }
   };
 
-  const toggleWishlist = (artworkId: string) => {
-    setWishlist((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(artworkId)) {
-        newSet.delete(artworkId);
-      } else {
-        newSet.add(artworkId);
-      }
-      return newSet;
-    });
+  const handleAddToCart = (art: Artwork) => {
+    addItem(art);
+    toast.success(`"${art.title}" added to your cart.`);
   };
 
-  const clearFilters = () => {
-    setSearchQuery("");
-    setSelectedCategory("All Artworks");
-    setSelectedMedium("All");
-    setSelectedCollection("All");
-    setPriceRange({ min: 0, max: 10000 });
-    setSortBy("Featured");
-  };
+  const categories = ["All", "Himalaya", "Culture", "Portrait", "Sketch"];
 
-  const filteredAndSortedArtworks = artworks
-    .filter((artwork) => {
+  const filteredArtworks = artworks
+    .filter((art) => {
       const matchesSearch =
-        artwork.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        artwork.medium.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        artwork.note?.toLowerCase().includes(searchQuery.toLowerCase());
-
+        art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (art.note && art.note.toLowerCase().includes(searchQuery.toLowerCase()));
       const matchesCategory =
-        selectedCategory === "All Artworks" ||
-        (selectedCategory === "Available Now" && artwork.status === "IN_SALE") ||
-        (selectedCategory === "Original Paintings" && artwork.medium.toLowerCase().includes("watercolour")) ||
-        (selectedCategory === "Art Prints" && artwork.medium.toLowerCase().includes("sketch"));
-
-      const matchesMedium = selectedMedium === "All" || artwork.medium.toLowerCase().includes(selectedMedium.toLowerCase());
-
-      const matchesCollection = selectedCollection === "All" || artwork.collection_id === selectedCollection;
-
-      const matchesPrice = artwork.price >= priceRange.min && artwork.price <= priceRange.max;
-
-      return matchesSearch && matchesCategory && matchesMedium && matchesCollection && matchesPrice;
+        selectedCategory === "All" ||
+        (art as any).category?.toLowerCase() === selectedCategory.toLowerCase() ||
+        art.collection?.category?.toLowerCase() === selectedCategory.toLowerCase() ||
+        art.collection?.title?.toLowerCase().includes(selectedCategory.toLowerCase());
+      return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
-      switch (sortBy) {
-        case "Newest":
-          return 0; // Would use date if available
-        case "Price: Low to High":
-          return a.price - b.price;
-        case "Price: High to Low":
-          return b.price - a.price;
-        case "Best Selling":
-          return b.featured ? 1 : -1;
-        default:
-          return 0;
-      }
+      if (sortBy === "price-low") return a.price - b.price;
+      if (sortBy === "price-high") return b.price - a.price;
+      return 0;
     });
 
-  const categories = ["All Artworks", "Original Paintings", "Art Prints", "Limited Editions", "Available Now"];
-  const mediums = ["All", "Watercolour", "Graphite", "Acrylic", "Oil", "Digital"];
-  const sortOptions = ["Featured", "Newest", "Price: Low to High", "Price: High to Low", "Best Selling"];
-
-  if (loading) {
-    return (
-      <>
-        <DuluwaNavbar />
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-zinc-900 border-t-transparent mx-auto" />
-        </div>
-        <GenZGlassyFooter />
-      </>
-    );
-  }
-
   return (
-    <>
-      <DuluwaNavbar />
+    <div className="bg-[#fcfcfc] text-black min-h-screen">
+      <RevixNavbar />
 
-      <main className="min-h-screen bg-[#FAFAF8] text-zinc-900 pb-20 pt-[76px]">
-        {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-zinc-500 mb-6">
-              <Link href="/" className="hover:text-zinc-900 transition-colors">
-                Home
-              </Link>
-              <span>/</span>
-              <span className="text-zinc-900">Shop Art</span>
+      {/* Hero Header */}
+      <section className="rx-hero">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 pb-12 border-b border-black/10">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-black/50 mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#ff2a2a]"></span>
+              Original Artworks &amp; Studies
             </div>
-
-            {/* Eyebrow */}
-            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-4">
-              The Duluwa Art Collection
-            </p>
-
-            {/* Heading */}
-            <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-6">
-              Art That Speaks Beyond Words
+            <h1 className="rx-hero-title">
+              Gallery Shop &amp;<br />
+              Exhibition Pieces
             </h1>
-
-            {/* Description */}
-            <p className="text-lg text-zinc-600 max-w-2xl leading-relaxed">
-              Explore original artworks and thoughtfully curated prints, created to bring character,
-              emotion, and individuality into your space.
+          </div>
+          <div className="max-w-md">
+            <p className="rx-hero-sub mb-6">
+              Acquire authentic original paintings created with fine pigment washes on handmade Nepalese
+              cotton rag paper. Each piece includes a signed Certificate of Authenticity.
             </p>
-          </motion.div>
-        </section>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/commission" className="rx-btn rx-btn-black">
+                Custom Commission <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+        </div>
 
-        {/* Categories */}
-        <section className="max-w-7xl mx-auto px-6 md:px-12 py-8 border-b border-zinc-200">
-          <div className="flex flex-wrap gap-3">
-            {categories.map((category) => (
+        {/* Filter Controls & Search */}
+        <div className="pt-8 pb-4 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
+          <div className="flex flex-wrap gap-2">
+            {categories.map((cat) => (
               <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-5 py-2 text-sm font-medium transition-colors ${
-                  selectedCategory === category
-                    ? "text-zinc-900 border-b-2 border-zinc-900"
-                    : "text-zinc-500 hover:text-zinc-900"
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all ${
+                  selectedCategory === cat
+                    ? "bg-black text-white"
+                    : "bg-black/5 text-black hover:bg-black/10"
                 }`}
               >
-                {category}
+                {cat}
               </button>
             ))}
           </div>
-        </section>
 
-        {/* Search, Filter, and Sort Bar */}
-        <section className="max-w-7xl mx-auto px-6 md:px-12 py-8">
-          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            {/* Search */}
-            <div className="relative w-full md:w-96">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+          <div className="flex items-center gap-4">
+            <div className="relative flex-1 md:w-64">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-black/40" />
               <input
                 type="text"
                 placeholder="Search artworks..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-zinc-200 rounded-full focus:outline-none focus:border-zinc-900 transition-colors text-sm bg-white"
+                className="w-full pl-9 pr-4 py-2 border border-black/15 rounded-full text-xs bg-transparent focus:outline-none focus:border-black"
               />
             </div>
 
-            {/* Filter and Sort */}
-            <div className="flex items-center gap-4 w-full md:w-auto">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-3 border border-zinc-200 rounded-full text-sm hover:border-zinc-900 transition-colors bg-white"
-              >
-                <SlidersHorizontal className="h-4 w-4" />
-                Filters
-              </button>
-
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-3 border border-zinc-200 rounded-full text-sm focus:outline-none focus:border-zinc-900 transition-colors bg-white"
-              >
-                {sortOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-
-              <span className="text-sm text-zinc-500">
-                {filteredAndSortedArtworks.length} artworks
-              </span>
-            </div>
-          </div>
-
-          {/* Filter Drawer */}
-          {showFilters && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mt-6 p-6 bg-white border border-zinc-200 rounded-xl"
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-4 py-2 border border-black/15 rounded-full text-xs bg-transparent focus:outline-none focus:border-black"
             >
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                {/* Medium Filter */}
-                <div>
-                  <label className="block text-xs uppercase tracking-widest text-zinc-400 mb-3">
-                    Medium
-                  </label>
-                  <select
-                    value={selectedMedium}
-                    onChange={(e) => setSelectedMedium(e.target.value)}
-                    className="w-full px-4 py-2 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:border-zinc-900"
-                  >
-                    {mediums.map((medium) => (
-                      <option key={medium} value={medium}>
-                        {medium}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <option value="featured">Featured Order</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+      </section>
 
-                {/* Collection Filter */}
-                <div>
-                  <label className="block text-xs uppercase tracking-widest text-zinc-400 mb-3">
-                    Collection
-                  </label>
-                  <select
-                    value={selectedCollection}
-                    onChange={(e) => setSelectedCollection(e.target.value)}
-                    className="w-full px-4 py-2 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:border-zinc-900"
-                  >
-                    <option value="All">All Collections</option>
-                    {collections.map((collection) => (
-                      <option key={collection.id} value={collection.id}>
-                        {collection.title}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Price Range */}
-                <div>
-                  <label className="block text-xs uppercase tracking-widest text-zinc-400 mb-3">
-                    Price Range
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      value={priceRange.min}
-                      onChange={(e) => setPriceRange({ ...priceRange, min: Number(e.target.value) })}
-                      className="w-full px-3 py-2 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:border-zinc-900"
+      {/* Artworks Grid */}
+      <section className="px-8 pb-24 max-w-[1720px] mx-auto">
+        {loading ? (
+          <div className="py-24 text-center text-black/40 text-sm uppercase tracking-widest">
+            Loading gallery pieces...
+          </div>
+        ) : filteredArtworks.length === 0 ? (
+          <div className="py-24 text-center">
+            <h3 className="text-xl font-bold mb-2">No artworks match your search</h3>
+            <p className="text-black/60 text-sm mb-6">Try clearing your search query or filters.</p>
+            <button
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedCategory("All");
+              }}
+              className="rx-btn rx-btn-black text-xs"
+            >
+              Reset Filters
+            </button>
+          </div>
+        ) : (
+          <div className="rx-grid">
+            {filteredArtworks.map((art) => {
+              const displayImg = art.image || "/art/drawing-09.jpg";
+              return (
+                <div key={art.id} className="rx-card group">
+                  <div className="rx-card-media relative">
+                    <Image
+                      src={displayImg}
+                      alt={art.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
-                    <span className="text-zinc-400">-</span>
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      value={priceRange.max}
-                      onChange={(e) => setPriceRange({ ...priceRange, max: Number(e.target.value) })}
-                      className="w-full px-3 py-2 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:border-zinc-900"
-                    />
+                    <div className="absolute top-4 left-4 z-10">
+                      <span className="rx-tag bg-white/90 backdrop-blur-sm text-black">
+                        {(art as any).category || art.collection?.title || "Original Work"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="rx-card-info">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="rx-card-title text-xl">{art.title}</h3>
+                      <span className="font-semibold text-sm">
+                        {formatPrice ? formatPrice(art.price) : `Rs. ${art.price}`}
+                      </span>
+                    </div>
+                    <p className="rx-card-meta mb-3">
+                      {art.medium} &bull; {art.size || "Original"}
+                    </p>
+                    <p className="text-xs text-black/60 line-clamp-2 mb-4 leading-relaxed">
+                      {art.note || "Fine artwork on handmade Nepalese cotton rag paper."}
+                    </p>
+                    <div className="flex items-center gap-3 pt-3 border-t border-black/5">
+                      <button
+                        onClick={() => handleAddToCart(art)}
+                        className="rx-btn rx-btn-black text-[11px] py-2 px-4"
+                      >
+                        + Add to Cart
+                      </button>
+                      <Link
+                        href={`/collections/${art.collection_id || art.id}`}
+                        className="text-xs font-semibold underline text-black/70 hover:text-black"
+                      >
+                        Details
+                      </Link>
+                    </div>
                   </div>
                 </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
-                {/* Clear Filters */}
-                <div className="flex items-end">
-                  <button
-                    onClick={clearFilters}
-                    className="w-full px-4 py-2 border border-zinc-200 rounded-lg text-sm hover:border-zinc-900 transition-colors flex items-center justify-center gap-2"
-                  >
-                    <X className="h-4 w-4" />
-                    Clear All
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </section>
-
-        {/* Artwork Grid */}
-        <section className="max-w-7xl mx-auto px-6 md:px-12 py-12">
-          {filteredAndSortedArtworks.length === 0 ? (
-            <div className="text-center py-24">
-              <p className="text-zinc-500 text-lg">No artworks found matching your criteria.</p>
-              <button
-                onClick={clearFilters}
-                className="mt-4 text-sm text-zinc-900 underline hover:no-underline"
-              >
-                Clear filters
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {filteredAndSortedArtworks.map((artwork, index) => (
-                <motion.div
-                  key={artwork.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Link href={`/collections/${artwork.id}`} className="group block">
-                    <div className="relative aspect-[3/4] bg-zinc-100 overflow-hidden mb-4">
-                      {artwork.image ? (
-                        <img
-                          src={artwork.image}
-                          alt={artwork.title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-zinc-400 text-sm">
-                          Preview
-                        </div>
-                      )}
-
-                      {/* Wishlist Button */}
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleWishlist(artwork.id);
-                        }}
-                        className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
-                      >
-                        <Heart
-                          className={`h-4 w-4 ${
-                            wishlist.has(artwork.id) ? "fill-red-500 text-red-500" : "text-zinc-600"
-                          }`}
-                        />
-                      </button>
-
-                      {/* Status Badge */}
-                      {artwork.status === "SOLD_OUT" && (
-                        <div className="absolute top-3 left-3 bg-zinc-900/80 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider px-3 py-1 rounded-full">
-                          Sold Out
-                        </div>
-                      )}
-
-                      {artwork.featured && artwork.status === "IN_SALE" && (
-                        <div className="absolute bottom-3 left-3 bg-white/80 backdrop-blur-sm text-zinc-900 text-[10px] uppercase tracking-wider px-3 py-1 rounded-full">
-                          Featured
-                        </div>
-                      )}
-
-                      {/* Hover Overlay */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                        <span className="text-white text-xs uppercase tracking-widest font-medium">
-                          View Artwork
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Product Details */}
-                    <div>
-                      <h3 className="font-medium text-zinc-900 mb-1">{artwork.title}</h3>
-                      <p className="text-sm text-zinc-500 mb-2">
-                        {artwork.medium} • {artwork.size || "Various sizes"}
-                      </p>
-                      <p className="text-base font-light text-zinc-900">{formatPrice(artwork.price)}</p>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </section>
-      </main>
-
-      <GenZGlassyFooter />
-    </>
+      <RevixFooter />
+    </div>
   );
 }
