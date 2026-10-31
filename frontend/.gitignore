@@ -1,6 +1,5 @@
 node_modules
 .next
-public/artworks
 data/images.generated.json
 *.tsbuildinfo
 next-env.d.ts
