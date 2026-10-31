@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     loader: 'custom',
     loaderFile: './lib/image-loader.ts',
+    unoptimized: true,
   },
 };
 export default nextConfig;
