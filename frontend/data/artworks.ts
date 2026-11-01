@@ -65,7 +65,7 @@ export const artworks: Artwork[] = RAW.map((r) => {
     status: r.status ?? 'available',
     oneOfOne: !!r.oneOfOne,
     justPainted: !!r.justPainted,
-    image: r.id,
+    image: `/artworks/${r.id}-1600.webp`,
     width: m.width,
     height: m.height,
     aspect: m.aspect,

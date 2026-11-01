@@ -1,1 +1,0 @@
-# Orders app for Duluwa Art Gallery

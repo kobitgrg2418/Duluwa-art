@@ -49,7 +49,7 @@ export const useStore = create<State>()(
     (set, get) => ({
       lines: [],
       wishlist: [],
-      currency: 'NPR',
+      currency: 'NPR', // Default to NPR for Nepal
       menuOpen: false,
       cartOpen: false,
       searchOpen: false,
@@ -93,6 +93,14 @@ export const useStore = create<State>()(
       storage: createJSONStorage(() => safeStorage),
       partialize: (s) => ({ lines: s.lines, wishlist: s.wishlist, currency: s.currency }),
       skipHydration: true,
+      version: 1, // Increment to reset localStorage
+      migrate: (persistedState: any, version: number) => {
+        // Force currency to NPR on migration
+        if (version === 0) {
+          return { ...persistedState, currency: 'NPR' };
+        }
+        return persistedState;
+      },
     },
   ),
 );

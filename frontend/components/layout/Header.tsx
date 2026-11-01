@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { m, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useStore, cartCount } from '@/store/useStore';
 import { EASE } from '@/lib/motion';
+import { useCatalog } from '@/context/CatalogContext';
 
 /** Fixed header. mix-blend-mode: difference keeps it legible over paper, photos and the dark sections. */
 export default function Header() {
@@ -14,6 +15,13 @@ export default function Header() {
   const setMenu = useStore((s) => s.setMenu);
   const setCart = useStore((s) => s.setCart);
   const setSearch = useStore((s) => s.setSearch);
+  const { site } = useCatalog();
+
+  const shipsFromLabel = site?.settings?.header_ships_from_label || 'Ships from';
+  const shipsFromValue = site?.settings?.header_ships_from_value || 'Pokhara, Nepal';
+  const shippingLabel = site?.settings?.header_shipping_label || 'Worldwide shipping';
+  const shippingValue = site?.settings?.header_shipping_value || 'Tracked & insured';
+  const wordmark = site?.settings?.wordmark || 'Duluwa';
 
   useMotionValueEvent(scrollY, 'change', (v) => {
     const prev = scrollY.getPrevious() ?? 0;
@@ -30,19 +38,19 @@ export default function Header() {
       transition={{ duration: 0.5, ease: EASE }}
     >
       <div className="page-pad flex items-start justify-between gap-6 pt-4">
-        <Link href="/" className="flex items-start gap-1.5" aria-label="Duluwa Art — home">
-          <span className="font-display text-[26px] font-bold uppercase leading-none tracking-tightest md:text-[30px]">Duluwa</span>
+        <Link href="/" className="flex items-start gap-1.5" aria-label={`${wordmark} Art — home`}>
+          <span className="font-display text-[26px] font-bold uppercase leading-none tracking-tightest md:text-[30px]">{wordmark}</span>
           <span className="label mt-0.5 border border-current px-1 py-[2px] !text-[8px]">Art</span>
         </Link>
 
         <div className="hidden flex-1 justify-end gap-14 pr-10 md:flex">
           <div>
-            <p className="label opacity-60">Ships from</p>
-            <p className="label mt-1">Kathmandu, Nepal</p>
+            <p className="label opacity-60">{shipsFromLabel}</p>
+            <p className="label mt-1">{shipsFromValue}</p>
           </div>
           <div>
-            <p className="label opacity-60">Worldwide shipping</p>
-            <p className="label mt-1">Tracked &amp; insured</p>
+            <p className="label opacity-60">{shippingLabel}</p>
+            <p className="label mt-1">{shippingValue}</p>
           </div>
         </div>
 

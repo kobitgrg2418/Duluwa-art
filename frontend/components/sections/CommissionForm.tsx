@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { m, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
-import { bySlug } from '@/data/artworks';
+import { useCatalog } from '@/context/CatalogContext';
 import { EASE } from '@/lib/motion';
 import { useStore } from '@/store/useStore';
 
@@ -30,6 +30,7 @@ function Choice({ options, value, onChange, label }: { options: string[]; value:
 
 export default function CommissionForm() {
   const sp = useSearchParams();
+  const { bySlug } = useCatalog();
   const similar = sp.get('similar') ? bySlug(sp.get('similar')!) : undefined;
   const toast = useStore((s) => s.toast);
   const [step, setStep] = useState(0);

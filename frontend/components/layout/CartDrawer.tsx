@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { useStore, cartTotal, cartCount } from '@/store/useStore';
-import { byId } from '@/data/artworks';
+import { useCatalog } from '@/context/CatalogContext';
 import Art from '@/components/ui/Art';
 import { money } from '@/lib/price';
 import { EASE_WIPE } from '@/lib/motion';
@@ -15,6 +15,7 @@ export default function CartDrawer() {
   const currency = useStore((s) => s.currency);
   const setQty = useStore((s) => s.setQty);
   const removeLine = useStore((s) => s.removeLine);
+  const { byId } = useCatalog();
 
   useEffect(() => {
     if (!open) return;

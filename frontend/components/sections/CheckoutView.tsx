@@ -4,10 +4,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import { useStore, cartTotal } from '@/store/useStore';
-import { byId } from '@/data/artworks';
+import { useCatalog } from '@/context/CatalogContext';
 import Art from '@/components/ui/Art';
 import { money } from '@/lib/price';
-import { SHIPPING } from '@/lib/prints';
 import { placeOrder, type PaymentMethod } from '@/lib/payments';
 
 const METHODS: { id: PaymentMethod; label: string; note: string }[] = [
@@ -31,13 +30,14 @@ export default function CheckoutView() {
   const lines = useStore((s) => s.lines);
   const currency = useStore((s) => s.currency);
   const clearCart = useStore((s) => s.clearCart);
-  const [ship, setShip] = useState('standard');
+  const { byId, shopConfig } = useCatalog();
+  const [ship, setShip] = useState(shopConfig?.shipping_methods[0]?.key || 'standard');
   const [method, setMethod] = useState<PaymentMethod>('esewa');
   const [busy, setBusy] = useState(false);
 
-  const shipping = SHIPPING.find((s) => s.id === ship)!;
+  const shipping = shopConfig?.shipping_methods.find((s) => s.key === ship) || { key: 'standard', label: 'Standard', days: '5-7 days', price_npr: 500 };
   const sub = cartTotal(lines);
-  const total = sub + shipping.npr;
+  const total = sub + shipping.price_npr;
 
   if (!lines.length) {
     return (
@@ -56,8 +56,13 @@ export default function CheckoutView() {
       method, amountNPR: total, email: String(fd.get('email')), shippingId: ship,
       items: lines.map((l) => ({ artworkId: l.artworkId, option: l.option, qty: l.qty, unitNPR: l.unitNPR })),
     });
-    clearCart();
-    router.push(`/checkout/success?order=${res.orderId}&status=${res.status}`);
+    setBusy(false);
+    if (res.ok) {
+      clearCart();
+      router.push(`/checkout/success?order=${res.orderId}&status=${res.status}`);
+    } else {
+      alert(res.message);
+    }
   };
 
   return (

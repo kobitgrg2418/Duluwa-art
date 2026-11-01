@@ -3,7 +3,7 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { m, type MotionValue, type MotionStyle } from 'framer-motion';
 import type { Collection } from '@/lib/types';
-import { byId } from '@/data/artworks';
+import { useCatalog } from '@/context/CatalogContext';
 import Art from '@/components/ui/Art';
 import Chip from '@/components/ui/Chip';
 
@@ -18,6 +18,7 @@ interface Props {
 }
 
 export default function CollectionCard({ c, count, className, gray, style, sizes = '(min-width:1024px) 25vw, 100vw' }: Props) {
+  const { byId } = useCatalog();
   const art = byId(c.cover);
   if (!art) return null;
   const gs = gray ? ({ ['--gs' as string]: gray } as MotionStyle) : undefined;

@@ -3,8 +3,7 @@ import { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { m, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
-import { artworks } from '@/data/artworks';
-import { collections } from '@/data/collections';
+import { useCatalog } from '@/context/CatalogContext';
 import ArtworkCard from '@/components/cards/ArtworkCard';
 import { useStore } from '@/store/useStore';
 import { money } from '@/lib/price';
@@ -40,6 +39,8 @@ function Group({ title, children }: { title: string; children: React.ReactNode }
 const toggleIn = (arr: string[], v: string) => (arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
 
 function FilterPanel({ f, set, currency }: { f: Filters; set: (p: Partial<Filters>) => void; currency: 'NPR' | 'USD' }) {
+  const { collections } = useCatalog();
+  
   return (
     <div>
       <Group title="Type">
@@ -71,6 +72,7 @@ function FilterPanel({ f, set, currency }: { f: Filters; set: (p: Partial<Filter
 }
 
 export default function ShopClient() {
+  const { artworks, collections } = useCatalog();
   const sp = useSearchParams();
   const currency = useStore((s) => s.currency);
   const wishlist = useStore((s) => s.wishlist);
@@ -99,7 +101,7 @@ export default function ShopClient() {
     if (f.sort === 'high') l = l.slice().sort((a, b) => b.priceNPR - a.priceNPR);
     if (f.sort === 'newest') l = l.slice().sort((a, b) => b.year - a.year);
     return l;
-  }, [f, wishlist]);
+  }, [f, wishlist, artworks]);
 
   const active = (f.type !== 'all' ? 1 : 0) + (f.avail !== 'all' ? 1 : 0) + f.categories.length + f.series.length + f.orientation.length + f.sizes.length + (f.max < MAX ? 1 : 0) + (f.saved ? 1 : 0);
 

@@ -4,6 +4,13 @@ const nextConfig = {
   images: {
     loader: 'custom',
     loaderFile: './lib/image-loader.ts',
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+      },
+    ],
   },
 };
 export default nextConfig;

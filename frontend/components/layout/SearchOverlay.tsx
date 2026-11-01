@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
-import { artworks } from '@/data/artworks';
+import { useCatalog } from '@/context/CatalogContext';
 import { EASE_WIPE } from '@/lib/motion';
 
 export default function SearchOverlay() {
@@ -11,6 +11,7 @@ export default function SearchOverlay() {
   const setSearch = useStore((s) => s.setSearch);
   const [q, setQ] = useState('');
   const input = useRef<HTMLInputElement>(null);
+  const { artworks } = useCatalog();
 
   useEffect(() => {
     if (!open) return;
@@ -25,7 +26,7 @@ export default function SearchOverlay() {
     const s = q.trim().toLowerCase();
     if (!s) return artworks.slice(0, 6);
     return artworks.filter((a) => [a.title, a.series, a.category, a.type, ...a.tags].join(' ').toLowerCase().includes(s));
-  }, [q]);
+  }, [q, artworks]);
 
   return (
     <AnimatePresence>

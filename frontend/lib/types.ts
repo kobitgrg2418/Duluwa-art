@@ -42,6 +42,8 @@ export interface CartLine {
   key: string; // artworkId + option
   artworkId: string;
   option?: string; // print size/paper
+  sizeIndex?: number;
+  paperIndex?: number;
   unitNPR: number;
   qty: number;
 }
