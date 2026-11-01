@@ -43,7 +43,7 @@ class SiteSettings(Singleton):
     wordmark = models.CharField(max_length=40, default='Duluwa', help_text='Big footer / header wordmark.')
     tagline = models.CharField(max_length=200, default='Watercolors from the Himalaya — painted in Nepal, shipped to your wall.')
     header_ships_from_label = models.CharField(max_length=60, default='Ships from')
-    header_ships_from_value = models.CharField(max_length=80, default='Kathmandu, Nepal')
+    header_ships_from_value = models.CharField(max_length=80, default='Pokhara, Nepal')
     header_shipping_label = models.CharField(max_length=60, default='Worldwide shipping')
     header_shipping_value = models.CharField(max_length=80, default='Tracked & insured')
     contact_email = models.EmailField(default='hello@duluwa.art')
