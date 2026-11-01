@@ -77,6 +77,7 @@ async function getCatalogData() {
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const site = await getSite();
+    if (!site) throw new Error('Unable to load site metadata from the API');
     return {
       metadataBase: new URL(SITE),
       title: { default: site.settings.seo_title, template: '%s — Duluwa Art' },

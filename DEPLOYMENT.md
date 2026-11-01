@@ -6,36 +6,35 @@ This project consists of:
 
 ## Frontend Deployment (Vercel)
 
-### 1. Environment Variables
-Set these in Vercel project settings:
+Vercel hosts the Next.js frontend. Deploy the Django API separately (for example, on
+Render or Railway); Vercel's serverless filesystem is not suitable for this project's
+SQLite database or uploaded media.
+
+### 1. Deploy the frontend
+
+1. Import the GitHub repository into Vercel.
+2. Set **Root Directory** to `frontend`. Leave the framework preset as **Next.js**;
+   Vercel will use the app's `vercel.json` and `package-lock.json`.
+3. Add the environment variables below in **Project Settings → Environment Variables**.
+   `NEXT_PUBLIC_API_URL` must be the public base URL of the deployed Django API, without
+   a trailing slash. `NEXT_PUBLIC_SITE_URL` is optional and should be the public site URL.
+4. Deploy (or redeploy after changing environment variables).
 
 ```
-NEXT_PUBLIC_API_URL=https://your-backend-api.com
+NEXT_PUBLIC_API_URL=https://your-backend-api.example.com
+NEXT_PUBLIC_SITE_URL=https://your-site.example.com
 ```
 
-### 2. Deploy to Vercel
+The frontend build runs `npm run build`, which runs the image-generation prebuild script
+before building Next.js. The generated images are included in the deployment.
 
-Option A: Using Vercel CLI
+You can also deploy from the CLI with the Vercel project rooted in `frontend`:
 ```bash
 cd frontend
 npm install -g vercel
 vercel login
 vercel
 ```
-
-Option B: Using Vercel Dashboard
-1. Go to [vercel.com](https://vercel.com)
-2. Click "Add New Project"
-3. Import from GitHub
-4. Select the `frontend` folder (or configure root directory)
-5. Add environment variables
-6. Deploy
-
-### 3. Vercel Configuration
-The `vercel.json` file is already configured with:
-- Build command: `npm run build`
-- Output directory: `.next`
-- Framework: Next.js
 
 ## Backend Deployment Options
 

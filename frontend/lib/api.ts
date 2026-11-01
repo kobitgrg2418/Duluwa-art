@@ -35,6 +35,8 @@ async function get<T>(path: string, options?: RequestInit): Promise<T | null> {
     return null;
   });
 
+  if (!res) return null;
+
   if (!res.ok) {
     console.error(`API error ${res.status} for ${path}`);
     return null;
@@ -142,27 +144,27 @@ export function mapPost(api: JournalPostAPI) {
 }
 
 // API fetchers
-export async function getSite(): Promise<SiteAPI> {
+export async function getSite(): Promise<SiteAPI | null> {
   return get<SiteAPI>('/site/');
 }
 
-export async function getHome(): Promise<HomeAPI> {
+export async function getHome(): Promise<HomeAPI | null> {
   return get<HomeAPI>('/home/');
 }
 
-export async function getArtist(): Promise<ArtistAPI> {
+export async function getArtist(): Promise<ArtistAPI | null> {
   return get<ArtistAPI>('/artist/');
 }
 
-export async function getShopConfig(): Promise<ShopConfigAPI> {
+export async function getShopConfig(): Promise<ShopConfigAPI | null> {
   return get<ShopConfigAPI>('/shop-config/');
 }
 
-export async function getCollections(): Promise<CollectionAPI[]> {
+export async function getCollections(): Promise<CollectionAPI[] | null> {
   return get<CollectionAPI[]>('/collections/');
 }
 
-export async function getCollection(slug: string): Promise<CollectionAPI> {
+export async function getCollection(slug: string): Promise<CollectionAPI | null> {
   return get<CollectionAPI>(`/collections/${slug}/`);
 }
 
@@ -179,7 +181,7 @@ export async function getArtworks(params?: {
   search?: string;
   ordering?: string;
   page_size?: number;
-}): Promise<PaginatedResponse<ArtworkAPI>> {
+}): Promise<PaginatedResponse<ArtworkAPI> | null> {
   const query = new URLSearchParams();
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
@@ -189,15 +191,15 @@ export async function getArtworks(params?: {
   return get<PaginatedResponse<ArtworkAPI>>(`/artworks/?${query.toString()}`);
 }
 
-export async function getArtwork(slug: string): Promise<ArtworkAPI> {
+export async function getArtwork(slug: string): Promise<ArtworkAPI | null> {
   return get<ArtworkAPI>(`/artworks/${slug}/`);
 }
 
-export async function getJournal(): Promise<PaginatedResponse<JournalPostAPI>> {
+export async function getJournal(): Promise<PaginatedResponse<JournalPostAPI> | null> {
   return get<PaginatedResponse<JournalPostAPI>>('/journal/');
 }
 
-export async function getJournalPost(slug: string): Promise<JournalPostAPI> {
+export async function getJournalPost(slug: string): Promise<JournalPostAPI | null> {
   return get<JournalPostAPI>(`/journal/${slug}/`);
 }
 
@@ -205,7 +207,7 @@ export async function createOrder(order: OrderAPI): Promise<OrderResponseAPI> {
   return post<OrderResponseAPI>('/orders/', order);
 }
 
-export async function getOrder(orderId: string, email: string): Promise<OrderResponseAPI> {
+export async function getOrder(orderId: string, email: string): Promise<OrderResponseAPI | null> {
   return get<OrderResponseAPI>(`/orders/${orderId}/?email=${encodeURIComponent(email)}`);
 }
 

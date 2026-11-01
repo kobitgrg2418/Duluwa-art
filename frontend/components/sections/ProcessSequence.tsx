@@ -33,7 +33,7 @@ function Frame({ i, art, stage }: { i: number; art: Artwork; stage: { title: str
       <div className="order-2 md:order-1">
         <p className="font-display text-[clamp(5rem,16vw,14rem)] font-bold leading-[0.8] tracking-tightest text-white/10">0{i + 1}</p>
         <h3 className="display-md mt-2">{t}</h3>
-        <p className="mt-4 max-w-[420px] text-[14px] text-white/60 md:text-[15px]">{s.d}</p>
+        <p className="mt-4 max-w-[420px] text-[14px] text-white/60 md:text-[15px]">{d}</p>
       </div>
       <div className="order-1 flex h-full max-h-[52vh] items-center justify-center md:order-2 md:max-h-[70vh]">
         <div className="relative h-full overflow-hidden bg-white shadow-matDeep" style={{ aspectRatio: art.aspect }}>

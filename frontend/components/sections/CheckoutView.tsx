@@ -7,6 +7,7 @@ import { useStore, cartTotal } from '@/store/useStore';
 import { useCatalog } from '@/context/CatalogContext';
 import Art from '@/components/ui/Art';
 import { money } from '@/lib/price';
+import { SHIPPING } from '@/lib/prints';
 import { placeOrder, type PaymentMethod } from '@/lib/payments';
 
 const METHODS: { id: PaymentMethod; label: string; note: string }[] = [
@@ -35,9 +36,12 @@ export default function CheckoutView() {
   const [method, setMethod] = useState<PaymentMethod>('esewa');
   const [busy, setBusy] = useState(false);
 
-  const shipping = shopConfig?.shipping_methods.find((s) => s.key === ship) || { key: 'standard', label: 'Standard', days: '5-7 days', price_npr: 500 };
+  const shippingMethods = shopConfig?.shipping_methods.length
+    ? shopConfig.shipping_methods
+    : SHIPPING.map(({ id, label, days, npr }) => ({ key: id, label, days, price_npr: npr }));
+  const shipping = shippingMethods.find((s) => s.key === ship) ?? shippingMethods[0];
   const sub = cartTotal(lines);
-  const total = sub + shipping.price_npr;
+  const total = sub + (shipping?.price_npr ?? 0);
 
   if (!lines.length) {
     return (
@@ -52,16 +56,15 @@ export default function CheckoutView() {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     setBusy(true);
-    const res = await placeOrder({
-      method, amountNPR: total, email: String(fd.get('email')), shippingId: ship,
-      items: lines.map((l) => ({ artworkId: l.artworkId, option: l.option, qty: l.qty, unitNPR: l.unitNPR })),
-    });
-    setBusy(false);
-    if (res.ok) {
+    try {
+      const res = await placeOrder({
+        method, amountNPR: total, email: String(fd.get('email')), shippingId: ship,
+        items: lines.map((l) => ({ artworkId: l.artworkId, option: l.option, qty: l.qty, unitNPR: l.unitNPR })),
+      });
       clearCart();
       router.push(`/checkout/success?order=${res.orderId}&status=${res.status}`);
-    } else {
-      alert(res.message);
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -84,10 +87,10 @@ export default function CheckoutView() {
         <section aria-labelledby="c2">
           <h2 id="c2" className="display-md mb-6">Shipping</h2>
           <div className="grid gap-2" role="radiogroup" aria-label="Shipping method">
-            {SHIPPING.map((s) => (
-              <label key={s.id} className={clsx('flex cursor-pointer items-center justify-between border p-4', ship === s.id ? 'border-ink bg-card' : 'border-ink/20')}>
-                <span className="flex items-center gap-3"><input type="radio" name="ship" checked={ship === s.id} onChange={() => setShip(s.id)} className="accent-[var(--accent)]" /><span><span className="font-semibold">{s.label}</span><span className="label ml-3 text-mute">{s.days}</span></span></span>
-                <span className="font-semibold">{money(s.npr, currency)}</span>
+            {shippingMethods.map((s) => (
+              <label key={s.key} className={clsx('flex cursor-pointer items-center justify-between border p-4', ship === s.key ? 'border-ink bg-card' : 'border-ink/20')}>
+                <span className="flex items-center gap-3"><input type="radio" name="ship" checked={ship === s.key} onChange={() => setShip(s.key)} className="accent-[var(--accent)]" /><span><span className="font-semibold">{s.label}</span><span className="label ml-3 text-mute">{s.days}</span></span></span>
+                <span className="font-semibold">{money(s.price_npr, currency)}</span>
               </label>
             ))}
           </div>
@@ -124,7 +127,7 @@ export default function CheckoutView() {
         </ul>
         <dl className="mt-4 space-y-1 text-sm">
           <div className="flex justify-between"><dt>Subtotal</dt><dd>{money(sub, currency)}</dd></div>
-          <div className="flex justify-between"><dt>Shipping</dt><dd>{money(shipping.npr, currency)}</dd></div>
+          <div className="flex justify-between"><dt>Shipping</dt><dd>{money(shipping?.price_npr ?? 0, currency)}</dd></div>
           <div className="flex justify-between border-t border-ink/10 pt-2 text-base font-semibold"><dt>Total</dt><dd>{money(total, currency)}</dd></div>
         </dl>
         <button type="submit" disabled={busy} className="btn mt-6 w-full disabled:opacity-50">{busy ? 'Processing…' : `Pay ${money(total, currency)}`}</button>
